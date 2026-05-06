@@ -3,18 +3,20 @@ import type { AstroExpressiveCodeOptions } from 'astro-expressive-code'
 
 export const siteConfig: SiteConfig = {
 	// Used as both a meta property (src/components/BaseHead.astro L:31 + L:49) & the generated satori png (src/pages/og-image/[slug].png.ts)
-	author: 'SRLEOM',
+	author: 'Florian Lefevre',
 	// Meta property used to construct the meta title property, found in src/components/BaseHead.astro L:11
-	title: 'astro-theme-resume',
+	title: 'Florian Lefevre | Dev Notes',
 	// Meta property used as the default description meta property
-	description: 'The official Astro Resume Theme',
+	description:
+		"Mes expérimentation techniques, mes découvertes et mes retours d'expériences. Un blog par moi, pour moi, mais ouvert aux regards extérieurs",
 	// HTML lang property, found in src/layouts/Base.astro L:18
-	lang: 'en-GB',
+	// TODO: anticipate i18n — English version to come
+	lang: 'fr',
 	// Meta property, found in src/components/BaseHead.astro L:42
-	ogLocale: 'en_GB',
+	ogLocale: 'fr_FR',
 	// Date.prototype.toLocaleDateString() parameters, found in src/utils/date.ts.
 	date: {
-		locale: 'en-GB',
+		locale: 'fr-FR',
 		options: {
 			day: 'numeric',
 			month: 'short',
@@ -27,6 +29,10 @@ export const menuLinks: Array<{ title: string; path: string }> = [
 	{
 		title: 'Home',
 		path: '/'
+	},
+	{
+		title: 'CV',
+		path: '/cv/'
 	},
 	{
 		title: 'Blog',

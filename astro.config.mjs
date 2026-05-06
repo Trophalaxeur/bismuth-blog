@@ -11,7 +11,7 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://example.me',
+	site: 'https://flefevre.fr',
 	integrations: [
 		expressiveCode(expressiveCodeOptions),
 		sitemap(),
