@@ -1,4 +1,4 @@
-<img align="left" src="docs/bismuth.png" style="margin-right:20px" height="186" />
+<img align="left" src="docs/bismuth-thumb.png" style="margin-right:20px" height="186" />
 
 ```
  mmmmmm     mmmmmm     mmmm    mmm  mmm  mm    mm  mmmmmmmm  mm    mm 
