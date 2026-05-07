@@ -1,4 +1,4 @@
-# Personal Blog — Claude Code Notes
+# Bismuth — Claude Code Notes
 
 ## Stack
 

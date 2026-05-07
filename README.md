@@ -1,79 +1,53 @@
-# Astro Resume
+<img align="left" src="docs/bismuth.png" style="margin-right:20px" height="186" />
 
-## Features
-
-- Astro v4
-- TailwindCSS utility classes
-- ESLint / Prettier pre-installed and pre-configured
-- Accessible, semantic HTML markup
-- Responsive & SEO-friendly
-- Dark / Light mode, using Tailwind and CSS variables (referenced from shadcn)
-- [Astro Assets Integration](https://docs.astro.build/en/guides/assets/) for optimised images
-- MD & [MDX](https://docs.astro.build/en/guides/markdown-content/#mdx-only-features) posts
-- Pagination
-- [Automatic RSS feed](https://docs.astro.build/en/guides/rss)
-- Auto-generated [sitemap](https://docs.astro.build/en/guides/integrations-guide/sitemap/)
-- [Expressive Code](https://expressive-code.com/) source code and syntax highlighter
-
-## Credits
-
-- [astro-theme-cactus](https://github.com/chrismwilliams/astro-theme-cactus) for blog design
-- [minirezume-framer](https://minirezume.framer.website/) for resume homepage design
-
-## Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-├── public/
-├── src/
-    ├── assets/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-|   ├── pages/
-|   ├── styles/
-|   ├── utils/
-|   ├── site.config.ts
-│   └── types.ts
-├── .elintrc.cjs
-├── .gitignore
-├── .prettierignore
-├── package.json
-├── prettier.config.cjs
-├── README.md
-├── tailwind.config.js
-└── tsconfig.json
 ```
+ mmmmmm     mmmmmm     mmmm    mmm  mmm  mm    mm  mmmmmmmm  mm    mm 
+ ##""""##   ""##""   m#""""#   ###  ###  ##    ##  """##"""  ##    ## 
+ ##    ##     ##     ##m       ########  ##    ##     ##     ##    ## 
+ #######      ##      "####m   ## ## ##  ##    ##     ##     ######## 
+ ##    ##     ##          "##  ## "" ##  ##    ##     ##     ##    ## 
+ ##mmmm##   mm##mm   #mmmmm#"  ##    ##  "##mm##"     ##     ##    ## 
+ """""""    """"""    """""    ""    ""    """"       ""     ""    "" 
+```
+<br />
+<!-- https://patorjk.com/software/taag/#p=display&f=ASCII+12&t=BISMUTH&x=none&v=4&h=0&w=80&we=false -->
 
-## Editing guide
 
-### Site info
+> Named after **Bismuth (Bi, 83)** — the element that forms spectacular iridescent crystals when it oxidizes.
+> Because a personal site that doesn't catch your eye is just entropy. (#Haha)
 
-To edit site info such as site title and description, edit the `src/site.config.ts` file.
+---
 
-### Page contents
+## What it is
 
-To edit the resume homepage content and design, edit the `src/pages/index.astro` file.
+Personal website of [@Trophalaxeur](https://github.com/Trophalaxeur).
 
-### Page components
+A blog born out of frustration: too many cool things to explore, never enough time. And out of a simple idea — what if I used AI to finally do, right now, everything I've been putting off?
 
-To edit page components found site-wide such as the card used in the homepage, edit the files found in the `src/components/` directory.
+CV, dev experiments, homelab documentation. **Written for me, open to outside eyes.**
 
-### Layouts
+## Goals
 
-To edit the base layouts of all pages, edit the `src/layouts/BaseLayout.astro` file.
+- **Professional showcase** — shareable CV with a recruiter-friendly short version and a full competency dossier
+- **Dev blog** — technical adventures, experiments, and lessons learned
+- **Homelab docs** — *(coming later)* home infrastructure documentation
 
-To edit the layout of a blog article, edit the `src/layouts/BlogPost.astro` file.
+## Stack
 
-### Blog content
+| Layer | Tech |
+|---|---|
+| Framework | [Astro 6](https://astro.build/) — static output |
+| Styling | [Tailwind CSS v4](https://tailwindcss.com/) via `@tailwindcss/vite` |
+| Content | Astro Content Layer (glob loader + Zod schemas) |
+| Syntax highlighting | [Expressive Code](https://expressive-code.com/) |
+| Hosting | [Vercel](https://vercel.com/) — static |
+| Domain | [flefevre.fr](https://flefevre.fr) |
 
-To add blog content, insert `.md` files in the `src/content/` directory.
+## Claude Code in the workflow
 
-To add images in blog articles, insert a folder in the `src/content/` directory, add both the `.md` and image files into the new folder, and reference the image in your `.md` file.
+This project is built with [Claude Code](https://claude.ai/code) as a first-class tool in the development loop:
 
-## Theming
-
-To change the theme colours of the site, edit the `src/styles/app.css` file.
-
-To change the fonts of the site, add your font files into `/public`, add it as a `@font-face` in the `src/styles/app.css` file, as a `fontFamily` in the `tailwind.config.js` file, and apply the new font class to the `body` tag in the `src/layouts/BaseLayout.astro` file.
+- **Pair programming** — architecture decisions, component design, content modeling
+- **PR reviews** — GitHub Actions triggers a Claude review on every pull request
+- **Living documentation** — `CLAUDE.md` is maintained alongside the code to give Claude full context on conventions and stack choices
+- **Content drafting** — blog posts and CV content iterated with Claude assistance
