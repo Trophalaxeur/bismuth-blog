@@ -3,6 +3,8 @@ name: Claude Review
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+    paths-ignore:
+      - 'src/content/**'
 
 jobs:
   review:
@@ -22,6 +24,8 @@ jobs:
           prompt: |
             REPO: ${{ github.repository }}
             PR NUMBER: ${{ github.event.pull_request.number }}
+
+            Ignore all files under `src/content/` — markdown content files are out of scope.
 
             Review this pull request with a focus on:
             - Code quality and Astro/TypeScript best practices

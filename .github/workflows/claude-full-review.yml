@@ -16,7 +16,8 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           prompt: |
-            Perform a thorough review of this entire codebase (bismuth-blog — Astro 6, Tailwind v4, TypeScript).
+            Perform a thorough review of this codebase (bismuth-blog — Astro 6, Tailwind v4, TypeScript).
+            Exclude `src/content/` entirely — markdown content files are out of scope.
 
             Cover:
             - Architecture and project structure consistency
@@ -33,4 +34,4 @@ jobs:
             Group findings by severity: Critical / Warning / Suggestion.
 
           claude_args: |
-            --allowedTools "Bash(gh issue create:*),Bash(find:*),Read,Bash(grep:*)"
+            --allowedTools "Bash(gh issue create:*),Bash(find . -not -path './src/content/*':*),Read,Bash(grep --exclude-dir=src/content:*)"
