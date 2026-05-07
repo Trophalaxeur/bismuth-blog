@@ -1,0 +1,52 @@
+---
+interface Props {
+	company: string
+	role: string
+	start: string
+	end?: string
+	current?: boolean
+	tags?: string[]
+	html: string
+	variant: 'short' | 'detailed'
+}
+const { company, role, start, end, current, tags, html, variant } = Astro.props
+
+function formatDate(yyyyMM: string): string {
+	const [year, month] = yyyyMM.split('-')
+	const d = new Date(Number(year), Number(month) - 1)
+	return d.toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' })
+}
+
+const period = `${formatDate(start)} — ${current ? "Aujourd'hui" : end ? formatDate(end) : ''}`
+const visibleTags = tags ? tags.slice(0, variant === 'short' ? 5 : tags.length) : []
+---
+
+<article class='group relative mb-8 break-inside-avoid rounded-r border-l-2 border-border/70 pl-7 transition-all duration-200 hover:-translate-y-px hover:border-cv-accent hover:bg-muted/30 hover:shadow-sm'>
+	<div class='absolute -left-1.25 top-1.5 h-2 w-2 rounded-full border border-cv-accent/50 bg-background transition-all duration-200 group-hover:border-cv-accent group-hover:bg-cv-accent/15'></div>
+	<div class='flex items-baseline justify-between gap-4'>
+		<div>
+			<span class='text-base font-bold leading-snug'>{company}</span>
+			<span class='ml-2.5 text-sm font-normal text-foreground/65'>{role}</span>
+		</div>
+		<span class='w-36 shrink-0 text-right text-[11px] tabular-nums text-muted-foreground'>{period}</span>
+	</div>
+	{
+		visibleTags.length > 0 && (
+			<div class='mt-2.5 flex flex-wrap gap-1.5'>
+				{visibleTags.map((tag) => (
+					<span class='inline-flex h-6 items-center rounded-full bg-cv-accent/8 px-2.5 text-[11px] font-medium text-cv-accent/75'>
+						{tag}
+					</span>
+				))}
+			</div>
+		)
+	}
+	{
+		html && (
+			<div
+				class='prose prose-sm mt-3 max-w-none dark:prose-invert prose-p:my-1 prose-p:leading-[1.7] prose-ul:my-1 prose-li:my-0 prose-li:leading-[1.7]'
+				set:html={html}
+			/>
+		)
+	}
+</article>

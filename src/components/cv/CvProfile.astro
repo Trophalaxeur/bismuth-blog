@@ -1,0 +1,11 @@
+---
+interface Props {
+	html: string
+}
+const { html } = Astro.props
+---
+
+<section id='profil' class='mb-12'>
+	<h2 class='mb-5 border-b border-border/60 pb-2 text-[11px] font-bold uppercase tracking-[0.12em] text-foreground/50'>Profil</h2>
+	<div class='prose prose-sm max-w-none dark:prose-invert prose-p:my-1.5 prose-p:leading-[1.7]' set:html={html} />
+</section>

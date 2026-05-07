@@ -35,4 +35,51 @@ const post = defineCollection({
 		})
 })
 
-export const collections = { post }
+const cvExperiences = defineCollection({
+	loader: glob({ pattern: '*.md', base: './src/content/cv/experiences' }),
+	schema: z.object({
+		schemaVersion: z.number().optional(),
+		type: z.literal('experience'),
+		company: z.string(),
+		clientLocation: z.string().optional(),
+		employer: z.string().optional(),
+		role: z.string(),
+		start: z.string(),
+		end: z.string().optional(),
+		current: z.boolean().optional().default(false),
+		priority: z.number().optional().default(50),
+		variants: z.array(z.string()).optional(),
+		tags: z.array(z.string()).optional(),
+		environment: z
+			.object({
+				languages: z.array(z.string()).optional(),
+				tools: z.array(z.string()).optional(),
+				systems: z.array(z.string()).optional(),
+				methods: z.array(z.string()).optional()
+			})
+			.optional()
+	})
+})
+
+const cvSections = defineCollection({
+	loader: glob({ pattern: '*.md', base: './src/content/cv' }),
+	schema: z.object({
+		schemaVersion: z.number().optional(),
+		type: z.enum(['profile', 'skills', 'education', 'projects', 'extra-info']),
+		priority: z.number().optional(),
+		// profile
+		name: z.string().optional(),
+		title: z.string().optional(),
+		baseline: z.string().optional(),
+		image: z.string().optional(),
+		location: z.string().optional(),
+		contact: z
+			.object({ email: z.string(), phone: z.string().optional(), github: z.string().optional() })
+			.optional(),
+		positioning: z.array(z.string()).optional(),
+		// skills
+		skills: z.record(z.string(), z.array(z.string())).optional()
+	})
+})
+
+export const collections = { post, cvExperiences, cvSections }

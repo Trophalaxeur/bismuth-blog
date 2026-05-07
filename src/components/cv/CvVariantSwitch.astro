@@ -1,0 +1,51 @@
+---
+interface Props {
+	current: 'short' | 'detailed'
+}
+const { current } = Astro.props
+---
+
+<div class='mb-8'>
+<nav class='flex items-center gap-x-3 text-sm'>
+	<div class='flex rounded-lg border border-border bg-muted/40 p-0.5'>
+		<a
+			href='/cv/short'
+			class={`rounded-md px-3 py-1.5 font-medium transition-all duration-150 ${
+				current === 'short'
+					? 'bg-background text-foreground shadow-sm'
+					: 'text-muted-foreground hover:text-foreground'
+			}`}
+		>
+			Version courte
+		</a>
+		<a
+			href='/cv/detailed'
+			class={`rounded-md px-3 py-1.5 font-medium transition-all duration-150 ${
+				current === 'detailed'
+					? 'bg-background text-foreground shadow-sm'
+					: 'text-muted-foreground hover:text-foreground'
+			}`}
+		>
+			Version détaillée
+		</a>
+	</div>
+	<a
+		href={`/cv/print?variant=${current}`}
+		class='ml-auto flex items-center gap-x-1.5 rounded-lg border border-border bg-background px-3 py-1.5 font-medium text-foreground transition-all duration-150 hover:border-cv-accent hover:text-cv-accent'
+		target='_blank'
+	>
+		<svg xmlns='http://www.w3.org/2000/svg' class='h-3.5 w-3.5' viewBox='0 0 24 24'
+			><path
+				fill='currentColor'
+				d='M18 3H6a1 1 0 0 0-1 1v4H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h1v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2h1a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-1V4a1 1 0 0 0-1-1m-1 16H7v-4h10zm0-10H7V5h10zM5 13a1 1 0 1 1 0-2a1 1 0 0 1 0 2'
+			></path></svg
+		>
+		Imprimer / PDF
+	</a>
+</nav>
+<nav class='mt-2.5 flex items-center gap-x-5 text-xs text-muted-foreground'>
+	<a href='#profil' class='transition-colors hover:text-cv-accent'>Profil</a>
+	<a href='#competences' class='transition-colors hover:text-cv-accent'>Compétences</a>
+	<a href='#experiences' class='transition-colors hover:text-cv-accent'>Expériences</a>
+</nav>
+</div>
