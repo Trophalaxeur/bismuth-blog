@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+
 @plugin '@tailwindcss/typography';
 
 @variant dark (&:where(.dark, .dark *));
@@ -23,25 +24,22 @@
   --color-popover-foreground: hsl(var(--popover-foreground));
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
-
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
-
   --font-satoshi: 'Satoshi', sans-serif;
-
   --color-cv-accent: hsl(var(--cv-accent));
 }
 
 @font-face {
-  font-family: 'Satoshi';
+  font-family: Satoshi;
   src: url('/fonts/Satoshi-Variable.ttf');
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Satoshi';
+  font-family: Satoshi;
   src: url('/fonts/Satoshi-VariableItalic.ttf');
   font-style: italic;
   font-display: swap;
@@ -71,6 +69,7 @@
     --ring: 220 15% 12%;
     --radius: 0.5rem;
   }
+
   .dark {
     --background: 222 18% 6%;
     --foreground: 220 10% 96%;
@@ -99,9 +98,11 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   body::before {
     content: '';
     position: fixed;
