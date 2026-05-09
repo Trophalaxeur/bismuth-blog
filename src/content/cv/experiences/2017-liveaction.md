@@ -1,12 +1,12 @@
 ---
 schemaVersion: 1
 type: experience
-company: "LiveAction"
-clientLocation: "Toulouse"
-employer: "Florian Lefevre Consulting"
-role: "Ingénieur études et développement"
-start: "2017-10"
-end: "2019-03"
+company: 'LiveAction'
+clientLocation: 'Toulouse'
+employer: 'Florian Lefevre Consulting'
+role: 'Ingénieur études et développement'
+start: '2017-10'
+end: '2019-03'
 priority: 70
 variants:
   - short
@@ -43,9 +43,10 @@ Migration et maintien d'une application de monitoring réseau d'AngularJS vers A
 :::
 
 :::detailed
+
 - Développement et maintien d'une application Angular de monitoring réseau.
 - Petits développements Java en renfort des équipes backend.
 - Gestion d'équipe en méthode Agile, rôle de référent technique.
 - Réalisation de dashboards et rapports avec Highcharts et D3.js.
 - Dockerisation des développements.
-:::
+  :::

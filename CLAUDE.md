@@ -37,13 +37,13 @@ src/
 `app.css` is the TW4 entry point. Colors are defined as CSS custom properties in `:root` / `.dark` and mapped to TW4 utilities via `@theme inline`:
 
 ```css
-@import "tailwindcss";
-@plugin "@tailwindcss/typography";
-@variant dark (&:where(.dark, .dark *));   /* class-based dark mode */
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+@variant dark (&:where(.dark, .dark *)); /* class-based dark mode */
 
 @theme inline {
-  --color-border: hsl(var(--border));
-  /* ... all design tokens ... */
+	--color-border: hsl(var(--border));
+	/* ... all design tokens ... */
 }
 ```
 
@@ -66,15 +66,16 @@ const post = defineCollection({
 
 ## Astro v6 API changes (applied throughout)
 
-| v5 | v6 |
-|---|---|
-| `entry.slug` | `entry.id.replace(/\.(md\|mdx)$/, '')` |
-| `entry.render()` | `render(entry)` (import `render` from `astro:content`) |
-| `import { z } from 'astro:content'` | `import { z } from 'zod'` |
+| v5                                  | v6                                                     |
+| ----------------------------------- | ------------------------------------------------------ |
+| `entry.slug`                        | `entry.id.replace(/\.(md\|mdx)$/, '')`                 |
+| `entry.render()`                    | `render(entry)` (import `render` from `astro:content`) |
+| `import { z } from 'astro:content'` | `import { z } from 'zod'`                              |
 
 ## Site config
 
 Personalise in `src/site.config.ts`:
+
 - `siteConfig.author`, `.title`, `.description`, `.lang`
 - `menuLinks` for nav
 

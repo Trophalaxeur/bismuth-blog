@@ -49,13 +49,15 @@ skills:
 ## Compétences
 
 :::short
+
 - **Frontend** : Angular, TypeScript, RxJS, NgRx, Nx, HTML, CSS.
 - **Backend & fullstack** : NestJS, Node.js, PHP, Symfony, Python, Java.
 - **DevOps & outillage** : Git, Docker, CI/CD, Jenkins, GitLab, GitHub, Bitbucket, GNU/Linux.
 - **Leadership technique** : revue de code, coaching, audit, estimation, amélioration continue.
-:::
+  :::
 
 :::detailed
+
 ### Développement frontend
 
 Angular, TypeScript, RxJS, NgRx, Nx, AngularJS, Vue.js, React, HTML, CSS.

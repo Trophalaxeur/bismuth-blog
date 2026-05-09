@@ -1,17 +1,17 @@
 <img align="left" src="docs/bismuth-thumb.png" style="margin-right:20px" height="186" />
 
 ```
- mmmmmm     mmmmmm     mmmm    mmm  mmm  mm    mm  mmmmmmmm  mm    mm 
- ##""""##   ""##""   m#""""#   ###  ###  ##    ##  """##"""  ##    ## 
- ##    ##     ##     ##m       ########  ##    ##     ##     ##    ## 
- #######      ##      "####m   ## ## ##  ##    ##     ##     ######## 
- ##    ##     ##          "##  ## "" ##  ##    ##     ##     ##    ## 
- ##mmmm##   mm##mm   #mmmmm#"  ##    ##  "##mm##"     ##     ##    ## 
- """""""    """"""    """""    ""    ""    """"       ""     ""    "" 
+ mmmmmm     mmmmmm     mmmm    mmm  mmm  mm    mm  mmmmmmmm  mm    mm
+ ##""""##   ""##""   m#""""#   ###  ###  ##    ##  """##"""  ##    ##
+ ##    ##     ##     ##m       ########  ##    ##     ##     ##    ##
+ #######      ##      "####m   ## ## ##  ##    ##     ##     ########
+ ##    ##     ##          "##  ## "" ##  ##    ##     ##     ##    ##
+ ##mmmm##   mm##mm   #mmmmm#"  ##    ##  "##mm##"     ##     ##    ##
+ """""""    """"""    """""    ""    ""    """"       ""     ""    ""
 ```
+
 <br />
 <!-- https://patorjk.com/software/taag/#p=display&f=ASCII+12&t=BISMUTH&x=none&v=4&h=0&w=80&we=false -->
-
 
 > Named after **Bismuth (Bi, 83)** — the element that forms spectacular iridescent crystals when it oxidizes.
 > Because a personal site that doesn't catch your eye is just entropy. (#Haha)
@@ -30,18 +30,18 @@ CV, dev experiments, homelab documentation. **Written for me, open to outside ey
 
 - **Professional showcase** — shareable CV with a recruiter-friendly short version and a full competency dossier
 - **Dev blog** — technical adventures, experiments, and lessons learned
-- **Homelab docs** — *(coming later)* home infrastructure documentation
+- **Homelab docs** — _(coming later)_ home infrastructure documentation
 
 ## Stack
 
-| Layer | Tech |
-|---|---|
-| Framework | [Astro 6](https://astro.build/) — static output |
-| Styling | [Tailwind CSS v4](https://tailwindcss.com/) via `@tailwindcss/vite` |
-| Content | Astro Content Layer (glob loader + Zod schemas) |
-| Syntax highlighting | [Expressive Code](https://expressive-code.com/) |
-| Hosting | [Vercel](https://vercel.com/) — static |
-| Domain | [flefevre.fr](https://flefevre.fr) |
+| Layer               | Tech                                                                |
+| ------------------- | ------------------------------------------------------------------- |
+| Framework           | [Astro 6](https://astro.build/) — static output                     |
+| Styling             | [Tailwind CSS v4](https://tailwindcss.com/) via `@tailwindcss/vite` |
+| Content             | Astro Content Layer (glob loader + Zod schemas)                     |
+| Syntax highlighting | [Expressive Code](https://expressive-code.com/)                     |
+| Hosting             | [Vercel](https://vercel.com/) — static                              |
+| Domain              | [flefevre.fr](https://flefevre.fr)                                  |
 
 ## Claude Code in the workflow
 

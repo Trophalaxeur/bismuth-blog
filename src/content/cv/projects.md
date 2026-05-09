@@ -7,11 +7,13 @@ priority: 80
 ## Projets personnels et associatifs
 
 :::short
+
 - Développeur bénévole frontend Vue.js pour une application d'édition de film slowmotion.
 - Réalisation d'un site de mariage en React, Firebase, Docker, AWS et scripts Node.js.
-:::
+  :::
 
 :::detailed
+
 ### Application d'édition de film slowmotion
 
 Développement bénévole frontend Vue.js pour une application de création de film slowmotion.

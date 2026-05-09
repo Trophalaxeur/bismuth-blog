@@ -1,12 +1,12 @@
 ---
 schemaVersion: 1
 type: experience
-company: "Kaliz"
-clientLocation: "Toulouse"
-employer: "Florian Lefevre Consulting"
-role: "Lead Dev Angular"
-start: "2021-04"
-end: "2023-06"
+company: 'Kaliz'
+clientLocation: 'Toulouse'
+employer: 'Florian Lefevre Consulting'
+role: 'Lead Dev Angular'
+start: '2021-04'
+end: '2023-06'
 priority: 30
 variants:
   - short
@@ -45,6 +45,7 @@ Lead Dev Angular sur une application de gestion immobilière, avec accompagnemen
 :::
 
 :::detailed
+
 - Développement et maintien d'une application Angular de gestion immobilière.
 - Audit de code, revue de code et propositions d'amélioration.
 - Coaching de l'équipe sur les bonnes pratiques de développement frontend.
@@ -52,4 +53,4 @@ Lead Dev Angular sur une application de gestion immobilière, avec accompagnemen
 - Collaboration étroite avec le Lead Dev backend.
 - Mise en place des tests end-to-end avec Cypress.
 - Mise en place de NgRx et Nx.
-:::
+  :::

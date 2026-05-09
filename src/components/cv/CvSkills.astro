@@ -18,7 +18,9 @@ const entries = Object.entries(skills).filter(([, items]) => items.length > 0)
 ---
 
 <section id='competences' class='mb-12'>
-	<h2 class='mb-5 border-b border-border/60 pb-2 text-[11px] font-bold uppercase tracking-[0.12em] text-foreground/50'>
+	<h2
+		class='border-border/60 text-foreground/50 mb-5 border-b pb-2 text-[11px] font-bold tracking-[0.12em] uppercase'
+	>
 		Compétences
 	</h2>
 	{
@@ -26,9 +28,7 @@ const entries = Object.entries(skills).filter(([, items]) => items.length > 0)
 			<dl class='grid grid-cols-[8rem_1fr] gap-x-4 gap-y-2'>
 				{entries.map(([key, items]) => (
 					<>
-						<dt class='pt-0.5 text-xs font-semibold text-muted-foreground'>
-							{labels[key] ?? key}
-						</dt>
+						<dt class='text-muted-foreground pt-0.5 text-xs font-semibold'>{labels[key] ?? key}</dt>
 						<dd class='text-sm leading-relaxed'>{items.join(' · ')}</dd>
 					</>
 				))}

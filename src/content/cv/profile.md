@@ -1,15 +1,15 @@
 ---
 schemaVersion: 1
 type: profile
-name: "Florian Lefevre"
-title: "Lead Tech / Lead Dev Angular"
-baseline: "Lead Frontend Engineer • Angular Architect • Tech Lead • Software Engineering Manager"
-image: "/images/profil_2.png"
+name: 'Florian Lefevre'
+title: 'Lead Tech / Lead Dev Angular'
+baseline: 'Lead Frontend Engineer • Angular Architect • Tech Lead • Software Engineering Manager'
+image: '/images/profil_2.png'
 location: "Castelnau d'Estrétefonds, région toulousaine"
 contact:
-  email: "contact@flefevre.fr"
-  phone: "06.07.23.39.05"
-  github: "https://github.com/Trophalaxeur"
+  email: 'contact@flefevre.fr'
+  phone: '06.07.23.39.05'
+  github: 'https://github.com/Trophalaxeur'
 variants:
   default: short
   available:
@@ -17,10 +17,10 @@ variants:
     - detailed
 pdf:
   short:
-    filename: "florian-lefevre-cv.pdf"
+    filename: 'florian-lefevre-cv.pdf'
     pageTarget: 2
   detailed:
-    filename: "florian-lefevre-dossier-competences.pdf"
+    filename: 'florian-lefevre-dossier-competences.pdf'
     pageTarget: 8
 positioning:
   - Lead Tech

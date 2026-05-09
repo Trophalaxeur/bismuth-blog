@@ -3,7 +3,12 @@ import PageLayout from '@/layouts/BaseLayout.astro'
 import CvPage from '@/components/cv/CvPage.astro'
 ---
 
-<PageLayout meta={{ title: 'CV — Dossier de compétences', description: 'Dossier de compétences de Florian Lefevre' }}>
+<PageLayout
+	meta={{
+		title: 'CV — Dossier de compétences',
+		description: 'Dossier de compétences de Florian Lefevre'
+	}}
+>
 	<div class='w-full'>
 		<CvPage variant='detailed' />
 	</div>

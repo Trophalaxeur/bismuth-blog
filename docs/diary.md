@@ -7,7 +7,7 @@
 
 ## 2026-05-05 (pm) — Astro 6 + TW4 migration (continuation)
 
-*Source: Claude Code CLI — session in `/home/flefevre/Project/perso/personal-blog`.*
+_Source: Claude Code CLI — session in `/home/flefevre/Project/perso/personal-blog`._
 
 ### Resuming without context, again
 
@@ -49,17 +49,17 @@
 
 ### Patterns observed
 
-| Pattern | Recommendation |
-|---|---|
+| Pattern                          | Recommendation                                                                      |
+| -------------------------------- | ----------------------------------------------------------------------------------- |
 | "Let's resume where we left off" | Add a word on the exact restart point — confirms Claude is reading the right memory |
-| Environment issue | Full state dump immediately: `nvm ls`, `which node`, `cat ~/.zshrc \| grep nvm` |
-| Repeated correction (yay/pacman) | Verify the correction is written to CLAUDE.md, not just said in conversation |
+| Environment issue                | Full state dump immediately: `nvm ls`, `which node`, `cat ~/.zshrc \| grep nvm`     |
+| Repeated correction (yay/pacman) | Verify the correction is written to CLAUDE.md, not just said in conversation        |
 
 ---
 
 ## 2026-05-05 (am) — Reset + theme choice + migration start
 
-*Source: Claude Code CLI — session in `/home/flefevre/Project/perso/personal-blog`.*
+_Source: Claude Code CLI — session in `/home/flefevre/Project/perso/personal-blog`._
 
 ### Resuming without context
 
@@ -129,19 +129,19 @@
 
 ### Patterns observed
 
-| Pattern | Recommendation |
-|---|---|
-| Prompt with no explanation asked | Add "and explain your choice" for structural decisions (clone vs template, adapter vs plugin, etc.) |
-| Request based on wrong premise | Claude should correct before executing — I could have avoided a full reinstall |
-| Ecosystem constraint without understanding | Ask "what themes fit my needs best" rather than imposing vague technical constraints |
-| Architecture choice silently carried over | Deployment target must be re-confirmed, not just renewed |
-| Undiscussed major version downgrade | Always stop and ask for options when Claude changes a major version without explanation |
+| Pattern                                    | Recommendation                                                                                      |
+| ------------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| Prompt with no explanation asked           | Add "and explain your choice" for structural decisions (clone vs template, adapter vs plugin, etc.) |
+| Request based on wrong premise             | Claude should correct before executing — I could have avoided a full reinstall                      |
+| Ecosystem constraint without understanding | Ask "what themes fit my needs best" rather than imposing vague technical constraints                |
+| Architecture choice silently carried over  | Deployment target must be re-confirmed, not just renewed                                            |
+| Undiscussed major version downgrade        | Always stop and ask for options when Claude changes a major version without explanation             |
 
 ---
 
 ## 2026-05-04 — Project creation + AstroWind setup
 
-*Source: Claude Code CLI — session in `/home/flefevre/Project/perso`. Hugo vs Astro decision was made earlier in Claude.ai (not logged here).*
+_Source: Claude Code CLI — session in `/home/flefevre/Project/perso`. Hugo vs Astro decision was made earlier in Claude.ai (not logged here)._
 
 ### Well-structured initial prompt
 
@@ -171,8 +171,8 @@
 
 ### Patterns observed
 
-| Pattern | Recommendation |
-|---|---|
-| Structured bootstrap prompt | Provide context, numbered tasks, and file contents inline — most effective format |
+| Pattern                                | Recommendation                                                                                        |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Structured bootstrap prompt            | Provide context, numbered tasks, and file contents inline — most effective format                     |
 | "We'll resume tomorrow" session ending | Ask Claude to explicitly save the working directory in memory, so context is findable from any folder |
-| Silent implementation choice | Ask for an explanation on structural choices — "and explain why" goes a long way |
+| Silent implementation choice           | Ask for an explanation on structural choices — "and explain why" goes a long way                      |

@@ -10,13 +10,17 @@ interface Props {
 const { name, title, baseline, image, location, contact } = Astro.props
 ---
 
-<header class='mb-12 border-b border-border/60 pb-10'>
+<header class='border-border/60 mb-12 border-b pb-10'>
 	<div class='flex items-start justify-between gap-8'>
 		<div class='flex-1'>
-			<h1 class='text-4xl font-black tracking-tight text-foreground'>{name}</h1>
-			<p class='mt-2 text-sm font-normal text-foreground/75'>{title}</p>
-			{baseline && <p class='mt-2.5 text-[11px] leading-relaxed text-muted-foreground'>{baseline}</p>}
-			<div class='mt-5 flex flex-wrap gap-x-4 gap-y-1.5 text-xs text-muted-foreground'>
+			<h1 class='text-foreground text-4xl font-black tracking-tight'>{name}</h1>
+			<p class='text-foreground/75 mt-2 text-sm font-normal'>{title}</p>
+			{
+				baseline && (
+					<p class='text-muted-foreground mt-2.5 text-[11px] leading-relaxed'>{baseline}</p>
+				)
+			}
+			<div class='text-muted-foreground mt-5 flex flex-wrap gap-x-4 gap-y-1.5 text-xs'>
 				<span class='flex items-center gap-x-1.5'>
 					<svg xmlns='http://www.w3.org/2000/svg' class='h-3.5 w-3.5 shrink-0' viewBox='0 0 24 24'
 						><path
@@ -28,7 +32,7 @@ const { name, title, baseline, image, location, contact } = Astro.props
 				</span>
 				<a
 					href={`mailto:${contact.email}`}
-					class='flex items-center gap-x-1.5 transition-colors hover:text-cv-accent'
+					class='hover:text-cv-accent flex items-center gap-x-1.5 transition-colors'
 				>
 					<svg xmlns='http://www.w3.org/2000/svg' class='h-3.5 w-3.5 shrink-0' viewBox='0 0 24 24'
 						><path
@@ -60,7 +64,7 @@ const { name, title, baseline, image, location, contact } = Astro.props
 						<a
 							href={contact.github}
 							target='_blank'
-							class='flex items-center gap-x-1.5 transition-colors hover:text-cv-accent'
+							class='hover:text-cv-accent flex items-center gap-x-1.5 transition-colors'
 						>
 							<svg
 								xmlns='http://www.w3.org/2000/svg'
@@ -83,7 +87,7 @@ const { name, title, baseline, image, location, contact } = Astro.props
 				<img
 					src={image}
 					alt={name}
-					class='mt-1 h-28 w-28 shrink-0 rounded-full object-cover object-top ring-1 ring-border/50 shadow-lg'
+					class='ring-border/50 mt-1 h-28 w-28 shrink-0 rounded-full object-cover object-top shadow-lg ring-1'
 				/>
 			)
 		}

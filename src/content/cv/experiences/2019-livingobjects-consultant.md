@@ -1,12 +1,12 @@
 ---
 schemaVersion: 1
 type: experience
-company: "LivingObjects"
-clientLocation: "Toulouse"
-employer: "Florian Lefevre Consulting"
-role: "Consultant développeur frontend expert"
-start: "2019-09"
-end: "2020-03"
+company: 'LivingObjects'
+clientLocation: 'Toulouse'
+employer: 'Florian Lefevre Consulting'
+role: 'Consultant développeur frontend expert'
+start: '2019-09'
+end: '2020-03'
 priority: 60
 variants:
   - short
@@ -38,8 +38,9 @@ Conseil et développement sur une application Angular de monitoring réseau, ave
 :::
 
 :::detailed
+
 - Développement et maintien d'une application Angular de monitoring réseau.
 - Audit de code et propositions d'amélioration.
 - Coaching de l'équipe sur les bonnes pratiques de codage.
 - Gestion de petits projets : estimation de charges, spécifications et réalisation.
-:::
+  :::

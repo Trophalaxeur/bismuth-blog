@@ -1,12 +1,12 @@
 ---
 schemaVersion: 1
 type: experience
-company: "BlueWhale"
-clientLocation: "Montauban"
-employer: "Florian Lefevre Consulting"
-role: "Lead Dev Angular"
-start: "2025-04"
-end: "2026-04"
+company: 'BlueWhale'
+clientLocation: 'Montauban'
+employer: 'Florian Lefevre Consulting'
+role: 'Lead Dev Angular'
+start: '2025-04'
+end: '2026-04'
 current: true
 priority: 10
 variants:
@@ -46,8 +46,9 @@ Lead Dev Angular sur une application ERP de gestion et vente de produits agricol
 :::
 
 :::detailed
+
 - Développement et maintien d'une application ERP de gestion et vente de produits agricoles en Angular / Java.
 - Intervention sur des applications annexes en PowerBuilder.
 - Gestion de contraintes techniques legacy : Oracle 9, VM Windows Server 2003.
 - Responsabilité des déploiements : pipelines Bitbucket, communication et coordination de livraison.
-:::
+  :::

@@ -6,8 +6,13 @@ const { html } = Astro.props
 ---
 
 <section class='mb-12'>
-	<h2 class='mb-5 border-b border-border/60 pb-2 text-[11px] font-bold uppercase tracking-[0.12em] text-foreground/50'>
+	<h2
+		class='border-border/60 text-foreground/50 mb-5 border-b pb-2 text-[11px] font-bold tracking-[0.12em] uppercase'
+	>
 		Formation
 	</h2>
-	<div class='prose prose-sm max-w-none dark:prose-invert prose-ul:my-1 prose-li:my-1 prose-li:leading-[1.7]' set:html={html} />
+	<div
+		class='prose prose-sm dark:prose-invert prose-ul:my-1 prose-li:my-1 prose-li:leading-[1.7] max-w-none'
+		set:html={html}
+	/>
 </section>

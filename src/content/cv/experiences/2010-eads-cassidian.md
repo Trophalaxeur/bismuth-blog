@@ -1,11 +1,11 @@
 ---
 schemaVersion: 1
 type: experience
-company: "EADS Cassidian"
-clientLocation: "Colomiers"
-role: "Stage de développement"
-start: "2010"
-end: "2010"
+company: 'EADS Cassidian'
+clientLocation: 'Colomiers'
+role: 'Stage de développement'
+start: '2010'
+end: '2010'
 priority: 120
 variants:
   - detailed
