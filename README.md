@@ -48,7 +48,7 @@ CV, dev experiments, homelab documentation. **Written for me, open to outside ey
 This project is built with [Claude Code](https://claude.ai/code) as a first-class tool in the development loop:
 
 - **Pair programming** — architecture decisions, component design, content modeling
-- **PR reviews** — GitHub Actions triggers a Claude review on every pull request
+- **PR reviews** — GitHub Actions requests a GitHub Copilot review on every pull request
 - **Living documentation** — `CLAUDE.md` is maintained alongside the code to give Claude full context on conventions and stack choices
 - **Content drafting** — blog posts and CV content iterated with Claude assistance
 
