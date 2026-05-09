@@ -33,6 +33,7 @@ const FORM_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
       <section class="flex flex-col gap-y-3">
         <h2 class="text-lg font-semibold">Email</h2>
         <p>
+          {/* eslint-disable-next-line jsx-a11y/anchor-is-valid -- href starts as "#", JS replaces with mailto: (progressive enhancement) */}
           <a id="email-link" href="#" data-user={emailUser} data-domain={emailDomain} class="hover:text-cv-accent underline underline-offset-4">
             <noscript>{emailUser} [at] {emailDomain}</noscript>
             <span class="js-email-display">activez JavaScript pour afficher l'email</span>
@@ -48,7 +49,6 @@ const FORM_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
 
           {/* Honeypot — masqué visuellement et accessible aux bots uniquement */}
           <div class="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
-            <label for="website">Ne pas remplir</label>
             <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
           </div>
 

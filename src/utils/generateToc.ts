@@ -9,7 +9,7 @@ function diveChildren(item: TocItem, depth: number): Array<TocItem> {
     return item.subheadings;
   } else {
     // e.g., 2
-    return diveChildren(item.subheadings[item.subheadings.length - 1] as TocItem, depth - 1);
+    return diveChildren(item.subheadings[item.subheadings.length - 1], depth - 1);
   }
 }
 
@@ -25,7 +25,7 @@ export function generateToc(headings: ReadonlyArray<MarkdownHeading>) {
     if (heading.depth === 2) {
       toc.push(heading);
     } else {
-      const lastItemInToc = toc[toc.length - 1]!;
+      const lastItemInToc = toc[toc.length - 1];
       if (heading.depth < lastItemInToc.depth) {
         throw new Error(`Orphan heading found: ${heading.text}.`);
       }

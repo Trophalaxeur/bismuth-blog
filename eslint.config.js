@@ -38,9 +38,13 @@ export default defineConfig([
   jsxA11y.flatConfigs.recommended,
 
   // Astro: warn on set:html (XSS surface — fine for static content, watch for dynamic)
+  // label-has-associated-control: jsx-a11y looks for JSX `htmlFor`, Astro uses HTML `for` — false positives
   {
     files: ['**/*.astro'],
-    rules: { 'astro/no-set-html-directive': 'warn' },
+    rules: {
+      'astro/no-set-html-directive': 'warn',
+      'jsx-a11y/label-has-associated-control': 'off',
+    },
   },
 
   // Unused imports — auto-fixable cleanup (replaces TS no-unused-vars for imports)
