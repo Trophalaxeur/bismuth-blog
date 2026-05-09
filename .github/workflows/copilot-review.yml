@@ -10,15 +10,24 @@ jobs:
     permissions:
       pull-requests: write
     steps:
-      - name: Request Copilot as reviewer
+      - name: Request Copilot via JSON body
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "=== API response ===" && \
-          gh api \
+          echo "--- tentative 1 : JSON body explicite ---"
+          RESPONSE=$(echo '{"reviewers":["Copilot"]}' | gh api \
             --method POST \
             -H "Accept: application/vnd.github+json" \
+            -H "Content-Type: application/json" \
             "/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/requested_reviewers" \
-            -f 'reviewers[]=Copilot' | tee /tmp/api-response.json && \
-          echo "=== requested_reviewers ===" && \
-          jq '.requested_reviewers' /tmp/api-response.json
+            --input -)
+          echo "$RESPONSE" | jq '.requested_reviewers'
+
+      - name: Request Copilot via gh pr edit
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "--- tentative 2 : gh pr edit --add-reviewer ---"
+          gh pr edit ${{ github.event.pull_request.number }} \
+            --repo ${{ github.repository }} \
+            --add-reviewer Copilot
