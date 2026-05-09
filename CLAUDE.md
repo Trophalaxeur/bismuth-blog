@@ -17,6 +17,10 @@ npm run preview  # preview built output
 npm run lint     # prettier + eslint fix
 ```
 
+## Conventions
+
+- **Never run Prettier on `.md` files** (no `prettier --write *.md`, no `npm run lint:prettier` on Markdown). Markdown is intentionally excluded from the lint pipeline — keep it that way for ad-hoc edits too.
+
 ## Project structure
 
 ```

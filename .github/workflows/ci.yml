@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Prettier (check)
+        run: npm run lint:prettier
+        continue-on-error: true
+
+      - name: ESLint
+        # Default behavior: warnings exit 0, errors exit 1 → blocks on errors only
+        run: npm run lint:eslint
+
+      - name: Stylelint
+        # Default behavior: warnings exit 0, errors exit 2 → blocks on errors only
+        run: npm run lint:stylelint
