@@ -1,42 +1,42 @@
 ---
-import BaseHead from '@/components/BaseHead.astro'
-import { siteConfig } from '@/site-config'
+import BaseHead from '@/components/BaseHead.astro';
+import { siteConfig } from '@/site-config';
 
 interface Props {
-	title?: string
+  title?: string;
 }
-const { title = 'CV — Florian Lefevre' } = Astro.props
+const { title = 'CV — Florian Lefevre' } = Astro.props;
 ---
 
 <html lang={siteConfig.lang}>
-	<head>
-		<BaseHead title={title} description='Curriculum Vitae de Florian Lefevre' />
-		<style>
-			@media print {
-				@page {
-					size: A4;
-					margin: 15mm 15mm 15mm 15mm;
-				}
-				body {
-					-webkit-print-color-adjust: exact;
-					print-color-adjust: exact;
-				}
-				a[href]::after {
-					content: none;
-				}
-				.no-print {
-					display: none !important;
-				}
-				article {
-					break-inside: avoid;
-				}
-				section {
-					break-inside: avoid;
-				}
-			}
-		</style>
-	</head>
-	<body class='bg-background p-8 font-satoshi text-[0.88rem] leading-relaxed text-foreground'>
-		<slot />
-	</body>
+  <head>
+    <BaseHead title={title} description="Curriculum Vitae de Florian Lefevre" />
+    <style>
+      @media print {
+        @page {
+          size: A4;
+          margin: 15mm 15mm 15mm 15mm;
+        }
+        body {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+        a[href]::after {
+          content: none;
+        }
+        .no-print {
+          display: none !important;
+        }
+        article {
+          break-inside: avoid;
+        }
+        section {
+          break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-background font-satoshi text-foreground p-8 text-[0.88rem] leading-relaxed">
+    <slot />
+  </body>
 </html>

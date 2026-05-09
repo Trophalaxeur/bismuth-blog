@@ -9,7 +9,7 @@
 		"preview": "astro preview",
 		"astro": "astro",
 		"lint": "npm run lint:prettier && npm run lint:eslint && npm run lint:stylelint",
-		"lint:prettier": "prettier --check \"**/*.{js,ts,tsx,md,mdx,astro,css}\"",
+		"lint:prettier": "prettier --check \"**/*.{js,ts,tsx,astro,css}\"",
 		"lint:eslint": "eslint \"src/**/*.{js,ts,tsx,astro}\"",
 		"lint:stylelint": "stylelint \"src/**/*.css\""
 	},

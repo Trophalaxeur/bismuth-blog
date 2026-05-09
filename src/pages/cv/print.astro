@@ -1,22 +1,22 @@
 ---
-import CvPrintLayout from '@/layouts/CvPrintLayout.astro'
-import CvPage from '@/components/cv/CvPage.astro'
+import CvPrintLayout from '@/layouts/CvPrintLayout.astro';
+import CvPage from '@/components/cv/CvPage.astro';
 ---
 
 <CvPrintLayout>
-	<div id='variant-short'>
-		<CvPage variant='short' showSwitch={false} />
-	</div>
-	<div id='variant-detailed' style='display:none'>
-		<CvPage variant='detailed' showSwitch={false} />
-	</div>
+  <div id="variant-short">
+    <CvPage variant="short" showSwitch={false} />
+  </div>
+  <div id="variant-detailed" style="display:none">
+    <CvPage variant="detailed" showSwitch={false} />
+  </div>
 </CvPrintLayout>
 
 <script>
-	const params = new URLSearchParams(window.location.search)
-	const variant = params.get('variant') === 'detailed' ? 'detailed' : 'short'
-	if (variant === 'detailed') {
-		document.getElementById('variant-short')!.style.display = 'none'
-		document.getElementById('variant-detailed')!.style.display = 'block'
-	}
+  const params = new URLSearchParams(window.location.search);
+  const variant = params.get('variant') === 'detailed' ? 'detailed' : 'short';
+  if (variant === 'detailed') {
+    document.getElementById('variant-short')!.style.display = 'none';
+    document.getElementById('variant-detailed')!.style.display = 'block';
+  }
 </script>

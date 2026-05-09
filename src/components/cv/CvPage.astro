@@ -1,80 +1,76 @@
 ---
-import { getCollection } from 'astro:content'
-import { extractVariantMarkdown, renderMarkdown } from '@/utils'
-import CvHeader from './CvHeader.astro'
-import CvProfile from './CvProfile.astro'
-import CvSkills from './CvSkills.astro'
-import CvExperienceList from './CvExperienceList.astro'
-import CvEducation from './CvEducation.astro'
-import CvProjects from './CvProjects.astro'
-import CvExtraInfo from './CvExtraInfo.astro'
-import CvVariantSwitch from './CvVariantSwitch.astro'
+import { getCollection } from 'astro:content';
+import { extractVariantMarkdown, renderMarkdown } from '@/utils';
+import CvHeader from './CvHeader.astro';
+import CvProfile from './CvProfile.astro';
+import CvSkills from './CvSkills.astro';
+import CvExperienceList from './CvExperienceList.astro';
+import CvEducation from './CvEducation.astro';
+import CvProjects from './CvProjects.astro';
+import CvExtraInfo from './CvExtraInfo.astro';
+import CvVariantSwitch from './CvVariantSwitch.astro';
 
 interface Props {
-	variant: 'short' | 'detailed'
-	showSwitch?: boolean
+  variant: 'short' | 'detailed';
+  showSwitch?: boolean;
 }
-const { variant, showSwitch = true } = Astro.props
+const { variant, showSwitch = true } = Astro.props;
 
 // Load sections
-const allSections = await getCollection('cvSections')
-const find = (type: string) => allSections.find((e) => e.data.type === type)
+const allSections = await getCollection('cvSections');
+const find = (type: string) => allSections.find((e) => e.data.type === type);
 
-const profileEntry = find('profile')
-const skillsEntry = find('skills')
-const educationEntry = find('education')
-const projectsEntry = find('projects')
-const extraInfoEntry = find('extra-info')
+const profileEntry = find('profile');
+const skillsEntry = find('skills');
+const educationEntry = find('education');
+const projectsEntry = find('projects');
+const extraInfoEntry = find('extra-info');
 
-const render = async (entry: (typeof allSections)[number] | undefined) =>
-	entry ? renderMarkdown(extractVariantMarkdown(entry.body ?? '', variant)) : ''
+const render = async (entry: (typeof allSections)[number] | undefined) => (entry ? renderMarkdown(extractVariantMarkdown(entry.body ?? '', variant)) : '');
 
 const [profileHtml, skillsHtml, educationHtml, projectsHtml, extraInfoHtml] = await Promise.all([
-	render(profileEntry),
-	render(skillsEntry),
-	render(educationEntry),
-	render(projectsEntry),
-	render(extraInfoEntry)
-])
+  render(profileEntry),
+  render(skillsEntry),
+  render(educationEntry),
+  render(projectsEntry),
+  render(extraInfoEntry),
+]);
 
 // Load, filter and sort experiences
-const allExperiences = await getCollection('cvExperiences')
-const visibleExperiences =
-	variant === 'short'
-		? allExperiences.filter((e) => !e.data.variants || e.data.variants.includes('short'))
-		: allExperiences
+const allExperiences = await getCollection('cvExperiences');
+const visibleExperiences = variant === 'short' ? allExperiences.filter((e) => !e.data.variants || e.data.variants.includes('short')) : allExperiences;
 
 const sortedExperiences = [...visibleExperiences].sort((a, b) => {
-	const pDiff = (a.data.priority ?? 50) - (b.data.priority ?? 50)
-	return pDiff !== 0 ? pDiff : b.data.start.localeCompare(a.data.start)
-})
+  const pDiff = (a.data.priority ?? 50) - (b.data.priority ?? 50);
+  return pDiff !== 0 ? pDiff : b.data.start.localeCompare(a.data.start);
+});
 
 const experiencesData = await Promise.all(
-	sortedExperiences.map(async (exp) => ({
-		company: exp.data.company,
-		role: exp.data.role,
-		start: exp.data.start,
-		end: exp.data.end,
-		current: exp.data.current,
-		tags: exp.data.tags,
-		html: await renderMarkdown(extractVariantMarkdown(exp.body ?? '', variant))
-	}))
-)
+  sortedExperiences.map(async (exp) => ({
+    company: exp.data.company,
+    role: exp.data.role,
+    start: exp.data.start,
+    end: exp.data.end,
+    current: exp.data.current,
+    tags: exp.data.tags,
+    html: await renderMarkdown(extractVariantMarkdown(exp.body ?? '', variant)),
+  }))
+);
 ---
 
 {showSwitch && <CvVariantSwitch current={variant} />}
 
 {
-	profileEntry?.data && (
-		<CvHeader
-			name={profileEntry.data.name ?? ''}
-			title={profileEntry.data.title ?? ''}
-			baseline={profileEntry.data.baseline}
-			image={profileEntry.data.image}
-			location={profileEntry.data.location ?? ''}
-			contact={profileEntry.data.contact ?? { email: '' }}
-		/>
-	)
+  profileEntry?.data && (
+    <CvHeader
+      name={profileEntry.data.name ?? ''}
+      title={profileEntry.data.title ?? ''}
+      baseline={profileEntry.data.baseline}
+      image={profileEntry.data.image}
+      location={profileEntry.data.location ?? ''}
+      contact={profileEntry.data.contact ?? { email: '' }}
+    />
+  )
 }
 
 <CvProfile html={profileHtml} />

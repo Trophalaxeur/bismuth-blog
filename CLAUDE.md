@@ -37,9 +37,9 @@ src/
 `app.css` is the TW4 entry point. Colors are defined as CSS custom properties in `:root` / `.dark` and mapped to TW4 utilities via `@theme inline`:
 
 ```css
-@import "tailwindcss";
-@plugin "@tailwindcss/typography";
-@variant dark (&:where(.dark, .dark *));   /* class-based dark mode */
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+@variant dark (&:where(.dark, .dark *)); /* class-based dark mode */
 
 @theme inline {
   --color-border: hsl(var(--border));
@@ -85,6 +85,7 @@ const post = defineCollection({
 ## CV architecture
 
 Single source of truth in `src/content/cv/`:
+
 - Flat files: `profile.md`, `skills.md`, `education.md`, `projects.md`, `extra-info.md`
 - Experiences: `experiences/` — one file per role, named `YYYY-company.md`
 - Two content collections: `cvSections` (flat schema) + `cvExperiences`
@@ -96,6 +97,7 @@ Single source of truth in `src/content/cv/`:
 ## Site config
 
 Personalise in `src/site.config.ts`:
+
 - `siteConfig.author`, `.title`, `.description`, `.lang`
 - `menuLinks` for nav
 

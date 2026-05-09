@@ -1,185 +1,141 @@
 ---
-import PageLayout from '@/layouts/BaseLayout.astro'
-import Button from '@/components/Button.astro'
+import PageLayout from '@/layouts/BaseLayout.astro';
+import Button from '@/components/Button.astro';
 
 const meta = {
-	title: 'Contact',
-	description: 'Me contacter par email ou via le formulaire'
-}
+  title: 'Contact',
+  description: 'Me contacter par email ou via le formulaire',
+};
 
 // Email split en deux data-attributes — le client reconstruit la chaîne
 // après chargement JS. La majorité des crawlers de spam ne rendent pas le JS.
-const emailUser = 'contact'
-const emailDomain = 'flefevre.fr'
+const emailUser = 'contact';
+const emailDomain = 'flefevre.fr';
 
 // Formspree endpoint — remplacer YOUR_FORM_ID par l'ID obtenu sur https://formspree.io
-const FORM_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID'
+const FORM_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
 ---
 
 <PageLayout meta={meta}>
-	<div class='w-full'>
-		<Button title='Back' href='/' style='button'>
-			<svg
-				xmlns='http://www.w3.org/2000/svg'
-				width='14'
-				height='14'
-				viewBox='0 0 24 24'
-				slot='icon-before'
-			>
-				<path
-					fill='currentColor'
-					d='m6.921 12.5l5.792 5.792L12 19l-7-7l7-7l.713.708L6.921 11.5H19v1z'
-				></path>
-			</svg>
-		</Button>
+  <div class="w-full">
+    <Button title="Back" href="/" style="button">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" slot="icon-before">
+        <path fill="currentColor" d="m6.921 12.5l5.792 5.792L12 19l-7-7l7-7l.713.708L6.921 11.5H19v1z"></path>
+      </svg>
+    </Button>
 
-		<div class='mt-5 flex w-full flex-col gap-y-10'>
-			<div>
-				<h1 class='mb-1 text-2xl font-bold'>Contact</h1>
-				<p class='text-muted-foreground'>
-					Une question, une remarque, une opportunité ? Le plus simple : email direct, ou
-					formulaire ci-dessous.
-				</p>
-			</div>
+    <div class="mt-5 flex w-full flex-col gap-y-10">
+      <div>
+        <h1 class="mb-1 text-2xl font-bold">Contact</h1>
+        <p class="text-muted-foreground">Une question, une remarque, une opportunité ? Le plus simple : email direct, ou formulaire ci-dessous.</p>
+      </div>
 
-			<section class='flex flex-col gap-y-3'>
-				<h2 class='text-lg font-semibold'>Email</h2>
-				<p>
-					<a
-						id='email-link'
-						href='#'
-						data-user={emailUser}
-						data-domain={emailDomain}
-						class='underline underline-offset-4 hover:text-cv-accent'
-					>
-						<noscript>{emailUser} [at] {emailDomain}</noscript>
-						<span class='js-email-display'>activez JavaScript pour afficher l'email</span>
-					</a>
-				</p>
-			</section>
+      <section class="flex flex-col gap-y-3">
+        <h2 class="text-lg font-semibold">Email</h2>
+        <p>
+          <a id="email-link" href="#" data-user={emailUser} data-domain={emailDomain} class="hover:text-cv-accent underline underline-offset-4">
+            <noscript>{emailUser} [at] {emailDomain}</noscript>
+            <span class="js-email-display">activez JavaScript pour afficher l'email</span>
+          </a>
+        </p>
+      </section>
 
-			<section class='flex flex-col gap-y-3'>
-				<h2 class='text-lg font-semibold'>Formulaire</h2>
-				<form
-					id='contact-form'
-					action={FORM_ENDPOINT}
-					method='POST'
-					class='flex flex-col gap-y-4'
-				>
-					<input type='hidden' name='_subject' value='Contact depuis flefevre.fr' />
-					<input
-						type='hidden'
-						name='_form_loaded_at'
-						id='form-loaded-at'
-						value=''
-					/>
+      <section class="flex flex-col gap-y-3">
+        <h2 class="text-lg font-semibold">Formulaire</h2>
+        <form id="contact-form" action={FORM_ENDPOINT} method="POST" class="flex flex-col gap-y-4">
+          <input type="hidden" name="_subject" value="Contact depuis flefevre.fr" />
+          <input type="hidden" name="_form_loaded_at" id="form-loaded-at" value="" />
 
-					{/* Honeypot — masqué visuellement et accessible aux bots uniquement */}
-					<div class='absolute -left-[9999px] h-0 w-0 overflow-hidden' aria-hidden='true'>
-						<label for='website'>Ne pas remplir</label>
-						<input
-							type='text'
-							id='website'
-							name='website'
-							tabindex='-1'
-							autocomplete='off'
-						/>
-					</div>
+          {/* Honeypot — masqué visuellement et accessible aux bots uniquement */}
+          <div class="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
+            <label for="website">Ne pas remplir</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+          </div>
 
-					<div class='flex flex-col gap-y-1.5'>
-						<label for='name' class='text-sm font-medium'>Nom</label>
-						<input
-							type='text'
-							id='name'
-							name='name'
-							required
-							autocomplete='name'
-							class='rounded-lg border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring'
-						/>
-					</div>
+          <div class="flex flex-col gap-y-1.5">
+            <label for="name" class="text-sm font-medium">Nom</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              autocomplete="name"
+              class="border-input bg-background focus:ring-ring rounded-lg border px-3 py-2 text-sm focus:ring-2 focus:outline-none"
+            />
+          </div>
 
-					<div class='flex flex-col gap-y-1.5'>
-						<label for='email' class='text-sm font-medium'>Email</label>
-						<input
-							type='email'
-							id='email'
-							name='email'
-							required
-							autocomplete='email'
-							class='rounded-lg border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring'
-						/>
-					</div>
+          <div class="flex flex-col gap-y-1.5">
+            <label for="email" class="text-sm font-medium">Email</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              required
+              autocomplete="email"
+              class="border-input bg-background focus:ring-ring rounded-lg border px-3 py-2 text-sm focus:ring-2 focus:outline-none"
+            />
+          </div>
 
-					<div class='flex flex-col gap-y-1.5'>
-						<label for='message' class='text-sm font-medium'>Message</label>
-						<textarea
-							id='message'
-							name='message'
-							required
-							rows='6'
-							class='rounded-lg border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring'
-						></textarea>
-					</div>
+          <div class="flex flex-col gap-y-1.5">
+            <label for="message" class="text-sm font-medium">Message</label>
+            <textarea
+              id="message"
+              name="message"
+              required
+              rows="6"
+              class="border-input bg-background focus:ring-ring rounded-lg border px-3 py-2 text-sm focus:ring-2 focus:outline-none"></textarea>
+          </div>
 
-					<button
-						type='submit'
-						class='self-start rounded-lg border border-border bg-primary-foreground px-4 py-2 text-sm font-medium transition-all hover:bg-input'
-					>
-						Envoyer
-					</button>
+          <button type="submit" class="border-border bg-primary-foreground hover:bg-input self-start rounded-lg border px-4 py-2 text-sm font-medium transition-all">
+            Envoyer
+          </button>
 
-					<p
-						id='form-status'
-						class='hidden text-sm'
-						role='status'
-						aria-live='polite'
-					>
-					</p>
-				</form>
-			</section>
-		</div>
-	</div>
+          <p id="form-status" class="hidden text-sm" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+    </div>
+  </div>
 </PageLayout>
 
 <script>
-	// Reconstruction de l'email côté client
-	const link = document.getElementById('email-link') as HTMLAnchorElement | null
-	if (link) {
-		const user = link.dataset.user ?? ''
-		const domain = link.dataset.domain ?? ''
-		const email = `${user}@${domain}`
-		link.href = `mailto:${email}`
-		const display = link.querySelector('.js-email-display')
-		if (display) display.textContent = email
-	}
+  // Reconstruction de l'email côté client
+  const link = document.getElementById('email-link') as HTMLAnchorElement | null;
+  if (link) {
+    const user = link.dataset.user ?? '';
+    const domain = link.dataset.domain ?? '';
+    const email = `${user}@${domain}`;
+    link.href = `mailto:${email}`;
+    const display = link.querySelector('.js-email-display');
+    if (display) display.textContent = email;
+  }
 
-	// Timestamp d'affichage du formulaire — un envoi en moins de 3s = bot probable
-	const loadedAtField = document.getElementById('form-loaded-at') as HTMLInputElement | null
-	if (loadedAtField) loadedAtField.value = String(Date.now())
+  // Timestamp d'affichage du formulaire — un envoi en moins de 3s = bot probable
+  const loadedAtField = document.getElementById('form-loaded-at') as HTMLInputElement | null;
+  if (loadedAtField) loadedAtField.value = String(Date.now());
 
-	// Validation rapide côté client : honeypot + délai minimal
-	const form = document.getElementById('contact-form') as HTMLFormElement | null
-	const status = document.getElementById('form-status') as HTMLParagraphElement | null
+  // Validation rapide côté client : honeypot + délai minimal
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const status = document.getElementById('form-status') as HTMLParagraphElement | null;
 
-	form?.addEventListener('submit', (event) => {
-		const honeypot = (form.querySelector<HTMLInputElement>('input[name="website"]'))?.value ?? ''
-		const loadedAt = Number(loadedAtField?.value ?? 0)
-		const elapsed = Date.now() - loadedAt
+  form?.addEventListener('submit', (event) => {
+    const honeypot = form.querySelector<HTMLInputElement>('input[name="website"]')?.value ?? '';
+    const loadedAt = Number(loadedAtField?.value ?? 0);
+    const elapsed = Date.now() - loadedAt;
 
-		if (honeypot.length > 0 || elapsed < 3000) {
-			event.preventDefault()
-			if (status) {
-				status.textContent = 'Message bloqué (anti-spam). Merci de réessayer.'
-				status.classList.remove('hidden')
-				status.classList.add('text-destructive')
-			}
-			return
-		}
+    if (honeypot.length > 0 || elapsed < 3000) {
+      event.preventDefault();
+      if (status) {
+        status.textContent = 'Message bloqué (anti-spam). Merci de réessayer.';
+        status.classList.remove('hidden');
+        status.classList.add('text-destructive');
+      }
+      return;
+    }
 
-		if (status) {
-			status.textContent = 'Envoi en cours…'
-			status.classList.remove('hidden', 'text-destructive')
-			status.classList.add('text-muted-foreground')
-		}
-	})
+    if (status) {
+      status.textContent = 'Envoi en cours…';
+      status.classList.remove('hidden', 'text-destructive');
+      status.classList.add('text-muted-foreground');
+    }
+  });
 </script>
