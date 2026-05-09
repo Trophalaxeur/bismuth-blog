@@ -1,4 +1,5 @@
 # Instructions Copilot — Review PR Bismuth
+<!-- test/02-copilot-review-ready-for-review — vérifie le trigger "ready_for_review" (draft → ready) -->
 
 Blog personnel : Astro 6, React, TypeScript, Tailwind CSS v4, Expressive Code. Output statique, Vercel.
 
