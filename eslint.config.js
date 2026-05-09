@@ -7,6 +7,7 @@ import jsxA11y from 'eslint-plugin-jsx-a11y';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import rxjsPlugin from 'eslint-plugin-rxjs-x';
+import unusedImports from 'eslint-plugin-unused-imports';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig([
@@ -17,9 +18,47 @@ export default defineConfig([
   ...tseslint.configs.strict,
   stylistic.configs.recommended,
 
+  // Type-aware rules — TS/TSX only (requires tsconfig type info)
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: tseslint.configs.recommendedTypeChecked,
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname, // Node 22+ native (added in Node 21.2) — not the old fileURLToPath workaround
+      },
+    },
+    rules: {
+      '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
+    },
+  },
+
   // Astro recommended — must come before React rules
   ...astroPlugin.configs['flat/recommended'],
   jsxA11y.flatConfigs.recommended,
+
+  // Astro: warn on set:html (XSS surface — fine for static content, watch for dynamic)
+  // label-has-associated-control: jsx-a11y looks for JSX `htmlFor`, Astro uses HTML `for` — false positives
+  {
+    files: ['**/*.astro'],
+    rules: {
+      'astro/no-set-html-directive': 'warn',
+      'jsx-a11y/label-has-associated-control': 'off',
+    },
+  },
+
+  // Unused imports — auto-fixable cleanup (replaces TS no-unused-vars for imports)
+  {
+    plugins: { 'unused-imports': unusedImports },
+    rules: {
+      '@typescript-eslint/no-unused-vars': 'off',
+      'unused-imports/no-unused-imports': 'error',
+      'unused-imports/no-unused-vars': [
+        'warn',
+        { vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' },
+      ],
+    },
+  },
 
   // React rules — JSX/TSX only (Astro files use class= not className=)
   {
