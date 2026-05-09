@@ -1,11 +1,13 @@
+# test/03 — push trivial pour valider le ruleset "Automated code reviews on push"
 name: Request Copilot Review
 
 on:
   pull_request:
-    types: [opened, reopened, ready_for_review]
+    types: [opened, reopened, ready_for_review, synchronize]
 
 jobs:
   request-review:
+    if: ${{ !github.event.pull_request.draft }}
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
