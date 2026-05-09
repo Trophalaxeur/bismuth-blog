@@ -1,3 +1,4 @@
+# test/01-copilot-review-opened — vérifie le trigger "opened" (PR non-draft)
 name: Request Copilot Review
 
 on:
