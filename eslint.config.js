@@ -1,5 +1,6 @@
 import eslint from '@eslint/js';
 import stylistic from '@stylistic/eslint-plugin';
+import { defineConfig } from 'eslint/config';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import astroPlugin from 'eslint-plugin-astro';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
@@ -8,7 +9,7 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import rxjsPlugin from 'eslint-plugin-rxjs-x';
 import tseslint from 'typescript-eslint';
 
-export default tseslint.config(
+export default defineConfig([
   { ignores: ['dist/', '.astro/', '**/*.md', '**/*.mdx'] },
 
   // Base rules — all files
@@ -56,5 +57,5 @@ export default tseslint.config(
   },
 
   // Prettier must be last — disables formatting rules that conflict
-  eslintConfigPrettier
-);
+  eslintConfigPrettier,
+]);

@@ -28,13 +28,7 @@ const extraInfoEntry = find('extra-info');
 
 const render = async (entry: (typeof allSections)[number] | undefined) => (entry ? renderMarkdown(extractVariantMarkdown(entry.body ?? '', variant)) : '');
 
-const [profileHtml, skillsHtml, educationHtml, projectsHtml, extraInfoHtml] = await Promise.all([
-  render(profileEntry),
-  render(skillsEntry),
-  render(educationEntry),
-  render(projectsEntry),
-  render(extraInfoEntry),
-]);
+const [profileHtml, educationHtml, projectsHtml, extraInfoHtml] = await Promise.all([render(profileEntry), render(educationEntry), render(projectsEntry), render(extraInfoEntry)]);
 
 // Load, filter and sort experiences
 const allExperiences = await getCollection('cvExperiences');
@@ -74,7 +68,7 @@ const experiencesData = await Promise.all(
 }
 
 <CvProfile html={profileHtml} />
-<CvSkills html={skillsHtml} skills={skillsEntry?.data.skills ?? {}} />
+<CvSkills skills={skillsEntry?.data.skills ?? {}} />
 <CvExperienceList experiences={experiencesData} variant={variant} />
 <CvEducation html={educationHtml} />
 {projectsHtml && <CvProjects html={projectsHtml} />}
