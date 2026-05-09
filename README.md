@@ -51,3 +51,47 @@ This project is built with [Claude Code](https://claude.ai/code) as a first-clas
 - **PR reviews** — GitHub Actions triggers a Claude review on every pull request
 - **Living documentation** — `CLAUDE.md` is maintained alongside the code to give Claude full context on conventions and stack choices
 - **Content drafting** — blog posts and CV content iterated with Claude assistance
+
+## Claude Code Skills
+
+Custom skills live in `.claude/skills/`. Install a skill by copying its folder there.
+
+### `ai-decision-doc-maintainer`
+
+Maintains the AI agent decision documentation under `docs/ai-agent-decision-tree/`.
+
+Invoke it in Claude Code:
+
+```text
+Use the ai-decision-doc-maintainer skill to update the decision matrix and D2 diagram in docs/ai-agent-decision-tree/.
+Check current pricing and quotas online, update sources, then regenerate SVG and PNG.
+```
+
+Manual image regeneration:
+
+```bash
+.claude/skills/ai-decision-doc-maintainer/scripts/update-ai-decision-doc.sh
+```
+
+The script runs:
+
+```bash
+d2 docs/ai-agent-decision-tree/decision-tree.d2 docs/ai-agent-decision-tree/decision-tree.svg
+d2 docs/ai-agent-decision-tree/decision-tree.d2 docs/ai-agent-decision-tree/decision-tree.png
+```
+
+### `full-review`
+
+Full codebase audit — dead code, unused files, quality, SEO, accessibility, React/Astro/Tailwind best practices.
+
+Invoke it in Claude Code:
+
+```text
+/full-review
+```
+
+Produces `review-YYYY-MM-DD.md` at the repo root with VSCode-clickable file links.
+
+## Copilot PR Review
+
+`.github/copilot-instructions.md` contains lightweight rules for GitHub Copilot to use when reviewing pull requests. It covers only changed files, ignores `src/content/`, `node_modules/` and hidden folders, and outputs a PR comment.

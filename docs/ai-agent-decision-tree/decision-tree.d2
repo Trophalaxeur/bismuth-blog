@@ -1,0 +1,156 @@
+direction: down
+
+title: "Arbre de décision : Claude Code, Copilot Agent et homelab"
+
+start: "Départ"
+
+q1: "La tâche doit-elle envoyer un mail,\ngénérer un récap ou produire\nun rendu très personnalisé ?"
+
+q2: "Est-ce uniquement de la lecture,\nde la synthèse ou du reporting ?"
+
+q3: "Le repo est-il privé,\nsensible ou lié à mon homelab ?"
+
+q4: "La tâche concerne-t-elle\nplusieurs repos ou mon réseau local ?"
+
+q5: "Est-ce une petite tâche GitHub\nponctuelle sur repo public ?"
+
+q6: "Ai-je besoin d'un refactoring\navec modification de code,\ntests, commit ou création de PR ?"
+
+q7: "Est-ce une PR automatisée\nbien intégrée à GitHub avec CI/logs ?"
+
+q8: "Est-ce que je veux éviter\ntoute installation ou maintenance locale ?"
+
+q9: "Est-ce que je veux faire tourner\nCopilot sur mon homelab ?"
+
+script_homelab: {
+  label: "Script homelab + Claude ponctuel"
+  shape: rectangle
+  style.fill: "#E8F5E9"
+}
+
+claude_local: {
+  label: "Claude Code CLI sur homelab"
+  shape: rectangle
+  style.fill: "#C8E6C9"
+}
+
+copilot_github: {
+  label: "GitHub Copilot Agent\ndepuis GitHub"
+  shape: rectangle
+  style.fill: "#E3F2FD"
+}
+
+claude_actions: {
+  label: "Claude Code via\nGitHub Actions"
+  shape: rectangle
+  style.fill: "#FFF3E0"
+}
+
+copilot_self_hosted: {
+  label: "Copilot Agent sur homelab\n/self-hosted runner"
+  shape: rectangle
+  style.fill: "#FCE4EC"
+}
+
+avoid: {
+  label: "À éviter au début\nsauf besoin avancé"
+  shape: rectangle
+  style.fill: "#FFEBEE"
+}
+
+why_script: {
+  label: "Pourquoi ?\n- git log / git diff\n- résumé de commits\n- mail quotidien\n- rapport textuel\n- cron / systemd timer\n- coût minimal\n- aucune modification de code"
+  shape: rectangle
+  style.stroke-dash: 4
+  style.fill: "#F1F8E9"
+}
+
+why_local: {
+  label: "Pourquoi ?\n- repos privés ou sensibles\n- refactoring réel\n- modification de code\n- tests / commits / PR\n- multi-repos\n- accès réseau local / homelab\n- orchestration nocturne\n- secrets hors GitHub"
+  shape: rectangle
+  style.stroke-dash: 4
+  style.fill: "#F1F8E9"
+}
+
+why_copilot: {
+  label: "Pourquoi ?\n- simple, intégré à GitHub\n- idéal pour petites PR / reviews\n- repo public, faible volume\n- zéro maintenance homelab\n! Copilot Pro : 300 requests/mois\n! consomme requests + Actions minutes"
+  shape: rectangle
+  style.stroke-dash: 4
+  style.fill: "#EAF4FF"
+}
+
+why_actions: {
+  label: "Pourquoi ?\n- PR automatisées\n- checks GitHub\n- logs Actions\n- triggers : push, PR, issue, cron, dispatch\n- bon compromis GitHub + Claude"
+  shape: rectangle
+  style.stroke-dash: 4
+  style.fill: "#FFF8E1"
+}
+
+why_self_hosted: {
+  label: "Pourquoi rarement ?\n- complexité élevée\n- orienté organisations GitHub\n- runners éphémères recommandés\n- Ubuntu x64 / Windows uniquement\n- quota Pro toujours limité (300 req/mois)\n- peu rentable pour usage perso"
+  shape: rectangle
+  style.stroke-dash: 4
+  style.fill: "#FCE4EC"
+}
+
+legend: {
+  label: "Règle de choix\n\nTâche GitHub publique, simple, ponctuelle :\n  → Copilot Agent (GitHub)\nPrivé / multi-repos / réseau local / mail :\n  → Claude Code CLI homelab\nPR automatisée avec CI/logs GitHub :\n  → Claude Code GitHub Actions\nMail / rapport / résumé sans code :\n  → Script homelab + Claude\nSelf-hosted Copilot :\n  → seulement organisations, besoin avancé"
+  shape: rectangle
+  style.stroke-dash: 4
+  style.fill: "#F5F5F5"
+}
+
+cost_warning: {
+  label: "Point coût (mai 2026)\n\nCopilot Pro 10 USD/mois → 300 premium requests, +0.04 USD/req au-delà\nCopilot Pro+ 39 USD/mois → 1 500 premium requests\nClaude Code Pro ≈20 USD/mois → limites partagées avec Claude.ai\nClaude Code Max ≈100 USD/mois → quota 5× ou 20× supérieur\nActions publics : gratuits — Actions privés : ≈0.006 USD/min (Linux)"
+  shape: rectangle
+  style.stroke-dash: 4
+  style.fill: "#ECEFF1"
+}
+
+start -> q1
+
+q1 -> q2: "Oui"
+q1 -> q3: "Non"
+
+q2 -> script_homelab: "Oui"
+script_homelab -> why_script
+
+q2 -> claude_local: "Non,\nil faut modifier ou explorer fortement"
+claude_local -> why_local
+
+q3 -> claude_local: "Oui"
+q3 -> q4: "Non"
+
+q4 -> claude_local: "Oui"
+q4 -> q5: "Non"
+
+q5 -> copilot_github: "Oui"
+copilot_github -> why_copilot
+
+q5 -> q6: "Non"
+
+q6 -> claude_local: "Oui,\net besoin de contrôle/local"
+q6 -> q7: "Oui,\net je veux GitHub-native"
+
+q6 -> q8: "Non"
+
+q7 -> claude_actions: "Oui"
+claude_actions -> why_actions
+
+q7 -> claude_local: "Non,\nje préfère contrôler localement"
+
+q8 -> copilot_github: "Oui"
+q8 -> q9: "Non"
+
+q9 -> copilot_self_hosted: "Oui"
+copilot_self_hosted -> avoid
+copilot_self_hosted -> why_self_hosted
+
+q9 -> claude_local: "Non"
+
+script_homelab -> legend
+claude_local -> legend
+copilot_github -> legend
+claude_actions -> legend
+
+legend -> cost_warning

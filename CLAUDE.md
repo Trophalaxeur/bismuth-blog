@@ -47,8 +47,6 @@ src/
 }
 ```
 
-`tailwind.config.js` is still present at root but **not loaded by TW4** — it's dead weight and can be deleted.
-
 ## Astro v6 Content Layer
 
 `src/content.config.ts` (not `src/content/config.ts`):
@@ -71,6 +69,29 @@ const post = defineCollection({
 | `entry.slug` | `entry.id.replace(/\.(md\|mdx)$/, '')` |
 | `entry.render()` | `render(entry)` (import `render` from `astro:content`) |
 | `import { z } from 'astro:content'` | `import { z } from 'zod'` |
+
+## Site URL structure
+
+```
+/               → Landing page (short bio, markdown-driven)
+/cv/short       → CV — version recruteur (2 pages)
+/cv/detailed    → CV — dossier de compétences (complet)
+/cv/print       → Layout minimal pour export PDF (accepts ?variant=short|detailed)
+/blog           → Blog articles in markdown
+/tools          → Personal tools/stack
+/contact        → Contact form + email
+```
+
+## CV architecture
+
+Single source of truth in `src/content/cv/`:
+- Flat files: `profile.md`, `skills.md`, `education.md`, `projects.md`, `extra-info.md`
+- Experiences: `experiences/` — one file per role, named `YYYY-company.md`
+- Two content collections: `cvSections` (flat schema) + `cvExperiences`
+- Variant system: `:::short` / `:::detailed` blocks in markdown, filtered by `extractVariantMarkdown()` in `src/utils/cv.ts`
+- Rendered via `marked` + `set:html` (not standard Astro pipeline — incompatible with custom block syntax)
+- Experiences sorted by `priority` field then `start` date descending (in `CvPage.astro`)
+- Components in `src/components/cv/`: CvPage, CvHeader, CvProfile, CvSkills, CvExperienceList, CvExperienceCard, CvEducation, CvProjects, CvExtraInfo, CvVariantSwitch
 
 ## Site config
 
