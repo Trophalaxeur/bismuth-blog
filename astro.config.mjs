@@ -6,7 +6,6 @@ import rehypeUnwrapImages from 'rehype-unwrap-images'
 import rehypeExternalLinks from 'rehype-external-links'
 import expressiveCode from 'astro-expressive-code'
 import { expressiveCodeOptions } from './src/site.config'
-import icon from 'astro-icon'
 import tailwindcss from '@tailwindcss/vite'
 
 // https://astro.build/config
@@ -15,8 +14,7 @@ export default defineConfig({
 	integrations: [
 		expressiveCode(expressiveCodeOptions),
 		sitemap(),
-		mdx(),
-		icon()
+		mdx()
 	],
 	vite: {
 		plugins: [tailwindcss()]

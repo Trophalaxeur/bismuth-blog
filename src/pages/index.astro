@@ -4,7 +4,7 @@ import Section from '../components/Section.astro'
 import Label from '../components/Label.astro'
 import PostPreview from '@/components/blog/PostPreview.astro'
 import { Image } from 'astro:assets'
-import astro from '../assets/about-astro.png'
+import bismuth from '../assets/bismuth.png'
 import { getAllPosts, sortMDByDate } from '@/utils'
 import { Content as BioContent } from '../content/bio.md'
 
@@ -17,9 +17,9 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS)
 	<div class='flex w-full flex-col gap-y-10'>
 		<section class='flex flex-col items-center gap-y-7'>
 			<Image
-				src={astro}
-				alt='Photo de profil'
-				class='h-28 w-auto rounded-full bg-[#FFBE98] p-2'
+				src={bismuth}
+				alt='Bismuth — logo du blog'
+				class='h-28 w-auto rounded-full bg-background p-2'
 				loading='eager'
 			/>
 			<div class='flex flex-col items-center gap-y-4'>

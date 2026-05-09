@@ -1,6 +1,6 @@
 import sharp from 'sharp'
 
-const src = 'docs/bismuth.png'
+const src = 'src/assets/bismuth.png'
 const dest = 'public/favicon'
 
 const sizes = [

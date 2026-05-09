@@ -1,22 +1,23 @@
 /** @type {import("prettier").Config} */
 module.exports = {
-  // i am just using the standard config, change if you need something else
-  ...require('prettier-config-standard'),
-  pluginSearchDirs: [__dirname],
   plugins: [
+    'prettier-plugin-organize-imports',
     'prettier-plugin-astro',
-    'prettier-plugin-tailwindcss'
+    'prettier-plugin-tailwindcss',
   ],
+  singleQuote: true,
+  tabWidth: 2,
+  useTabs: false,
+  printWidth: 180,
+  trailingComma: 'es5',
   overrides: [
     {
       files: '*.astro',
-      options: {
-        parser: 'astro'
-      }
+      options: { parser: 'astro' },
+    },
+    {
+      files: ['*.ts', '*.tsx'],
+      options: { parser: 'typescript' },
     },
   ],
-  useTabs: true,
-  singleQuote: true,
-  trailingComma: 'none',
-  printWidth: 100
 }

@@ -37,6 +37,10 @@ export const menuLinks: Array<{ title: string; path: string }> = [
 	{
 		title: 'Blog',
 		path: '/blog/'
+	},
+	{
+		title: 'Contact',
+		path: '/contact/'
 	}
 ]
 

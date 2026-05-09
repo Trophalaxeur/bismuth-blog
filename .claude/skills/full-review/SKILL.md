@@ -129,6 +129,20 @@ Identifier tout ce qui ne sert à rien dans le repo. Prioriser les suppressions 
 - 1.5.4 Dépendances côté client inutiles dans un site majoritairement statique
 - 1.5.5 Packages redondants avec Astro, Vite, Tailwind ou Node
 
+#### 1.6 Packages obsolètes et sécurité
+
+Lancer ces commandes et inclure le résultat dans la review :
+
+```bash
+npm outdated
+npm audit --audit-level=moderate
+```
+
+- 1.6.1 Pour chaque ligne `npm outdated` : indiquer le package, la version installée, la version latest, et si la mise à jour est un patch/minor/major
+- 1.6.2 Signaler les anomalies de version (version installée > version latest — peut indiquer un pre-release ou un tag non-standard)
+- 1.6.3 Vulnérabilités `npm audit` de niveau moderate ou supérieur → Bloquants/Importants selon la sévérité
+- 1.6.4 Ne pas recommander de mise à jour majeure sans signaler les breaking changes potentiels
+
 ---
 
 ### Partie 2 — Qualité React, JavaScript, HTML et CSS
