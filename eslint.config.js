@@ -21,11 +21,11 @@ export default defineConfig([
   // Type-aware rules — TS/TSX only (requires tsconfig type info)
   {
     files: ['**/*.{ts,tsx}'],
-    extends: [tseslint.configs.recommendedTypeChecked],
+    extends: tseslint.configs.recommendedTypeChecked,
     languageOptions: {
       parserOptions: {
         projectService: true,
-        tsconfigRootDir: import.meta.dirname,
+        tsconfigRootDir: import.meta.dirname, // Node 22+ native (added in Node 21.2) — not the old fileURLToPath workaround
       },
     },
     rules: {
