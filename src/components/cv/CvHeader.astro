@@ -1,4 +1,7 @@
 ---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
 interface Props {
   name: string;
   title: string;
@@ -8,6 +11,9 @@ interface Props {
   contact: { email: string; phone?: string; github?: string };
 }
 const { name, title, baseline, image, location, contact } = Astro.props;
+
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/*.{png,jpg,jpeg,webp}', { eager: true });
+const resolvedImage = image ? images[`/src/assets${image}`]?.default : undefined;
 ---
 
 <header class="border-border/60 mb-12 border-b pb-10">
@@ -57,6 +63,6 @@ const { name, title, baseline, image, location, contact } = Astro.props;
         }
       </div>
     </div>
-    {image && <img src={image} alt={name} loading="lazy" decoding="async" class="ring-border/50 mt-1 h-28 w-28 shrink-0 rounded-full object-cover object-top shadow-lg ring-1" />}
+    {resolvedImage && <Image src={resolvedImage} alt={name} width={112} height={112} loading="lazy" decoding="async" class="ring-border/50 mt-1 h-28 w-28 shrink-0 rounded-full object-cover object-top shadow-lg ring-1" />}
   </div>
 </header>

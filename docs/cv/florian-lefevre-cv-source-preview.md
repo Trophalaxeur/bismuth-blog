@@ -8,11 +8,11 @@ note: "Fichier de prévisualisation assemblé depuis la structure src/content/cv
 schemaVersion: 1
 type: profile
 name: "Florian Lefevre"
-title: "Lead Tech / Lead Dev Angular"
-location: "Castelnau d'Estrétefonds, région toulousaine"
+title: "Lead Tech"
+location: "xxx"
 contact:
-  email: "contact@flefevre.fr"
-  phone: "06.07.23.39.05"
+  email: "xxx"
+  phone: "xxx"
   github: "https://github.com/Trophalaxeur"
 variants:
   default: short
