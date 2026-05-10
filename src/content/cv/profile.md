@@ -7,7 +7,7 @@ baseline: "Software Engineering Manager • Tech Lead • Angular Architect • 
 image: "/images/profil_2.png"
 location: "Région Toulousaine"
 contact:
-  email: "contact@flefevre.fr"
+  email: "web@flefevre.fr"
   github: "https://github.com/Trophalaxeur"
 variants:
   default: short

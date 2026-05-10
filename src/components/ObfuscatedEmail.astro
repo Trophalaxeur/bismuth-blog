@@ -1,0 +1,31 @@
+---
+interface Props {
+  email: string;
+  class?: string;
+}
+const { email, class: className } = Astro.props;
+const [emailUser, emailDomain] = email.split('@');
+---
+
+<a
+  href="mailto:"
+  data-obf-email
+  data-user={emailUser}
+  data-domain={emailDomain}
+  class={className}
+>
+  <slot />
+  <noscript>{emailUser} [at] {emailDomain}</noscript>
+  <span class="js-obf-email"></span>
+</a>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('[data-obf-email]').forEach((link) => {
+    const user = link.dataset.user ?? '';
+    const domain = link.dataset.domain ?? '';
+    const email = `${user}@${domain}`;
+    link.href = `mailto:${email}`;
+    const display = link.querySelector('.js-obf-email');
+    if (display) display.textContent = email;
+  });
+</script>
