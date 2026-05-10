@@ -5,7 +5,7 @@ priority: 20
 skills:
   frontend:
     - Angular
-    - TypeScript
+    - TypeScript strict
     - RxJS
     - NgRx
     - Nx
@@ -14,33 +14,34 @@ skills:
   backend:
     - NestJS
     - Node.js
-    - PHP
-    - Symfony
+    - PHP (Symfony)
     - Python
     - Java
   databases:
     - MySQL
-    - NoSQL
+    - PostgreSQL
     - Oracle
+    - MongoDB
   devops:
     - GNU/Linux
     - Docker
     - Jenkins
-    - GitHub Actions
-    - GitLab CI
-    - Bitbucket Pipelines
+    - GitHub
+    - GitLab
+    - Bitbucket
     - Nginx
     - Apache
+    - AWS
   tools:
     - Git
     - Jira
     - Redmine
-    - Trello
+    - Notion
     - Confluence
-    - AWS
   methods:
     - Agile
-    - Cycle en V
+    - Cycle en V itératif
+  misc:
     - Revue de code
     - Coaching technique
     - Estimation de charges

@@ -4,7 +4,7 @@ type: experience
 company: "Scopea"
 clientLocation: "Toulouse"
 employer: "Florian Lefevre Consulting"
-role: "Consultant développeur fullstack Odoo"
+role: "Consultant développeur Odoo"
 start: "2017-10"
 end: "2021-04"
 priority: 50
@@ -14,8 +14,6 @@ variants:
 tags:
   - Odoo
   - Python
-  - ERP
-  - Consulting
 environment:
   languages:
     - Odoo
@@ -30,13 +28,13 @@ environment:
 ---
 
 :::short
-Conseil et développement de modules sur l'ERP Odoo, de l'étude du besoin à la livraison.
+Conseil et développement de modules **Python**/**HTML** sur l'ERP Odoo.
 :::
 
 :::detailed
 - Intervention au forfait.
 - Étude des besoins et proposition de solutions.
 - Estimation de charges et élaboration de devis.
-- Conception, amélioration et réalisation de modules Odoo.
+- Conception, amélioration et réalisation de modules **Python**/**HTML** Odoo.
 - Recette, livraison et maintien de modules.
 :::

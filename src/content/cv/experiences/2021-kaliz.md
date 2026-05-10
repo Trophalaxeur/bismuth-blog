@@ -13,27 +13,26 @@ variants:
   - detailed
 tags:
   - Angular
-  - TypeScript
+  - TypeScript strict
   - RxJS
   - NgRx
   - Nx
-  - Cypress
   - Code Review
   - Coaching
 environment:
   languages:
     - Angular
-    - TypeScript
+    - TypeScript strict
     - RxJS
     - NgRx
     - Nx
     - HTML
     - CSS
   tools:
-    - Git
-    - GitLab
+    - Git (Gitlab)
     - Docker
-    - Cypress
+    - Notion
+    - Cypress / Playwright
   systems:
     - GNU/Linux
   methods:
@@ -41,15 +40,18 @@ environment:
 ---
 
 :::short
-Lead Dev Angular sur une application de gestion immobilière, avec accompagnement de l'équipe, revue de code, amélioration de la qualité frontend et mise en place de Nx, NgRx et Cypress.
+**Lead Dev** sur une application **Angular** de gestion immobilière, avec accompagnement de l'équipe, revue de code, amélioration de la qualité frontend et mise en place de Nx et NgRx.
 :::
 
 :::detailed
-- Développement et maintien d'une application Angular de gestion immobilière.
+**Lead Dev** sur une application **Angular** de gestion immobilière, avec accompagnement de l'équipe, revue de code, amélioration de la qualité frontend et mise en place de Nx et NgRx.
+- Développement et maintien de l'application avec **TypeScript strict**.
 - Audit de code, revue de code et propositions d'amélioration.
-- Coaching de l'équipe sur les bonnes pratiques de développement frontend.
-- Responsabilité des déploiements : pipelines GitLab, communication et coordination de livraison.
-- Collaboration étroite avec le Lead Dev backend.
-- Mise en place des tests end-to-end avec Cypress.
+- Coaching de l'équipe sur les bonnes pratiques de développement.
+- ScrumMaster 
+- Responsabilité des déploiements et du CI/CD GitLab.
+- Collaboration étroite avec le Lead Dev backend (mis en place des APIs, contrats d'interface).
+- Collaboration avec l'équipe produit (études de solutions, estimation de charges, priorisations, coordination des livraisons)
+- Mise en place des tests end-to-end avec Cypress / Playwright.
 - Mise en place de NgRx et Nx.
 :::

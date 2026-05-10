@@ -12,25 +12,27 @@ variants:
   - short
   - detailed
 tags:
-  - Management
   - Angular
   - NestJS
-  - TypeScript
-  - Nx
+  - TypeScript strict
+  - RxJS
   - NgRx
+  - Nx
+  - Management
   - Architecture
-  - CI/CD
 environment:
   languages:
     - Angular
     - NestJS
-    - TypeScript
+    - NodeJS
+    - TypeScript strict
     - RxJS
     - NgRx
     - Nx
   tools:
-    - Git
-    - GitHub
+    - Git (Bitbucket / GitHub)
+    - Jira
+    - Notion
     - Docker
   systems:
     - GNU/Linux
@@ -39,13 +41,18 @@ environment:
 ---
 
 :::short
-Software Engineering Manager sur un écosystème d'applications de génération de business plan d'immigration, avec une stack Angular, NestJS et Nx.
+**Software Engineering Manager** sur un écosystème d'applications de génération de business plan d'immigration, avec une stack **Angular**, **NestJS**, Nx et **PHP**.
 :::
 
 :::detailed
-- Responsable d'un écosystème d'applications autour de la génération de business plans d'immigration : application financière, plugin Word, application d'agrégation de données et module IA.
-- Création et management d'une équipe internationale de 7 développeurs : Python, fullstack, lead et data.
-- Mise en place de l'écosystème technique et de l'architecture applicative.
-- Responsabilité des déploiements : pipelines GitHub, communication et coordination de livraison.
+**Software Engineering Manager** sur un écosystème d'applications de génération de business plan d'immigration, avec une stack **Angular**, **NestJS**, Nx et **PHP**.
+- Développement et maintien d'une application financière **Angular**, **NestJS** et **PHP**
 - Migration d'une base Symfony vers un écosystème Nx / NestJS.
+- Création d'un plugin MSWord **Angular**
+- Création d'une application **NestJS** d'agrégation de données (internet, HubSpot, Wrike, Google, Microsoft, etc.)
+- Mise en place de scripts **NodeJS** et intégration d'un module IA en **Python**
+- Création et management d'une équipe internationale de 7 développeurs (2 squads): Python, fullstack, lead dev et data engineer.
+- Mise en place de l'écosystème et de l'architecture applicative.
+- Responsabilité des déploiements et du CI/CD Bitbucket (et migration sur GitHub).
+- Collaboration avec l'équipe Produit (études de solutions, estimation de charges, priorisations, coordination des livraisons)
 :::

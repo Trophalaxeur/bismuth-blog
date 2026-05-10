@@ -9,6 +9,7 @@ priority: 80
 :::short
 - Développeur bénévole frontend Vue.js pour une application d'édition de film slowmotion.
 - Réalisation d'un site de mariage en React, Firebase, Docker, AWS et scripts Node.js.
+- Réalisation d'un homelab avec du Proxmox, Terraform et Ansible.
 :::
 
 :::detailed
@@ -23,4 +24,11 @@ Développement bénévole frontend Vue.js pour une application de création de f
 Réalisation d'un site avec identification, formulaire de présence et scripts d'extraction des données vers Google Sheets.
 
 **Environnement** : React, Node.js, HTML, CSS, Git, Docker, AWS, Firebase, GNU/Linux.
+
+
+### Homelab
+
+Réalisation d'un homelab d'expérimentation pouvant accueillir des POCs, un serveur Immich (Google Photos like) et un serveur HomeAssistant (domotique)
+
+**Environnement** : Proxmox, Terraform, Ansible, GNU/Linux.
 :::

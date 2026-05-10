@@ -4,7 +4,7 @@ type: experience
 company: "Joorney"
 clientLocation: "Télétravail complet"
 employer: "Florian Lefevre Consulting"
-role: "Consultant développeur fullstack"
+role: "Consultant développeur PHP fullstack"
 start: "2020-08"
 end: "2020-08"
 priority: 40
@@ -14,7 +14,6 @@ variants:
 tags:
   - PHP
   - Symfony
-  - Fullstack
 environment:
   languages:
     - PHP
@@ -30,10 +29,6 @@ environment:
     - Agile
 ---
 
-:::short
-Conseil et développement sur une application Symfony de génération de business plan.
-:::
-
 :::detailed
-- Développement et amélioration d'une application Symfony de génération de business plan.
+- Conseils, développement et amélioration d'une application **PHP** Symfony de génération de business plan.
 :::

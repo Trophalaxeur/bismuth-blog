@@ -4,7 +4,7 @@ type: experience
 company: "LiveAction"
 clientLocation: "Toulouse"
 employer: "Florian Lefevre Consulting"
-role: "Ingénieur études et développement"
+role: "Développeur Senior Angular"
 start: "2017-10"
 end: "2019-03"
 priority: 70
@@ -12,22 +12,23 @@ variants:
   - short
   - detailed
 tags:
+  - AngularJS
   - Angular
-  - TypeScript
+  - TypeScript strict
   - Java
   - Highcharts
   - D3.js
   - Docker
-  - Monitoring réseau
 environment:
   languages:
     - Angular
-    - TypeScript
+    - AngularJS
+    - TypeScript strict
     - HTML
     - CSS
     - Java
   tools:
-    - Git
+    - Git (Gitlab)
     - Trello
     - Jira
     - Docker
@@ -39,13 +40,15 @@ environment:
 ---
 
 :::short
-Migration et maintien d'une application de monitoring réseau d'AngularJS vers Angular, avec rôle de référent technique.
+Migration d'une application de monitoring réseau d'**AngularJS** vers **Angular2**. Référent technique
 :::
 
 :::detailed
-- Développement et maintien d'une application Angular de monitoring réseau.
+- Développement et maintien d'une application **Angular** de monitoring réseau.
+- Migration **AngularJS** vers **Angular**.
 - Petits développements Java en renfort des équipes backend.
-- Gestion d'équipe en méthode Agile, rôle de référent technique.
-- Réalisation de dashboards et rapports avec Highcharts et D3.js.
+- Réalisation de dashboards et rapports avec Highcharts et D3.js (manipulation web + impression PDF).
+- Mise en place de TypeScript en mode strict.
+- Rôle de référent / coach technique.
 - Dockerisation des développements.
 :::

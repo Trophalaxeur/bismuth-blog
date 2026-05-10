@@ -12,9 +12,11 @@ variants:
 tags:
   - Java
   - J2EE
-  - Documentation web
+  - HTML
+  - CSS
+  - JQuery
 ---
 
 :::detailed
-Stage de développement de 5 mois : développement d'une plateforme de documentation web en Java / J2EE.
+Stage de développement de 5 mois : développement d'une plateforme de documentation web en **Java** / **J2EE**.
 :::

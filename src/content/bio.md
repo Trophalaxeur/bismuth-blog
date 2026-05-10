@@ -1,4 +1,4 @@
-Ingénieur développeur passionné par l'architecture, la conception et la réalisation de sytème qui tourne comme des hologes bien huilé. J'aime les belles constructions et les algorithme, bien orchestré, qui déroule comme du papier à musique. J'aime le code simple, propre, agréable à lire avec un rendu qui émerveille.
+Ingénieur développeur passionné par l'architecture, la conception et la réalisation de systèmes qui tournent comme des horloges bien huilées. J'aime les belles constructions et les algorithmes, bien orchestrés, qui déroulent comme du papier à musique. J'aime le code simple, propre, agréable à lire avec un rendu qui émerveille.
 
 Ce blog est né d'une frustration. Plein de nouvelles technos, de sujets cool apparaissent tous les jours, mais je n'ai pas le temps de les tester et d'expérimenter.
 

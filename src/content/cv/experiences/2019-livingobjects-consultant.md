@@ -4,7 +4,7 @@ type: experience
 company: "LivingObjects"
 clientLocation: "Toulouse"
 employer: "Florian Lefevre Consulting"
-role: "Consultant développeur frontend expert"
+role: "Consultant expert Angular"
 start: "2019-09"
 end: "2020-03"
 priority: 60
@@ -13,14 +13,13 @@ variants:
   - detailed
 tags:
   - Angular
-  - TypeScript
-  - Monitoring réseau
+  - TypeScript strict
   - Code Review
   - Coaching
 environment:
   languages:
     - Angular
-    - TypeScript
+    - TypeScript strict
     - HTML
     - CSS
   tools:
@@ -34,12 +33,13 @@ environment:
 ---
 
 :::short
-Conseil et développement sur une application Angular de monitoring réseau, avec audit, amélioration du code et accompagnement de l'équipe.
+Développement sur une application **Angular** de monitoring réseau, avec audit, amélioration du code et accompagnement de l'équipe.
 :::
 
 :::detailed
-- Développement et maintien d'une application Angular de monitoring réseau.
+Développement sur une application **Angular** de monitoring réseau, avec audit, amélioration du code et accompagnement de l'équipe.
+- Développement et maintien de l'application.
 - Audit de code et propositions d'amélioration.
-- Coaching de l'équipe sur les bonnes pratiques de codage.
-- Gestion de petits projets : estimation de charges, spécifications et réalisation.
+- Coaching de l'équipe sur les bonnes pratiques de développement.
+- Gestion de petits projets: estimation de charges, spécifications et réalisation.
 :::

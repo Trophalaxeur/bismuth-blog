@@ -1,7 +1,7 @@
 ---
 schemaVersion: 1
 type: experience
-company: "Ausy / LivingObjects"
+company: "LivingObjects"
 clientLocation: "Toulouse"
 employer: "Ausy"
 role: "Ingénieur études et développement"
@@ -13,22 +13,16 @@ variants:
   - detailed
 tags:
   - AngularJS
-  - Angular
   - TypeScript
-  - Highcharts
-  - Monitoring réseau
 environment:
   languages:
-    - JavaScript
     - AngularJS
-    - Angular
     - TypeScript
     - HTML
     - CSS
   tools:
     - Trello
-    - GitHub
-    - Docker
+    - Git (Gitlab)
     - Redmine
     - Jira
   systems:
@@ -39,13 +33,11 @@ environment:
 ---
 
 :::short
-Développement d'une application web de monitoring réseau et migration d'AngularJS vers Angular.
+Développement d'une application web de monitoring réseau **AngularJS**.
 :::
 
 :::detailed
-- Développement d'une application de monitoring réseau AngularJS.
-- Migration AngularJS vers Angular.
-- Réalisation de dashboards et rapports avec Highcharts.
-- Mise en place de TypeScript en mode strict.
+- Développement et maintien d'une application de monitoring réseau **AngularJS**.
+- Réalisation de dashboards et rapports avec Highcharts (manipulation web + impression PDF).
 - Gestion de petits projets : estimation de charges, spécifications et réalisation.
 :::

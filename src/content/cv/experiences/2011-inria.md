@@ -10,7 +10,6 @@ priority: 110
 variants:
   - detailed
 tags:
-  - Recherche
   - SOA
   - IoT
 ---

@@ -11,9 +11,11 @@ variants:
   - detailed
 tags:
   - PHP
-  - Web
+  - HTML
+  - CSS
+  - JQuery
 ---
 
 :::detailed
-Développement d'un site web en PHP pour un voyagiste.
+Développement d'un site web en **PHP** pour un voyagiste.
 :::

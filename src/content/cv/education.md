@@ -9,6 +9,7 @@ priority: 90
 :::short
 - **2011** - Diplôme d'ingénieur Mathématiques et Informatique, EISTI, Pau.
 - **2009** - Licence Mathématiques et Informatique, Université de Cergy-Pontoise, en partenariat avec l'EISTI.
+- **2006** - Baccalauréat scientifique, option sciences de l'ingénieur, spécialité mathématiques, mention AB, Lycée International de Colomiers.
 :::
 
 :::detailed

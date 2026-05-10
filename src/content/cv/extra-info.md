@@ -8,7 +8,6 @@ priority: 100
 
 :::short
 - Anglais : TOEIC 780.
-- Permis A et B.
 :::
 
 :::detailed
