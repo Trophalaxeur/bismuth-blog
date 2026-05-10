@@ -14,6 +14,10 @@ const { name, title, baseline, image, location, contact } = Astro.props;
 
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/*.{png,jpg,jpeg,webp}', { eager: true });
 const resolvedImage = image ? images[`/src/assets${image}`]?.default : undefined;
+// Fail fast at build time — a silent undefined would hide the photo without any diagnostic
+if (image && !resolvedImage) {
+  throw new Error(`CvHeader: image "${image}" not found in /src/assets/images/`);
+}
 ---
 
 <header class="border-border/60 mb-12 border-b pb-10">
