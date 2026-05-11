@@ -1,6 +1,3 @@
-User-agent: *
-Allow: /
-
 # SEO scrapers & bad crawlers
 User-agent: AhrefsBot
 User-agent: AhrefsSiteAudit
@@ -16,5 +13,8 @@ User-agent: SemrushBot
 User-agent: SemrushBot-BA
 User-agent: SiteAuditBot
 Disallow: /
+
+User-agent: *
+Allow: /
 
 Sitemap: https://flefevre.fr/sitemap-index.xml

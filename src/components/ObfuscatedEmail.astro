@@ -4,7 +4,11 @@ interface Props {
   class?: string;
 }
 const { email, class: className } = Astro.props;
-const [emailUser, emailDomain] = email.split('@');
+const parts = email.split('@');
+if (parts.length !== 2 || !parts[0] || !parts[1]) {
+  throw new Error(`ObfuscatedEmail: invalid email format "${email}"`);
+}
+const [emailUser, emailDomain] = parts;
 ---
 
 <a
