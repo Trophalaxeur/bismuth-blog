@@ -1,0 +1,20 @@
+# SEO scrapers & bad crawlers
+User-agent: AhrefsBot
+User-agent: AhrefsSiteAudit
+User-agent: barkrowler
+User-agent: BLEXBot
+User-agent: DataForSeoBot
+User-agent: DotBot
+User-agent: dotbot
+User-agent: MJ12bot
+User-agent: PetalBot
+User-agent: rogerbot
+User-agent: SemrushBot
+User-agent: SemrushBot-BA
+User-agent: SiteAuditBot
+Disallow: /
+
+User-agent: *
+Allow: /
+
+Sitemap: https://flefevre.fr/sitemap-index.xml

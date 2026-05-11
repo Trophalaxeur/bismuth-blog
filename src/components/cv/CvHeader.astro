@@ -1,6 +1,8 @@
 ---
+
 import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
+import ObfuscatedEmail from '@/components/ObfuscatedEmail.astro';
 
 interface Props {
   name: string;
@@ -33,12 +35,11 @@ if (image && !resolvedImage) {
           >
           {location}
         </span>
-        <a href={`mailto:${contact.email}`} class="hover:text-cv-accent flex items-center gap-x-1.5 transition-colors">
+        <ObfuscatedEmail email={contact.email} class="hover:text-cv-accent flex items-center gap-x-1.5 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24"
             ><path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2m0 4l-8 5l-8-5V6l8 5l8-5z"></path></svg
           >
-          {contact.email}
-        </a>
+        </ObfuscatedEmail>
         {
           contact.phone && (
             <span class="flex items-center gap-x-1.5">

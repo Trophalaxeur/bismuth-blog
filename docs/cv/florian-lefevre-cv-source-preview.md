@@ -11,8 +11,7 @@ name: "Florian Lefevre"
 title: "Lead Tech"
 location: "xxx"
 contact:
-  email: "xxx"
-  phone: "xxx"
+  email: "web@flefevre.fr"
   github: "https://github.com/Trophalaxeur"
 variants:
   default: short

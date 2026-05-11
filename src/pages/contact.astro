@@ -1,16 +1,12 @@
 ---
 import PageLayout from '@/layouts/BaseLayout.astro';
 import Button from '@/components/Button.astro';
+import ObfuscatedEmail from '@/components/ObfuscatedEmail.astro';
 
 const meta = {
   title: 'Contact',
   description: 'Me contacter par email ou via le formulaire',
 };
-
-// Email split en deux data-attributes — le client reconstruit la chaîne
-// après chargement JS. La majorité des crawlers de spam ne rendent pas le JS.
-const emailUser = 'contact';
-const emailDomain = 'flefevre.fr';
 
 // Formspree endpoint — remplacer YOUR_FORM_ID par l'ID obtenu sur https://formspree.io
 const FORM_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
@@ -33,13 +29,19 @@ const FORM_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
       <section class="flex flex-col gap-y-3">
         <h2 class="text-lg font-semibold">Email</h2>
         <p>
-          {/* href="mailto:" is a valid URI placeholder — JS reassembles the full address from data-attributes to avoid email harvesting by crawlers */}
-          <a id="email-link" href="mailto:" data-user={emailUser} data-domain={emailDomain} class="hover:text-cv-accent underline underline-offset-4">
-            <noscript>{emailUser} [at] {emailDomain}</noscript>
-            <span class="js-email-display">activez JavaScript pour afficher l'email</span>
-          </a>
+          <ObfuscatedEmail email="web@flefevre.fr" class="hover:text-cv-accent underline underline-offset-4" />
         </p>
       </section>
+
+      <div class="border-border bg-muted/50 flex items-start gap-3 rounded-lg border px-4 py-3 font-mono text-xs">
+        <svg xmlns="http://www.w3.org/2000/svg" class="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" viewBox="0 0 24 24">
+          <path fill="currentColor" d="M13 14h-2v-4h2m0 8h-2v-2h2M1 21h22L12 2z"/>
+        </svg>
+        <div>
+          <p class="text-foreground"><span class="text-cv-accent">warning</span> En développement</p>
+          <p class="text-muted-foreground mt-0.5">// Le formulaire est en WIP. L'email ci-dessus fonctionne. ETA: soon™</p>
+        </div>
+      </div>
 
       <section class="flex flex-col gap-y-3">
         <h2 class="text-lg font-semibold">Formulaire</h2>
@@ -98,17 +100,6 @@ const FORM_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
 </PageLayout>
 
 <script>
-  // Reconstruction de l'email côté client
-  const link = document.getElementById('email-link') as HTMLAnchorElement | null;
-  if (link) {
-    const user = link.dataset.user ?? '';
-    const domain = link.dataset.domain ?? '';
-    const email = `${user}@${domain}`;
-    link.href = `mailto:${email}`;
-    const display = link.querySelector('.js-email-display');
-    if (display) display.textContent = email;
-  }
-
   // Timestamp d'affichage du formulaire — un envoi en moins de 3s = bot probable
   const loadedAtField = document.getElementById('form-loaded-at') as HTMLInputElement | null;
   if (loadedAtField) loadedAtField.value = String(Date.now());
