@@ -158,7 +158,7 @@ export async function renderOgImage(opts: {
   date?: string;
   tags?: string[];
   isArticle?: boolean;
-}): Promise<Uint8Array> {
+}): Promise<ArrayBuffer> {
   const element = opts.isArticle
     ? articleCard(opts.title ?? '', opts.description ?? '', opts.date ?? '', opts.tags ?? [])
     : siteCard(opts.description ?? '');
@@ -173,5 +173,6 @@ export async function renderOgImage(opts: {
   });
 
   const resvg = new Resvg(svg);
-  return resvg.render().asPng();
+  const png = resvg.render().asPng();
+  return png.buffer.slice(png.byteOffset, png.byteOffset + png.byteLength) as ArrayBuffer;
 }

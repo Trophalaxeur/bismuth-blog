@@ -4,13 +4,11 @@
 import { mkdirSync, writeFileSync } from 'node:fs';
 
 import { renderOgImage } from '../src/utils/og-image.ts';
+import { siteConfig } from '../src/site.config.ts';
 
 mkdirSync('./tmp', { recursive: true });
 
-const DESCRIPTION =
-  "Mes expérimentation techniques, mes découvertes et mes retours d'expériences. Un blog par moi, pour moi, mais ouvert aux regards extérieurs";
-
-const site = await renderOgImage({ description: DESCRIPTION, isArticle: false });
+const site = await renderOgImage({ description: siteConfig.description, isArticle: false });
 writeFileSync('./tmp/og-preview-site.png', Buffer.from(site));
 
 const article = await renderOgImage({
