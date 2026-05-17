@@ -1,5 +1,8 @@
 export type SiteConfig = {
+  url: string;
   author: string;
+  role: string;
+  siteName: string;
   title: string;
   description: string;
   lang: string;

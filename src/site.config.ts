@@ -2,8 +2,11 @@ import type { SiteConfig } from '@/types';
 import type { AstroExpressiveCodeOptions } from 'astro-expressive-code';
 
 export const siteConfig: SiteConfig = {
+  url: 'https://flefevre.fr',
   // Used as both a meta property (src/components/BaseHead.astro L:31 + L:49) & the generated satori png (src/pages/og-image/[slug].png.ts)
   author: 'Florian Lefevre',
+  role: 'Lead Tech / Software Engineering Manager',
+  siteName: 'Dev Notes',
   // Meta property used to construct the meta title property, found in src/components/BaseHead.astro L:11
   title: 'Florian Lefevre | Dev Notes',
   // Meta property used as the default description meta property

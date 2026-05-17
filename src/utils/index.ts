@@ -1,4 +1,5 @@
 export { extractVariantMarkdown, renderMarkdown } from './cv';
+export { renderOgImage } from './og-image';
 export { getFormattedDate } from './date';
 export { generateToc } from './generateToc';
 export type { TocItem } from './generateToc';
