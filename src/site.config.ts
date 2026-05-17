@@ -3,7 +3,7 @@ import type { AstroExpressiveCodeOptions } from 'astro-expressive-code';
 
 export const siteConfig: SiteConfig = {
   url: 'https://flefevre.fr',
-  // Used as both a meta property (src/components/BaseHead.astro L:31 + L:49) & the generated satori png (src/pages/og-image/[slug].png.ts)
+  // Used as a meta property (src/components/BaseHead.astro L:31 + L:49) and by OG image generation (src/pages/og-image/[slug].png.ts and src/utils/og-image.ts via siteCard/articleCard)
   author: 'Florian Lefevre',
   role: 'Lead Tech / Software Engineering Manager',
   siteName: 'Dev Notes',
