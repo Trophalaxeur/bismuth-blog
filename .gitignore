@@ -25,3 +25,6 @@ pnpm-debug.log*
 # local notes
 next-steps.md
 reviews/
+
+# local preview output
+tmp/

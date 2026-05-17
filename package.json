@@ -12,12 +12,14 @@
 		"lint": "npm run lint:prettier && npm run lint:eslint && npm run lint:stylelint",
 		"lint:prettier": "prettier --check \"**/*.{js,ts,tsx,astro,css}\"",
 		"lint:eslint": "eslint \"src/**/*.{js,ts,tsx,astro}\"",
-		"lint:stylelint": "stylelint \"src/**/*.css\""
+		"lint:stylelint": "stylelint \"src/**/*.css\"",
+		"og:preview": "node --experimental-strip-types --no-warnings scripts/og-preview.ts"
 	},
 	"dependencies": {
 		"@astrojs/mdx": "^5.0.4",
 		"@astrojs/rss": "^4.0.18",
 		"@astrojs/sitemap": "^3.7.2",
+		"@resvg/resvg-js": "^2.6.2",
 		"@tailwindcss/vite": "^4.3.0",
 		"astro": "^6.3.1",
 		"astro-expressive-code": "^0.42.0",
@@ -30,6 +32,7 @@
 		"remark-gfm": "^4.0.1",
 		"remark-parse": "^11.0.0",
 		"remark-rehype": "^11.1.2",
+		"satori": "^0.26.0",
 		"sharp": "^0.34.5",
 		"tailwind-merge": "^3.5.0",
 		"tailwindcss": "^4.3.0",
