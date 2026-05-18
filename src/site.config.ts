@@ -10,7 +10,7 @@ export const siteConfig: SiteConfig = {
   // Meta property used to construct the meta title property, found in src/components/BaseHead.astro L:11
   title: 'Florian Lefevre | Dev Notes',
   // Meta property used as the default description meta property
-  description: "Mes expérimentation techniques, mes découvertes et mes retours d'expériences. Un blog par moi, pour moi, mais ouvert aux regards extérieurs",
+  description: "Mes expérimentations techniques, mes découvertes et mes retours d'expérience. Un blog par moi, pour moi, mais ouvert aux regards extérieurs",
   // HTML lang property, found in src/layouts/Base.astro L:18
   // TODO: anticipate i18n — English version to come
   lang: 'fr',
