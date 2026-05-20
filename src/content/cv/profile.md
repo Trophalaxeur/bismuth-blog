@@ -30,11 +30,14 @@ positioning:
 ---
 
 :::short
-Lead Tech, spécialisé dans la conception, la maintenance et l'évolution d'applications métier. Expérience confirmée sur Angular, TypeScript, RxJS, NgRx et Nx, avec un positionnement orienté qualité, accompagnement d'équipes et responsabilité technique.
+Lead Tech / Software Engineering Manager (hands-on) fullstack, spécialisé dans la conception, l'architecture, la maintenance et l'évolution d'applications métier. Expérience confirmée sur Angular, TypeScript, RxJS, NgRx et Nx, avec un positionnement orienté qualité, accompagnement d'équipes et responsabilité technique.
 :::
 
 :::detailed
-Lead Tech avec une expérience construite autour d'applications métier complexes, de migrations d'envergure, d'écosystèmes web fullstack et de contextes à forte exigence de maintenabilité. Habitué à intervenir à la fois sur le code, l'architecture, les pratiques d'équipe, les déploiements et l'interface entre enjeux techniques et besoins produit.
 
-Mes expériences récentes couvrent le pilotage technique d'applications Angular, la structuration d'écosystèmes Nx / NestJS, le management d'équipes internationales, la mise en place de pratiques de revue de code, de tests, de CI/CD et l'amélioration progressive de bases applicatives existantes.
+Lead Tech / Software Engineering Manager (hands-on) fullstack, spécialisé sur les technologies Web et, notamment, Angular, TypeScript et NestJS, j’accompagne les équipes dans la conception, le développement, la structuration et l’évolution d’applications métier robustes et maintenables.
+
+Mon approche combine conception, architecture, développement, revue de code, méthodes agiles et accompagnement technique, avec pour objectif : livrer efficacement tout en faisant progresser la qualité et l’autonomie des équipes.
+
+J’intègre progressivement l’IA, notamment Claude Code, GitHub Copilot, agents et skills, comme assistant technique pour accélérer l’analyse et le développement sans déléguer les choix d’ingénierie.
 :::

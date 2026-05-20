@@ -5,9 +5,10 @@ import remarkRehype from 'remark-rehype';
 import { unified } from 'unified';
 
 export function extractVariantMarkdown(markdown: string, variant: 'short' | 'detailed'): string {
-  const other = variant === 'short' ? 'detailed' : 'short';
   let result = markdown;
-  result = result.replace(new RegExp(`:::${other}[\\s\\S]*?:::`, 'g'), '');
+  // Remove all variant blocks that are NOT the target (handles unknown future variants like "linkedin")
+  result = result.replace(new RegExp(`:::(?!${variant}\\b)\\w+[\\s\\S]*?:::`, 'g'), '');
+  // Unwrap the target variant
   result = result.replace(new RegExp(`:::${variant}([\\s\\S]*?):::`, 'g'), '$1');
   return result.replace(/\n{3,}/g, '\n\n').trim();
 }

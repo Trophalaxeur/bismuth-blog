@@ -3,6 +3,11 @@ schemaVersion: 1
 type: skills
 priority: 20
 skills:
+  leadership:
+    - Revue de code
+    - Coaching technique
+    - Architecture applicative
+    - Qualité logicielle
   frontend:
     - Angular
     - TypeScript strict
@@ -14,7 +19,7 @@ skills:
   backend:
     - NestJS
     - Node.js
-    - PHP (Symfony)
+    - PHP/Symfony
     - Python
     - Java
   databases:
@@ -23,28 +28,29 @@ skills:
     - Oracle
     - MongoDB
   devops:
-    - GNU/Linux
     - Docker
     - Jenkins
     - GitHub
     - GitLab
     - Bitbucket
+    - GNU/Linux
     - Nginx
     - Apache
     - AWS
+  methods:
+    - Agile (Scrum / Kanban)
+    - Cycle en V itératif
+    - Coordination management/produit/technique
   tools:
-    - Git
     - Jira
-    - Redmine
     - Notion
     - Confluence
-  methods:
-    - Agile
-    - Cycle en V itératif
-  misc:
-    - Revue de code
-    - Coaching technique
-    - Estimation de charges
+  ia:
+    - Claude Code
+    - GitHub Copilot
+    - Agents IA
+    - Skills
+    - Usage assisté de l’IA pour l’analyse et le développement
 ---
 
 ## Compétences
