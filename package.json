@@ -13,7 +13,8 @@
 		"lint:prettier": "prettier --check \"**/*.{js,ts,tsx,astro,css}\"",
 		"lint:eslint": "eslint \"src/**/*.{js,ts,tsx,astro}\"",
 		"lint:stylelint": "stylelint \"src/**/*.css\"",
-		"og:preview": "node --experimental-strip-types --no-warnings scripts/og-preview.ts"
+		"og:preview": "node --experimental-strip-types --no-warnings scripts/og-preview.ts",
+		"cv:pdf": "astro build && node --experimental-strip-types --no-warnings scripts/generate-cv-pdf.ts"
 	},
 	"dependencies": {
 		"@astrojs/mdx": "^5.0.4",
@@ -42,6 +43,7 @@
 	"devDependencies": {
 		"@astrojs/check": "^0.9.9",
 		"@eslint/js": "^10.0.1",
+		"@playwright/test": "^1.60.0",
 		"@stylistic/eslint-plugin": "^5.10.0",
 		"@tailwindcss/typography": "^0.5.19",
 		"eslint": "^10.3.0",
