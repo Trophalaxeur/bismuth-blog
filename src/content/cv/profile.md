@@ -9,6 +9,7 @@ location: "Région Toulousaine"
 contact:
   email: "web@flefevre.fr"
   github: "https://github.com/Trophalaxeur"
+  linkedin: "https://www.linkedin.com/in/florianlefevre/"
 variants:
   default: short
   available:

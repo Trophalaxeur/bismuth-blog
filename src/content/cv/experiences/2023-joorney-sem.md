@@ -67,7 +67,9 @@ Software Engineering Manager sur un écosystème applicatif interne de générat
 :::
 
 :::detailed
-**Software Engineering Manager** sur un écosystème applicatif interne dédié à la génération de business plans d’immigration, utilisé par environ 100 utilisateurs internes, avec une stack **Angular**, **NestJS**, **Nx**, **PHP**, **Node.js**, **Python** et **AWS**.
+Software Engineering Manager sur un écosystème applicatif interne dédié à la génération de business plans d’immigration, utilisé par environ 100 utilisateurs internes, avec une stack **Angular**, **NestJS**, **Nx**, **PHP**, **Node.js**, **Python** et **AWS**.
+
+*Objectif : passer d’un socle applicatif encore jeune et de traitements très manuels à un écosystème structuré, maintenable et capable d’industrialiser la production documentaire interne.*
 
 - **Renforcement, structuration et management d’une équipe internationale de 7 développeurs**, répartie en 2 squads : fullstack Angular/NestJS/PHP et Python/Data, avec recrutement, onboarding, rituels agiles, entretiens individuels, suivi opérationnel et gestion des priorités.
 - **Conception de l’architecture logicielle, applicative et technique** d’un écosystème de 6 applications : applications Angular, plugin Microsoft Word, backend PHP legacy, backends NestJS d’intégration, scripts Node.js et modules Python orientés IA.

@@ -8,7 +8,6 @@ import CvExperienceList from './CvExperienceList.astro';
 import CvEducation from './CvEducation.astro';
 import CvProjects from './CvProjects.astro';
 import CvExtraInfo from './CvExtraInfo.astro';
-import CvVariantSwitch from './CvVariantSwitch.astro';
 
 interface Props {
   variant: 'short' | 'detailed';
@@ -47,12 +46,11 @@ const experiencesData = await Promise.all(
     end: exp.data.end,
     current: exp.data.current,
     tags: exp.data.tags,
+    secondaryTags: exp.data.secondaryTags,
     html: await renderMarkdown(extractVariantMarkdown(exp.body ?? '', variant)),
   }))
 );
 ---
-
-{showSwitch && <CvVariantSwitch current={variant} />}
 
 {
   profileEntry?.data && (
@@ -63,6 +61,8 @@ const experiencesData = await Promise.all(
       image={profileEntry.data.image}
       location={profileEntry.data.location ?? ''}
       contact={profileEntry.data.contact ?? { email: '' }}
+      variant={variant}
+      showSwitch={showSwitch}
     />
   )
 }
