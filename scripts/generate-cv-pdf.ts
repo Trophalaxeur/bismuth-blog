@@ -1,5 +1,5 @@
 import { preview } from 'astro';
-import { chromium, type Browser } from 'playwright';
+import { chromium, type Browser } from '@playwright/test';
 import path from 'path';
 
 const ROOT = path.resolve(import.meta.dirname, '..');

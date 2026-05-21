@@ -14,7 +14,7 @@
 		"lint:eslint": "eslint \"src/**/*.{js,ts,tsx,astro}\"",
 		"lint:stylelint": "stylelint \"src/**/*.css\"",
 		"og:preview": "node --experimental-strip-types --no-warnings scripts/og-preview.ts",
-		"cv:pdf": "astro build && node --experimental-strip-types --no-warnings scripts/generate-cv-pdf.ts"
+		"cv:pdf": "npm run build && node --experimental-strip-types --no-warnings scripts/generate-cv-pdf.ts"
 	},
 	"dependencies": {
 		"@astrojs/mdx": "^5.0.4",
