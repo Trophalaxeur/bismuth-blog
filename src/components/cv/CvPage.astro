@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
-import { extractVariantMarkdown, renderMarkdown } from '@/utils';
+import { extractVariantMarkdown, renderMarkdown, sortCvExperiences } from '@/utils';
+import type { CvVariant } from '@/utils';
 import CvHeader from './CvHeader.astro';
 import CvProfile from './CvProfile.astro';
 import CvSkills from './CvSkills.astro';
@@ -8,10 +9,9 @@ import CvExperienceList from './CvExperienceList.astro';
 import CvEducation from './CvEducation.astro';
 import CvProjects from './CvProjects.astro';
 import CvExtraInfo from './CvExtraInfo.astro';
-import CvVariantSwitch from './CvVariantSwitch.astro';
 
 interface Props {
-  variant: 'short' | 'detailed';
+  variant: Exclude<CvVariant, 'career-channel'>;
   showSwitch?: boolean;
 }
 const { variant, showSwitch = true } = Astro.props;
@@ -34,10 +34,7 @@ const [profileHtml, educationHtml, projectsHtml, extraInfoHtml] = await Promise.
 const allExperiences = await getCollection('cvExperiences');
 const visibleExperiences = variant === 'short' ? allExperiences.filter((e) => !e.data.variants || e.data.variants.includes('short')) : allExperiences;
 
-const sortedExperiences = [...visibleExperiences].sort((a, b) => {
-  const pDiff = (a.data.priority ?? 50) - (b.data.priority ?? 50);
-  return pDiff !== 0 ? pDiff : b.data.start.localeCompare(a.data.start);
-});
+const sortedExperiences = sortCvExperiences(visibleExperiences);
 
 const experiencesData = await Promise.all(
   sortedExperiences.map(async (exp) => ({
@@ -47,12 +44,11 @@ const experiencesData = await Promise.all(
     end: exp.data.end,
     current: exp.data.current,
     tags: exp.data.tags,
+    secondaryTags: exp.data.secondaryTags,
     html: await renderMarkdown(extractVariantMarkdown(exp.body ?? '', variant)),
   }))
 );
 ---
-
-{showSwitch && <CvVariantSwitch current={variant} />}
 
 {
   profileEntry?.data && (
@@ -63,6 +59,8 @@ const experiencesData = await Promise.all(
       image={profileEntry.data.image}
       location={profileEntry.data.location ?? ''}
       contact={profileEntry.data.contact ?? { email: '' }}
+      variant={variant}
+      showSwitch={showSwitch}
     />
   )
 }

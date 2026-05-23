@@ -1,0 +1,40 @@
+---
+import PageLayout from '@/layouts/BaseLayout.astro';
+import CvCareerChannelCard from '@/components/cv/CvCareerChannelCard.astro';
+import { extractVariantMarkdown, stripMarkdownForCareerChannel, sortCvExperiences } from '@/utils';
+import { getCollection } from 'astro:content';
+
+const allExperiences = await getCollection('cvExperiences');
+
+const careerChannelExperiences = sortCvExperiences(
+  allExperiences.filter((e) => e.data.variants?.includes('career-channel')),
+);
+
+const experiencesData = careerChannelExperiences.map((exp) => ({
+  company: exp.data.company,
+  role: exp.data.role,
+  start: exp.data.start,
+  end: exp.data.end,
+  current: exp.data.current,
+  text: stripMarkdownForCareerChannel(extractVariantMarkdown(exp.body ?? '', 'career-channel')),
+}));
+---
+
+<PageLayout
+  meta={{
+    title: 'CV — Format réseau professionnel',
+    description: 'Descriptions de mes expériences professionnelles prêtes à copier-coller',
+  }}
+>
+  <div class="w-full">
+    <div class="mb-7">
+      <h1 class="text-foreground text-2xl font-bold tracking-tight">Format réseau professionnel</h1>
+      <p class="text-muted-foreground mt-2 text-sm">
+        Cliquez sur <strong class="text-foreground/80">Copier</strong> pour coller la description directement dans votre réseau professionnel — aucun reformatage nécessaire.
+      </p>
+    </div>
+    <div>
+      {experiencesData.map((exp) => <CvCareerChannelCard {...exp} />)}
+    </div>
+  </div>
+</PageLayout>

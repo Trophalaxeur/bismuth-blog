@@ -1,9 +1,11 @@
 ---
 import PageLayout from '@/layouts/BaseLayout.astro';
 import CvPage from '@/components/cv/CvPage.astro';
+import CvPrintButton from '@/components/cv/CvPrintButton.astro';
 ---
 
 <PageLayout meta={{ title: 'CV — Dossier de compétences', description: 'Dossier de compétences de Florian Lefevre' }}>
+  <CvPrintButton slot="headerActions" variant="detailed" />
   <div class="w-full">
     <CvPage variant="detailed" />
   </div>

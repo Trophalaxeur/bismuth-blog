@@ -1,4 +1,6 @@
 ---
+import { formatCvPeriod } from '@/utils';
+
 interface Props {
   company: string;
   role: string;
@@ -6,43 +8,54 @@ interface Props {
   end?: string;
   current?: boolean;
   tags?: string[];
+  secondaryTags?: string[];
   html: string;
   variant: 'short' | 'detailed';
 }
-const { company, role, start, end, current, tags, html, variant } = Astro.props;
+const { company, role, start, end, current, tags, secondaryTags, html, variant } = Astro.props;
 
-function formatDate(yyyyMM: string): string {
-  const [year, month] = yyyyMM.split('-');
-  const d = new Date(Number(year), Number(month) - 1);
-  return d.toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' });
-}
-
-const period = `${formatDate(start)} — ${current ? "Aujourd'hui" : end ? formatDate(end) : ''}`;
+const period = formatCvPeriod(start, end, current);
 const visibleTags = tags ? tags.slice(0, variant === 'short' ? 5 : tags.length) : [];
 ---
 
 <article
-  class="group border-border/70 hover:border-cv-accent hover:bg-muted/30 relative mb-8 break-inside-avoid rounded-r border-l-2 pl-7 transition-all duration-200 hover:-translate-y-px hover:shadow-sm"
+  class="group border-border/70 hover:border-cv-accent hover:bg-muted/30 relative mb-10 break-inside-avoid rounded-r border-l-2 py-3 pr-3 pl-7 transition-all duration-200 hover:-translate-y-px hover:shadow-sm"
 >
   <div
-    class="border-cv-accent/50 bg-background group-hover:border-cv-accent group-hover:bg-cv-accent/15 absolute top-1.5 -left-1.25 h-2 w-2 rounded-full border transition-all duration-200"
+    class="border-cv-accent/50 bg-background group-hover:border-cv-accent group-hover:bg-cv-accent/15 absolute top-4.5 -left-1.25 h-2 w-2 rounded-full border transition-all duration-200"
   >
   </div>
-  <div class="flex items-baseline justify-between gap-4">
-    <div>
+  <div class="flex flex-col gap-y-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4 sm:gap-y-0">
+    <div class="flex flex-col gap-y-0.5 sm:flex-row sm:items-baseline sm:gap-x-2.5">
       <span class="text-base leading-snug font-bold">{company}</span>
-      <span class="text-foreground/65 ml-2.5 text-sm font-normal">{role}</span>
+      <span class="text-foreground/85 text-sm font-medium">{role}</span>
     </div>
-    <span class="text-muted-foreground w-36 shrink-0 text-right text-[11px] tabular-nums">{period}</span>
+    <span class="text-muted-foreground text-[11px] tabular-nums sm:w-36 sm:shrink-0 sm:text-right">{period}</span>
   </div>
   {
     visibleTags.length > 0 && (
       <div class="mt-2.5 flex flex-wrap gap-1.5">
         {visibleTags.map((tag) => (
-          <span class="bg-cv-accent/8 text-cv-accent/75 inline-flex h-6 items-center rounded-full px-2.5 text-[11px] font-medium">{tag}</span>
+          <span class="bg-cv-accent/12 text-cv-accent/90 inline-flex h-6 items-center rounded-full px-2.5 text-[11px] font-medium">{tag}</span>
         ))}
       </div>
     )
   }
-  {html && <div class="prose prose-sm dark:prose-invert prose-p:my-1 prose-p:leading-[1.7] prose-ul:my-1 prose-li:my-0 prose-li:leading-[1.7] mt-3 max-w-none" set:html={html} />}
+  {
+    secondaryTags && secondaryTags.length > 0 && (
+      <div class="mt-1.5 flex flex-wrap gap-1.5">
+        {secondaryTags.map((tag) => (
+          <span class="text-cv-accent/90 inline-flex h-6 items-center rounded-full px-2.5 text-[11px] font-medium">{tag}</span>
+        ))}
+      </div>
+    )
+  }
+  {
+    html && (
+      <div
+        class="prose prose-sm dark:prose-invert prose-p:my-1.5 prose-p:leading-[1.75] prose-ul:my-1.5 prose-li:my-0.5 prose-li:leading-[1.75] mt-3 max-w-[90ch]"
+        set:html={html}
+      />
+    )
+  }
 </article>

@@ -1,7 +1,6 @@
 ---
-
-import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
 import ObfuscatedEmail from '@/components/ObfuscatedEmail.astro';
 
 interface Props {
@@ -10,9 +9,11 @@ interface Props {
   baseline?: string;
   image?: string;
   location: string;
-  contact: { email: string; phone?: string; github?: string };
+  contact: { email: string; phone?: string; github?: string; linkedin?: string };
+  variant?: 'short' | 'detailed';
+  showSwitch?: boolean;
 }
-const { name, title, baseline, image, location, contact } = Astro.props;
+const { name, title, baseline, image, location, contact, variant, showSwitch = true } = Astro.props;
 
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/*.{png,jpg,jpeg,webp}', { eager: true });
 const resolvedImage = image ? images[`/src/assets${image}`]?.default : undefined;
@@ -20,22 +21,41 @@ const resolvedImage = image ? images[`/src/assets${image}`]?.default : undefined
 if (image && !resolvedImage) {
   throw new Error(`CvHeader: image "${image}" not found in /src/assets/images/`);
 }
+
+const showVariantSwitch = variant && showSwitch;
+const displayUrl = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 ---
 
-<header class="border-border/60 mb-12 border-b pb-10">
+<header class="mb-8 pb-2">
+  <h1 class="sr-only">{name} — {title}</h1>
+
   <div class="flex items-start justify-between gap-8">
     <div class="flex-1">
-      <h1 class="text-foreground text-4xl font-black tracking-tight">{name}</h1>
-      <p class="text-foreground/75 mt-2 text-sm font-normal">{title}</p>
-      {baseline && <p class="text-muted-foreground mt-2.5 text-[11px] leading-relaxed">{baseline}</p>}
-      <div class="text-muted-foreground mt-5 flex flex-wrap gap-x-4 gap-y-1.5 text-xs">
-        <span class="flex items-center gap-x-1.5">
+      {
+        showSwitch ? (
+          <p class="text-foreground text-3xl font-black tracking-tight sm:text-[2rem]" aria-hidden="true">
+            {title}
+          </p>
+        ) : (
+          <>
+            <p class="text-foreground text-4xl font-black tracking-tight" aria-hidden="true">
+              {name}
+            </p>
+            <p class="text-foreground/75 mt-2 text-sm font-normal" aria-hidden="true">
+              {title}
+            </p>
+          </>
+        )
+      }
+      {baseline && <p class="text-cv-accent/85 mt-2.5 text-xs font-semibold tracking-wide">{baseline}</p>}
+      <div class="text-muted-foreground mt-4 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs">
+        <span class="flex w-full items-center gap-x-1.5 sm:w-auto">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24"
             ><path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7m0 9.5a2.5 2.5 0 0 1 0-5a2.5 2.5 0 0 1 0 5"></path></svg
           >
           {location}
         </span>
-        <ObfuscatedEmail email={contact.email} class="hover:text-cv-accent flex items-center gap-x-1.5 transition-colors">
+        <ObfuscatedEmail email={contact.email} class="hover:text-cv-accent flex items-center gap-x-1.5 transition-colors" displayClass="sr-only sm:not-sr-only">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24"
             ><path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2m0 4l-8 5l-8-5V6l8 5l8-5z"></path></svg
           >
@@ -62,12 +82,81 @@ if (image && !resolvedImage) {
                   d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59c.4.07.55-.17.55-.38c0-.19-.01-.82-.01-1.49c-2.01.37-2.53-.49-2.69-.94c-.09-.23-.48-.94-.82-1.13c-.28-.15-.68-.52-.01-.53c.63-.01 1.08.58 1.23.82c.72 1.21 1.87.87 2.33.66c.07-.52.28-.87.51-1.07c-1.78-.2-3.64-.89-3.64-3.95c0-.87.31-1.59.82-2.15c-.08-.2-.36-1.02.08-2.12c0 0 .67-.21 2.2.82c.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82c.44 1.1.16 1.92.08 2.12c.51.56.82 1.27.82 2.15c0 3.07-1.87 3.75-3.65 3.95c.29.25.54.73.54 1.48c0 1.07-.01 1.93-.01 2.2c0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"
                 />
               </svg>
-              GitHub
+              <span class="sr-only sm:not-sr-only">{showSwitch ? 'GitHub' : displayUrl(contact.github)}</span>
             </a>
+          )
+        }
+        {
+          contact.linkedin && (
+            <a href={contact.linkedin} target="_blank" rel="noopener noreferrer" class="hover:text-cv-accent flex items-center gap-x-1.5 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5 shrink-0" viewBox="0 0 16 16">
+                <path
+                  fill="currentColor"
+                  d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248c-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586c.173-.431.568-.878 1.232-.878c.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252c-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"
+                />
+              </svg>
+              <span class="sr-only sm:not-sr-only">{showSwitch ? 'LinkedIn' : displayUrl(contact.linkedin)}</span>
+            </a>
+          )
+        }
+        {
+          showVariantSwitch && (
+            <div class="border-border/60 bg-muted/30 ml-auto flex rounded-md border p-0.5 text-[11px]">
+              <a
+                href="/cv/short"
+                class={`rounded px-2 py-0.5 transition-all duration-150 ${
+                  variant === 'short' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                Version courte
+              </a>
+              <a
+                href="/cv/detailed"
+                class={`rounded px-2 py-0.5 transition-all duration-150 ${
+                  variant === 'detailed' ? 'bg-background text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                Version détaillée
+              </a>
+            </div>
           )
         }
       </div>
     </div>
-    {resolvedImage && <Image src={resolvedImage} alt={name} width={112} height={112} loading="lazy" decoding="async" class="ring-border/50 mt-1 h-28 w-28 shrink-0 rounded-full object-cover object-top shadow-lg ring-1" />}
+    {
+      resolvedImage && (
+        <Image
+          src={resolvedImage}
+          alt={name}
+          width={112}
+          height={112}
+          loading="lazy"
+          decoding="async"
+          class="ring-border/50 mt-1 h-24 w-24 shrink-0 rounded-full object-cover object-top shadow-lg ring-1 sm:h-28 sm:w-28"
+        />
+      )
+    }
   </div>
+
+  {
+    showVariantSwitch && (
+      <nav class="text-muted-foreground mt-4 flex justify-between gap-x-3 text-[11px] whitespace-nowrap sm:hidden" aria-label="Sections">
+        <a href="#profil" class="hover:text-cv-accent transition-colors">
+          Profil
+        </a>
+        <a href="#competences" class="hover:text-cv-accent transition-colors">
+          Compétences
+        </a>
+        <a href="#experiences" class="hover:text-cv-accent transition-colors">
+          Expériences
+        </a>
+        <a href="#formation" class="hover:text-cv-accent transition-colors">
+          Formation
+        </a>
+        <a href="#projets" class="hover:text-cv-accent transition-colors">
+          Projets
+        </a>
+      </nav>
+    )
+  }
 </header>

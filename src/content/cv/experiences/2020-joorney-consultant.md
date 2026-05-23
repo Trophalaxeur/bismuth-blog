@@ -10,7 +10,7 @@ end: "2020-08"
 priority: 40
 variants:
   - short
-  - linkedin
+  - career-channel
   - detailed
 tags:
   - PHP / Symfony
@@ -36,7 +36,7 @@ environment:
     - Agile
 ---
 
-:::linkedin
+:::career-channel
 Mission courte de développement PHP/Symfony chez Joorney, avec prise en main rapide d’une application métier existante et intervention directe sur le code en place.
 
 - Développement **PHP/Symfony** sur une application de génération de business plans.

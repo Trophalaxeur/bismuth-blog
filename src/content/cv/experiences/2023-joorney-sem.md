@@ -10,7 +10,7 @@ end: "2024-08"
 priority: 20
 variants:
   - short
-  - linkedin
+  - career-channel
   - detailed
 tags:
   - Engineering Management
@@ -53,7 +53,7 @@ environment:
 **Software Engineering Manager** sur un écosystème Angular/NestJS/PHP/Python de génération de business plans : management d’une **équipe internationale de 7 développeurs**, architecture de 6 applications, industrialisation métier, migration Symfony vers Nx/NestJS, CI/CD et modules IA internes.
 :::
 
-:::linkedin
+:::career-channel
 Software Engineering Manager sur un écosystème applicatif interne de génération de business plans d’immigration, utilisé par environ 100 utilisateurs internes. Mon rôle a consisté à structurer l’équipe, concevoir l’architecture applicative, industrialiser les processus métier et garantir le delivery sur une stack Angular, NestJS, Nx, PHP, Node.js, Python et AWS.
 
 - **Renforcement, structuration et management d’une équipe internationale de 7 développeurs**, répartie en 2 squads fullstack et Python/Data, avec recrutement, onboarding, rituels agiles et suivi opérationnel.
@@ -67,7 +67,9 @@ Software Engineering Manager sur un écosystème applicatif interne de générat
 :::
 
 :::detailed
-**Software Engineering Manager** sur un écosystème applicatif interne dédié à la génération de business plans d’immigration, utilisé par environ 100 utilisateurs internes, avec une stack **Angular**, **NestJS**, **Nx**, **PHP**, **Node.js**, **Python** et **AWS**.
+Software Engineering Manager sur un écosystème applicatif interne dédié à la génération de business plans d’immigration, utilisé par environ 100 utilisateurs internes, avec une stack **Angular**, **NestJS**, **Nx**, **PHP**, **Node.js**, **Python** et **AWS**.
+
+*Objectif : passer d’un socle applicatif encore jeune et de traitements très manuels à un écosystème structuré, maintenable et capable d’industrialiser la production documentaire interne.*
 
 - **Renforcement, structuration et management d’une équipe internationale de 7 développeurs**, répartie en 2 squads : fullstack Angular/NestJS/PHP et Python/Data, avec recrutement, onboarding, rituels agiles, entretiens individuels, suivi opérationnel et gestion des priorités.
 - **Conception de l’architecture logicielle, applicative et technique** d’un écosystème de 6 applications : applications Angular, plugin Microsoft Word, backend PHP legacy, backends NestJS d’intégration, scripts Node.js et modules Python orientés IA.

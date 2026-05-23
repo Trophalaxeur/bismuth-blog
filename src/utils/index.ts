@@ -1,4 +1,5 @@
-export { extractVariantMarkdown, renderMarkdown } from './cv';
+export { extractVariantMarkdown, renderMarkdown, stripMarkdownForCareerChannel, formatCvPeriod, sortCvExperiences, CAREER_CHANNEL_MAX_CHARS } from './cv';
+export type { CvVariant } from './cv';
 export { renderOgImage } from './og-image';
 export { getFormattedDate } from './date';
 export { generateToc } from './generateToc';

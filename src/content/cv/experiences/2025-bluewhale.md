@@ -11,7 +11,7 @@ current: false
 priority: 10
 variants:
   - short
-  - linkedin
+  - career-channel
   - detailed
 tags:
   - Angular
@@ -58,7 +58,7 @@ environment:
 Lead Tech **Angular** / **Java** sur ERP agricole legacy : pilotage opérationnel de 3 développeurs, modernisation incrémentale du socle applicatif, amélioration des pratiques qualité/CI-CD et sécurisation des livraisons.
 :::
 
-:::linkedin
+:::career-channel
 Lead Tech sur un ERP agricole utilisé par 50 à 100 utilisateurs, dans un contexte legacy complexe mêlant Angular, Java, Spring 2, PowerBuilder, Oracle 9 et infrastructures vieillissantes. Mon rôle consiste à accompagner l’équipe, structurer les pratiques techniques et moderniser progressivement le socle applicatif sans interruption de service.
 
 - **Leadership opérationnel** d’une équipe de 3 développeurs fullstack : organisation des sprints, clarification des sujets, revue de code et arbitrages techniques.

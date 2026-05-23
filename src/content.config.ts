@@ -50,6 +50,7 @@ const cvExperiences = defineCollection({
     priority: z.number().optional().default(50),
     variants: z.array(z.string()).optional(),
     tags: z.array(z.string()).optional(),
+    secondaryTags: z.array(z.string()).optional(),
     environment: z
       .object({
         languages: z.array(z.string()).optional(),
@@ -73,7 +74,7 @@ const cvSections = defineCollection({
     baseline: z.string().optional(),
     image: z.string().optional(),
     location: z.string().optional(),
-    contact: z.object({ email: z.string(), phone: z.string().optional(), github: z.string().optional() }).optional(),
+    contact: z.object({ email: z.string(), phone: z.string().optional(), github: z.string().optional(), linkedin: z.string().optional() }).optional(),
     positioning: z.array(z.string()).optional(),
     // skills
     skills: z.record(z.string(), z.array(z.string())).optional(),

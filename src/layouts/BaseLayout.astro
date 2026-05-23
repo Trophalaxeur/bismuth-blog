@@ -25,7 +25,9 @@ const {
   <body class="bg-background flex justify-center">
     <ThemeProvider />
     <main class="font-satoshi flex min-h-screen w-screen max-w-[60rem] flex-col items-center px-6 pt-7 pb-10 text-[0.92rem] leading-relaxed sm:px-10 lg:px-10">
-      <Header />
+      <Header>
+        <slot name="headerActions" slot="actions" />
+      </Header>
       <slot />
       <Footer />
     </main>
