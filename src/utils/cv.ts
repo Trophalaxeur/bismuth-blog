@@ -55,9 +55,15 @@ function formatCvDate(yyyyMM: string): string {
   return d.toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' });
 }
 
-/** Formats a CV experience period as "mmm. yyyy — mmm. yyyy" or "mmm. yyyy — Aujourd'hui". */
+/**
+ * Formats a CV experience period.
+ * - With end: "mmm. yyyy — mmm. yyyy"
+ * - Ongoing:  "mmm. yyyy — Aujourd'hui"
+ * - No end:   "mmm. yyyy" (no trailing separator)
+ */
 export function formatCvPeriod(start: string, end?: string, current?: boolean): string {
-  return `${formatCvDate(start)} — ${current ? "Aujourd'hui" : end ? formatCvDate(end) : ''}`;
+  const endLabel = current ? "Aujourd'hui" : end ? formatCvDate(end) : '';
+  return endLabel ? `${formatCvDate(start)} — ${endLabel}` : formatCvDate(start);
 }
 
 /** Sorts CV experiences by priority (ascending) then start date (descending). */
