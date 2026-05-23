@@ -8,14 +8,27 @@ start: "2008"
 end: "2008"
 priority: 130
 variants:
+  - career-channel
   - detailed
 tags:
   - PHP
-  - HTML
-  - CSS
-  - JQuery
+  - Web Development
+  - HTML/CSS
+secondaryTags:
+  - jQuery
+  - Website Development
 ---
 
+:::career-channel
+Missions de développement web réalisées avec la Junior Entreprise de l’EISTI, autour de sites clients en PHP, HTML, CSS, JavaScript vanilla et jQuery.
+
+- Développement d’un site web pour un voyagiste et d’un site vitrine pour une société de miroiterie.
+- Première expérience client : intégration web, adaptation au besoin et livraison de sites simples.
+:::
+
 :::detailed
-Développement d'un site web en **PHP** pour un voyagiste.
+Missions de développement web réalisées avec la Junior Entreprise de l’EISTI, autour de sites clients en PHP, HTML, CSS, JavaScript vanilla et jQuery.
+
+- Développement d’un site web pour un voyagiste et d’un site vitrine pour une société de miroiterie.
+- Première expérience client : intégration web, adaptation au besoin et livraison de sites simples.
 :::

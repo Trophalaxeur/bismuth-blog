@@ -40,13 +40,13 @@ Consultant fullstack sur l’ERP **Odoo** : montée en compétence rapide sur **
 :::
 
 :::career-channel
-Consultant fullstack pour Scopea sur des développements spécifiques autour de l’ERP **Odoo**, avec montée en compétence rapide sur **Python** et le framework Odoo. Intervention au forfait, de l’analyse du besoin à la livraison, sur des modules métier, corrections et évolutions applicatives.
+Consultant fullstack pour Scopea sur des développements spécifiques autour de l’ERP Odoo, avec montée en compétence rapide sur Python et le framework Odoo. Intervention au forfait, de l’analyse du besoin à la mise en production, sur des modules métier, corrections et évolutions applicatives.
 
-- Prise en main rapide de l’écosystème **Odoo** et du développement **Python/HTML/CSS**.
+- Prise en main rapide de l’écosystème **Odoo** et du développement Python/HTML/CSS.
 - Développement de modules métier spécifiques pour adapter Odoo à des processus clients non couverts par le standard.
 - Participation au recueil du besoin, à la définition de la solution technique, à l’estimation de charges et à l’élaboration des devis.
 - Réalisation de corrections de bugs, nouvelles pages, évolutions fonctionnelles et modules complets selon les demandes clients.
-- Livraison, recette, suivi et maintenance des développements réalisés.
+- Recette, livraison, suivi et maintenance des développements réalisés.
 - Travail en forte autonomie, seul ou en binôme, dans un contexte forfaitaire et orienté résultat.
 :::
 

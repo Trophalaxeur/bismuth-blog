@@ -50,9 +50,9 @@ Migration d’une application web de monitoring réseau d’**AngularJS** vers *
 :::
 
 :::career-channel
-Développeur senior / référent frontend sur une application web de monitoring réseau, dans le cadre d’une migration structurante d’**AngularJS** vers **Angular**. La mission a porté sur la remise à plat du socle frontend, l’amélioration de la maintenabilité et la modernisation des pratiques de développement.
+Développeur senior et référent frontend sur une application web de monitoring réseau, dans le cadre d’une migration structurante d’AngularJS vers Angular. La mission a porté sur la remise à plat du socle frontend, l’amélioration de la maintenabilité et la modernisation des pratiques de développement.
 
-- Participation active à la migration **AngularJS → Angular**, réalisée sur une application conséquente composée de nombreux modules, pages et composants.
+- **Contribution majeure à la migration AngularJS → Angular**, réalisée sur une application conséquente composée de nombreux modules, pages et composants.
 - Mise en place de **TypeScript strict**, d’ESLint et de bonnes pratiques Angular/RxJS pour renforcer la fiabilité, la lisibilité et la maintenabilité du code.
 - Développement et maintien de dashboards personnalisables avec **Highcharts** et **D3.js**, sur des interfaces riches en données et contraintes de performance.
 - Contribution aux modules de rapports PDF personnalisables, avec contraintes de rendu fidèle entre l’usage web et l’export.

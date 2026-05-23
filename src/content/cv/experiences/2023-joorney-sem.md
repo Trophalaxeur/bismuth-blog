@@ -54,16 +54,21 @@ environment:
 :::
 
 :::career-channel
-Software Engineering Manager sur un écosystème applicatif interne de génération de business plans d’immigration, utilisé par environ 100 utilisateurs internes. Mon rôle a consisté à structurer l’équipe, concevoir l’architecture applicative, industrialiser les processus métier et garantir le delivery sur une stack Angular, NestJS, Nx, PHP, Node.js, Python et AWS.
+Software Engineering Manager sur un écosystème applicatif interne de génération de business plans d’immigration, utilisé par environ 100 utilisateurs internes. J’ai structuré l’équipe, conçu l’architecture applicative et industrialisé des processus métier auparavant très manuels, sur une stack Angular, NestJS, Nx, PHP, Node.js, Python et AWS.
 
-- **Renforcement, structuration et management d’une équipe internationale de 7 développeurs**, répartie en 2 squads fullstack et Python/Data, avec recrutement, onboarding, rituels agiles et suivi opérationnel.
-- **Conception d’un écosystème de 6 applications** : applications Angular, plugin Microsoft Word, backend PHP legacy, services NestJS, scripts Node.js et modules Python orientés IA.
-- Mise en production d’une première application financière puis **industrialisation progressive** des outils d’aide à la rédaction de business plans, en remplaçant des traitements manuels et outils historiques par des applications métier dédiées.
-- **Migration Symfony/PHP vers Nx/NestJS**, avec maintien du moteur legacy utile et introduction progressive de briques TypeScript mieux maîtrisées par l’équipe.
+**Équipe & management**
+- Renforcement, structuration et management d’une équipe internationale de 7 développeurs, répartie en 2 squads fullstack et Python/Data.
+- Recrutement, onboarding, rituels agiles, suivi opérationnel, entretiens individuels et accompagnement de l’équipe.
+
+**Architecture & industrialisation**
+- Conception d’un écosystème de 6 applications : applications Angular, plugin Microsoft Word, backend PHP legacy, services NestJS, scripts Node.js et modules Python orientés IA.
+- Mise en production d’une première application financière puis industrialisation progressive des outils d’aide à la rédaction de business plans, en remplaçant des traitements manuels et outils historiques par des applications métier dédiées.
 - Mise en place d’intégrations avec Microsoft, Google, HubSpot, Wrike et les outils internes pour synchroniser les données et fiabiliser les processus.
-- **Standardisation des pratiques de développement** : Nx, schematics, TypeScript strict, ESLint et conventions de code pour homogénéiser les pratiques, faciliter l’onboarding et sécuriser les évolutions.
-- Responsabilité du **CI/CD**, des déploiements, de la migration Bitbucket vers GitHub et des premières pratiques autour de GitHub Copilot comme assistant de développement.
-- Arbitrages **Produit / Data / Tech** avec le CPO et l’équipe Data : clarification des besoins, estimation, priorisation, choix d’outils, POC/MVP et coordination des livraisons.
+
+**Modernisation & delivery**
+- Migration Symfony/PHP vers Nx/NestJS, avec maintien du moteur legacy utile et introduction progressive de briques TypeScript mieux maîtrisées par l’équipe.
+- Standardisation des pratiques de développement : Nx, schematics, TypeScript strict, ESLint et conventions de code pour homogénéiser les pratiques, faciliter l’onboarding et sécuriser les évolutions.
+- Pilotage du CI/CD, des déploiements, de la migration Bitbucket vers GitHub et des arbitrages Produit / Data / Tech avec le CPO et l’équipe Data.
 :::
 
 :::detailed

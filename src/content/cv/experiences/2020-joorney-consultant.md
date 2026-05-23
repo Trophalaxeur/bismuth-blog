@@ -37,7 +37,7 @@ environment:
 ---
 
 :::career-channel
-Mission courte de développement PHP/Symfony chez Joorney, avec prise en main rapide d’une application métier existante et intervention directe sur le code en place.
+Mission courte de développement PHP/Symfony chez Joorney, avec prise en main rapide d’une application métier existante et intervention opérationnelle sur le code.
 
 - Développement **PHP/Symfony** sur une application de génération de business plans.
 - Audit du code existant et identification de pistes d’amélioration techniques.

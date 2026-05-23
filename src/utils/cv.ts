@@ -50,6 +50,9 @@ export async function renderMarkdown(md: string): Promise<string> {
 export const CAREER_CHANNEL_MAX_CHARS = 2000;
 
 function formatCvDate(yyyyMM: string): string {
+  if (!yyyyMM.includes('-')) {
+    return yyyyMM; // Year-only format: display as-is
+  }
   const [year, month] = yyyyMM.split('-');
   const d = new Date(Number(year), Number(month) - 1);
   return d.toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' });

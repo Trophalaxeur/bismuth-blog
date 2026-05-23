@@ -59,15 +59,14 @@ Lead Tech **Angular** / **Java** sur ERP agricole legacy : pilotage opérationne
 :::
 
 :::career-channel
-Lead Tech sur un ERP agricole utilisé par 50 à 100 utilisateurs, dans un contexte legacy complexe mêlant Angular, Java, Spring 2, PowerBuilder, Oracle 9 et infrastructures vieillissantes. Mon rôle consiste à accompagner l’équipe, structurer les pratiques techniques et moderniser progressivement le socle applicatif sans interruption de service.
+Lead Tech sur un ERP métier agricole utilisé par 50 à 100 utilisateurs, dans un contexte legacy complexe mêlant Angular, Java, Spring 2, PowerBuilder, Oracle 9 et infrastructures vieillissantes. Mon rôle consiste à accompagner l’équipe, structurer les pratiques techniques et moderniser progressivement le socle applicatif sans interruption de service.
 
 - **Leadership opérationnel** d’une équipe de 3 développeurs fullstack : organisation des sprints, clarification des sujets, revue de code et arbitrages techniques.
-- **Modernisation du frontend** : migration Angular 15 → 21, mise à jour de DevExtreme et préparation d’une migration vers Angular Material, avec mise en place des garde-fous et conventions nécessaires à la coexistence des deux.
+- **Modernisation du frontend** : migration Angular 15 → 21, mise à jour de DevExtreme et préparation d’une migration vers Angular Material, avec garde-fous et conventions pour faire cohabiter les deux.
 - **Renforcement progressif de la qualité du code** : TypeScript strict, ESLint strict, Prettier et conventions de développement.
 - **Standardisation avec Nx** pour faciliter les migrations, homogénéiser les pratiques et préparer de futures applications modulaires Angular/NestJS.
-- Collaboration avec le produit pour challenger les priorités, affiner les sujets, lotir le scope et sécuriser les livraisons.
-- **Résolution de points de blocage** autour du code, de la CI/CD et des processus de livraison.
-- **Modernisation incrémentale du legacy** : résolution de points de blocage code/CI-CD, réduction progressive de la dette et maintien en production et intégration progressive de nouvelles briques techniques.
+- Collaboration produit : priorisation, affinage des sujets, lotissement du scope et sécurisation des livraisons.
+- **Modernisation incrémentale du legacy** : résolution de blocages code/CI/CD, réduction progressive de la dette et évolution du socle sans interruption de service.
 :::
 
 :::detailed

@@ -44,13 +44,13 @@ Développement **Angular** sur une application web de monitoring réseau : inté
 :::
 
 :::career-channel
-Consultant Angular sur une application web de monitoring réseau, avec prise en main immédiate d’un contexte technique proche d’une mission précédente. L’intervention a combiné développement frontend, intégration de modules Angular dans un socle legacy, audit de code et accompagnement de l’équipe.
+Consultant Angular sur une application web de monitoring réseau, avec intervention orientée développement frontend, intégration Angular dans un socle legacy, audit de code et accompagnement de l’équipe.
 
 - Développement et maintenance de modules **Angular** au sein d’une application existante.
-- Intégration de nouveaux modules Angular dans un socle legacy, en veillant à la cohérence avec l’existant et à la maintenabilité du code.
+- Intégration de nouveaux modules Angular dans un socle legacy, avec attention portée à la cohérence avec l’existant et à la maintenabilité.
 - Audit de code, revue de code et propositions d’amélioration sur les sujets frontend.
 - Coaching de l’équipe sur les bonnes pratiques Angular, TypeScript strict, ESLint et conventions de développement.
-- Réalisation de dashboards avec **Highcharts**, intégrant graphiques, tableaux, paramètres avancés et restitution de données agrégées.
+- Réalisation de dashboards avec Highcharts, intégrant graphiques, tableaux, paramètres avancés et restitution de données agrégées.
 - Travail en autonomie sur les tickets confiés, avec collaboration régulière avec l’équipe backend sur les sujets transverses.
 - Contribution à l’amélioration de l’expérience développeur, à la réduction des bugs et à la montée en compétence de l’équipe.
 :::

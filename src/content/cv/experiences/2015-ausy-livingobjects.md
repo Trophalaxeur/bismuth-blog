@@ -47,14 +47,14 @@ Développement **AngularJS** sur une application web de monitoring réseau compl
 :::
 
 :::career-channel
-Développeur frontend sur une application web de monitoring réseau en **AngularJS**, avec de fortes contraintes de visualisation de données, de performance et de restitution sous forme de dashboards et rapports personnalisables.
+Développeur frontend sur une application web de monitoring réseau en AngularJS, avec de fortes contraintes de visualisation de données, de performance et de restitution sous forme de dashboards et rapports personnalisables.
 
 - Développement et maintenance d’une application **AngularJS** utilisée par plusieurs centaines d’utilisateurs.
 - Réalisation de dashboards personnalisables, intégrant graphiques **Highcharts**, tableaux et formulaires de paramétrage avancé.
 - Réalisation du module de conception de rapports PDF planifiables, avec contraintes de rendu fidèle entre l’usage web et l’export.
 - Développement de fonctionnalités frontend sur des données agrégées complexes, avec recherche du format de visualisation le plus adapté aux usages.
 - Travail en autonomie sur les tickets confiés, en collaboration avec l’équipe backend sur les sujets transverses.
-- Montée en compétence rapide sur AngularJS, les bonnes pratiques frontend et les principes de développement dans un environnement exigeant et une équipe expérimentée.
+- Montée en compétence rapide sur AngularJS, les bonnes pratiques frontend et les principes de développement maintenable dans un environnement exigeant.
 :::
 
 :::detailed

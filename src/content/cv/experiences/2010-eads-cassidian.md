@@ -8,15 +8,30 @@ start: "2010"
 end: "2010"
 priority: 120
 variants:
+  - career-channel
   - detailed
 tags:
   - Java
   - J2EE
-  - HTML
-  - CSS
-  - JQuery
+  - Technical Documentation
+secondaryTags:
+  - HTML/CSS
+  - jQuery
+  - Software Design
+  - Database Modeling
+  - Architecture Diagrams
 ---
 
+:::career-channel
+Stage ingénieur chez EADS Cassidian autour de la conception et du développement d’une plateforme web de documentation en Java/J2EE.
+
+- Développement applicatif en Java/J2EE, HTML, CSS et jQuery.
+- Production du rapport de stage, schémas d’architecture, schémas de base de données et documentation technique.
+:::
+
 :::detailed
-Stage de développement de 5 mois : développement d'une plateforme de documentation web en **Java** / **J2EE**.
+Stage ingénieur chez EADS Cassidian autour de la conception et du développement d’une plateforme web de documentation en Java/J2EE.
+
+- Développement applicatif en Java/J2EE, HTML, CSS et jQuery.
+- Production du rapport de stage, schémas d’architecture, schémas de base de données et documentation technique.
 :::

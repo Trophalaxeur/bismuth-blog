@@ -60,13 +60,18 @@ Développement et maintenance d’interfaces **PHP/Smarty** pour les univers Can
 :::career-channel
 Développeur fullstack puis référent technique sur les interfaces Canal+ pour décodeurs et supports web, dans un contexte critique à forte disponibilité et très fort volume d’utilisateurs. Cette expérience m’a apporté une solide culture production : performance, résilience, multi-support, coordination transverse, monitoring et livraisons sensibles.
 
+**Développement & production**
 - Développement et maintenance d’applications **PHP/Smarty**, JavaScript, HTML, CSS et **MySQL**, utilisées sur de nombreux supports : décodeurs, web, smartphone et tablette.
 - Intervention dans un environnement à forte volumétrie, avec des pics pouvant atteindre plusieurs centaines de milliers d’utilisateurs simultanés et plusieurs millions lors de grands événements.
 - Contribution à des interfaces soumises à de fortes contraintes de performance, disponibilité, accessibilité, multi-langue et compatibilité avec des matériels hétérogènes.
-- Coordination avec les équipes Produit, Recette/Validation et Infra : suivi des tests, préparation des cahiers de livraison, monitoring, priorisation des corrections et orchestration des livraisons.
+
+**Coordination & delivery**
+- Coordination Produit / Recette / Infra : suivi des tests, priorisation des corrections, rédaction des cahiers de livraison, monitoring, communication inter-équipes et orchestration des livraisons.
 - Supervision de livraisons sensibles sur une architecture répartie d’environ 24 serveurs, avec déploiements progressifs, phases de tests, suivi du monitoring, retours arrière et patchs correctifs lorsque nécessaire.
+
+**Projets techniques & référent**
 - Pilotage de la migration des serveurs **32 bits vers 64 bits** : cadrage technique, POC, adaptations applicatives, coordination des tests, suivi inter-équipes et mise en production.
-- Participation active à la migration **SVN vers Git**, avec montée en compétence rapide et accompagnement de l’équipe sur les nouveaux usages de versioning.
+- Migration **SVN vers Git**, découverte et intégration d’APIs de décodeurs/box internet, support des environnements de validation et mentorat des nouveaux arrivants sur l’application legacy et les processus de livraison.
 - Découverte et intégration d’APIs de décodeurs et box internet pour adapter les interfaces aux contraintes techniques des différents supports.
 :::
 
