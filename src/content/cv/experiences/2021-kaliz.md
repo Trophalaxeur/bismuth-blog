@@ -10,7 +10,7 @@ end: "2023-06"
 priority: 30
 variants:
   - short
-  - linkedin
+  - career-channel
   - detailed
 tags:
   - Angular
@@ -52,7 +52,7 @@ environment:
 **Lead Dev Angular** sur une application critique de gestion immobilière : accompagnement de 4 à 5 développeurs, forte implication dans le développement frontend, reprise en main d’un socle complexe, réduction progressive de la dette, Nx/NgRx, qualité code, CI/CD GitLab et fiabilisation des livraisons.
 :::
 
-:::linkedin
+:::career-channel
 Lead Dev Angular sur une application critique de gestion immobilière, pilier des opérations métier pour une trentaine d’utilisateurs internes et utilisée par plusieurs centaines d’utilisateurs externes. J’ai assuré la responsabilité technique du frontend, avec une forte implication dans le développement, les refactorings et les sujets structurants.
 
 - **Leadership technique** auprès de 4 à 5 développeurs frontend : revue de code, coaching, diffusion des bonnes pratiques, arbitrages techniques et accompagnement de la montée en compétence.

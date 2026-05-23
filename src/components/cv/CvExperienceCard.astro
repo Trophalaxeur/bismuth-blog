@@ -1,4 +1,6 @@
 ---
+import { formatCvPeriod } from '@/utils';
+
 interface Props {
   company: string;
   role: string;
@@ -12,13 +14,7 @@ interface Props {
 }
 const { company, role, start, end, current, tags, secondaryTags, html, variant } = Astro.props;
 
-function formatDate(yyyyMM: string): string {
-  const [year, month] = yyyyMM.split('-');
-  const d = new Date(Number(year), Number(month) - 1);
-  return d.toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' });
-}
-
-const period = `${formatDate(start)} — ${current ? "Aujourd'hui" : end ? formatDate(end) : ''}`;
+const period = formatCvPeriod(start, end, current);
 const visibleTags = tags ? tags.slice(0, variant === 'short' ? 5 : tags.length) : [];
 ---
 
