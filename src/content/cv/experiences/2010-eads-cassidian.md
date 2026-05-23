@@ -30,8 +30,9 @@ Stage ingénieur chez EADS Cassidian autour de la conception et du développemen
 :::
 
 :::detailed
-Stage ingénieur chez EADS Cassidian autour de la conception et du développement d’une plateforme web de documentation en Java/J2EE.
+Stage ingénieur chez EADS Cassidian autour de la conception et du développement d’une plateforme web de documentation en **Java/J2EE**.
 
-- Développement applicatif en Java/J2EE, HTML, CSS et jQuery.
+- Développement applicatif en **Java/J2EE**, HTML, CSS et jQuery.
+- Participation à la conception de l’application et à la structuration des fonctionnalités.
 - Production du rapport de stage, schémas d’architecture, schémas de base de données et documentation technique.
 :::

@@ -15,7 +15,7 @@ variants:
 tags:
   - Angular
   - Technical Leadership
-  - Frontend Architecture
+  - Code Review
   - Technical Debt Reduction
   - CI/CD
 secondaryTags:
@@ -57,7 +57,7 @@ Lead Dev Angular sur une application critique de gestion immobilière, pilier de
 
 **Développement hands-on**
 - Développement sur les sujets frontend structurants : refactorings, composants complexes, évolutions métier, maintien à jour des librairies et amélioration continue du socle Angular.
-- Reprise en main d’un frontend Angular complexe devenu difficile à maintenir, avec une dette impactant la lisibilité du code, la qualité des évolutions et la capacité à livrer.
+- Reprise en main d’un frontend Angular complexe, avec une dette impactant la lisibilité du code, la qualité des évolutions et la capacité à livrer.
 
 **Leadership technique & qualité**
 - Accompagnement de 4 à 5 développeurs frontend : revue de code, coaching, bonnes pratiques Angular/RxJS, arbitrages techniques et montée en compétence.
@@ -69,19 +69,27 @@ Lead Dev Angular sur une application critique de gestion immobilière, pilier de
 :::
 
 :::detailed
-**Lead Dev Angular** sur une application critique de gestion immobilière, pilier des opérations métier pour une trentaine d’utilisateurs internes et utilisée par plusieurs centaines d’utilisateurs externes. J’ai assuré la responsabilité technique du frontend, avec une forte implication dans le développement, les refactorings et les sujets structurants.
+**Lead Dev Angular** sur une application critique de gestion immobilière, pilier des opérations métier pour une trentaine d’utilisateurs internes et utilisée par plusieurs centaines d’utilisateurs externes.
 
-- **Leadership technique** auprès de 4 à 5 développeurs frontend : revue de code, coaching, diffusion des bonnes pratiques, arbitrages techniques et accompagnement de la montée en compétence de l’équipe.
-- **Développement** sur les sujets frontend structurants : refactorings, composants complexes, évolutions métier, maintien à jour des librairies et amélioration continue du socle Angular.
-- **Reprise en main d’un frontend Angular complexe** devenu difficile à maintenir : pratiques hétérogènes, typage insuffisant, fichiers volumineux, flux RxJS peu lisibles, mélange de Promises et d’Observables, et forte dette sur les parcours métier.
-- **Audit de code approfondi** et définition d’une trajectoire d’amélioration visant à réduire progressivement la dette, améliorer la maintenabilité et renforcer la capacité de l’équipe à faire évoluer l’application.
-- **Responsabilité de la roadmap technique frontend** : priorisation de la dette, choix d’architecture applicative, planification des migrations, arbitrages qualité/délai et validation avec le CTO sur les sujets structurants.
-- **Renforcement progressif de la qualité frontend** : TypeScript strict, ESLint strict, conventions de développement, revues de code structurées, bonnes pratiques Angular/RxJS et maintien à jour des librairies du projet.
-- Mise en place de **Nx et schematics** pour standardiser la génération de composants récurrents, accélérer les refactorings et améliorer l’expérience développeur sur une application riche en formulaires et tableaux.
+J’ai assuré la responsabilité technique du frontend, tout en restant fortement impliqué dans le développement, les refactorings et les sujets structurants.
+
+**Développement hands-on**
+- Développement sur les sujets frontend structurants : refactorings, composants complexes, évolutions métier, maintien à jour des librairies et amélioration continue du socle Angular.
+- Reprise en main d’un frontend Angular complexe, avec une dette impactant la lisibilité du code, la qualité des évolutions et la capacité à livrer.
+- Travail sur une application riche en formulaires, tableaux, parcours métier et interactions frontend/backend.
+- Correction de bugs, amélioration de comportements applicatifs et sécurisation progressive des parcours critiques.
+
+**Leadership technique & qualité**
+- **Leadership technique** auprès de 4 à 5 développeurs frontend : revue de code, coaching, diffusion des bonnes pratiques, arbitrages techniques et accompagnement de la montée en compétence.
+- Audit de code approfondi et définition d’une trajectoire d’amélioration visant à réduire progressivement la dette, améliorer la maintenabilité et renforcer la capacité de l’équipe à faire évoluer l’application.
+- Responsabilité de la roadmap technique frontend : priorisation de la dette, choix d’architecture applicative, planification des migrations, arbitrages qualité/délai et validation avec le CTO sur les sujets structurants.
+- Renforcement progressif de la qualité frontend : TypeScript strict, ESLint strict, conventions de développement, revues de code structurées, bonnes pratiques Angular/RxJS et maintien à jour des librairies.
+
+**Architecture & delivery**
+- Mise en place de **Nx** et schematics pour standardiser la génération de composants récurrents, accélérer les refactorings et améliorer l’expérience développeur.
 - Introduction de **NgRx** pour centraliser l’état applicatif, clarifier les traitements métier complexes, réduire les bugs liés aux états incohérents et limiter les appels backend inutiles.
 - Mise en place d’un socle de tests **end-to-end avec Cypress / Playwright** sur des parcours métier essentiels, notamment autour de la création de bail et de la gestion locative.
 - Évolution du **CI/CD GitLab**, des processus de déploiement et de la fiabilisation des livraisons frontend.
 - Amélioration de la collaboration frontend/backend via des contrats d’interface plus clairs, notamment avec Swagger, afin de réduire les écarts entre API et frontend, limiter les allers-retours et fiabiliser les développements.
-- Structuration du fonctionnement d’équipe : rituels agiles adaptés, suivi des blocages techniques ou métier, amélioration continue et coordination des livraisons frontend.
 - Collaboration avec le produit et les utilisateurs pour clarifier les besoins, affiner les tickets, lotir le scope, proposer des améliorations UX/métier et accélérer la réalisation des évolutions.
 :::

@@ -27,8 +27,9 @@ Missions de développement web réalisées avec la Junior Entreprise de l’EIST
 :::
 
 :::detailed
-Missions de développement web réalisées avec la Junior Entreprise de l’EISTI, autour de sites clients en PHP, HTML, CSS, JavaScript vanilla et jQuery.
+Missions de développement web réalisées avec la Junior Entreprise de l’EISTI, autour de sites clients en **PHP**, HTML, CSS, JavaScript vanilla et jQuery.
 
-- Développement d’un site web pour un voyagiste et d’un site vitrine pour une société de miroiterie.
+- Développement d’un site web en **PHP** pour un voyagiste.
+- Développement d’un site vitrine pour une société de miroiterie, en **PHP**, HTML, CSS et jQuery.
 - Première expérience client : intégration web, adaptation au besoin et livraison de sites simples.
 :::

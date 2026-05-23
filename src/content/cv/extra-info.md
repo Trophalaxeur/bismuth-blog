@@ -4,15 +4,13 @@ type: extra-info
 priority: 100
 ---
 
-## Informations complémentaires
-
 :::short
-- Anglais : TOEIC 780.
+- Anglais professionnel, TOEIC 780, expérience en équipe internationale.
 :::
 
 :::detailed
-- Anglais : TOEIC 780.
+- Anglais professionnel, TOEIC 780, expérience en équipe internationale.
 - Permis A et B, véhicules personnels.
-- Trésorier et membre actif de l'association Air-EISTI pendant 4 ans.
+- Engagement associatif : trésorier et membre actif d’Air-EISTI pendant 4 ans.
 - Plongée subaquatique, niveau 2.
 :::

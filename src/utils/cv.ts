@@ -65,8 +65,10 @@ function formatCvDate(yyyyMM: string): string {
  * - No end:   "mmm. yyyy" (no trailing separator)
  */
 export function formatCvPeriod(start: string, end?: string, current?: boolean): string {
+  const startLabel = formatCvDate(start);
   const endLabel = current ? "Aujourd'hui" : end ? formatCvDate(end) : '';
-  return endLabel ? `${formatCvDate(start)} — ${endLabel}` : formatCvDate(start);
+  if (!endLabel || endLabel === startLabel) return startLabel;
+  return `${startLabel} — ${endLabel}`;
 }
 
 /** Sorts CV experiences by priority (ascending) then start date (descending). */

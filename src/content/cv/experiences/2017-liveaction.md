@@ -28,7 +28,7 @@ secondaryTags:
 environment:
   languages:
     - Angular
-    - AngularJS
+    - AngularJS Migration
     - TypeScript strict
     - HTML
     - CSS
@@ -61,15 +61,17 @@ Développeur senior et référent frontend sur une application web de monitoring
 :::
 
 :::detailed
-Développeur senior / référent frontend sur une application web de monitoring réseau, dans le cadre d’une migration structurante d’**AngularJS** vers **Angular**. La mission a consisté à moderniser le socle frontend, remettre à plat les pratiques de développement et améliorer la maintenabilité d’une application riche en dashboards, rapports et visualisation de données.
+Développeur senior et référent frontend sur une application web de monitoring réseau, dans le cadre d’une migration structurante d’**AngularJS** vers **Angular**.
 
-- Participation active à la migration **AngularJS → Angular**, menée sur une application conséquente composée d’une quinzaine de modules, d’une cinquantaine de pages et de plusieurs centaines de composants.
+La mission a consisté à moderniser le socle frontend, remettre à plat les pratiques de développement et améliorer la maintenabilité d’une application riche en dashboards, rapports et visualisation de données.
+
+- Contribution majeure à la migration **AngularJS → Angular**, menée sur une application conséquente composée d’une quinzaine de modules, d’une cinquantaine de pages et de plusieurs centaines de composants.
 - Mise en place de **TypeScript strict**, d’ESLint et de conventions Angular/RxJS afin de renforcer la fiabilité du typage, limiter les erreurs et améliorer la lisibilité du code.
 - Développement et maintien de dashboards personnalisables avec **Highcharts** et **D3.js**, intégrant graphiques, tableaux, paramètres avancés et restitution de données agrégées.
 - Contribution aux modules de conception et d’impression de rapports PDF personnalisables, avec contraintes de rendu fidèle entre l’usage web et l’export.
 - Travail sur des interfaces riches en données, avec attention portée à la performance d’affichage, à la pertinence des visualisations et à l’expérience utilisateur.
 - Rôle de référent frontend auprès de l’équipe : revues de code systématiques, partage de bonnes pratiques, accompagnement sur Angular, RxJS et TypeScript strict.
-- Mise en place de **Docker** pour simplifier l'environnement de développement.
+- Mise en place de Docker pour simplifier l’environnement de développement.
 - Développements ponctuels en **Java** en renfort de l’équipe backend sur des sujets transverses.
 - Travail en environnement agile, avec forte autonomie sur les tickets confiés et collaboration régulière avec l’équipe backend.
 :::

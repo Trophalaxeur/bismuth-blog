@@ -1,3 +1,12 @@
 ---
-return Astro.redirect('/cv/short', 302);
+import PageLayout from '@/layouts/BaseLayout.astro';
+import CvPage from '@/components/cv/CvPage.astro';
+import CvPrintButton from '@/components/cv/CvPrintButton.astro';
 ---
+
+<PageLayout meta={{ title: 'CV — Florian Lefevre', description: 'CV de Florian Lefevre — version courte' }}>
+  <CvPrintButton slot="headerActions" variant="short" />
+  <div class="w-full">
+    <CvPage variant="short" />
+  </div>
+</PageLayout>

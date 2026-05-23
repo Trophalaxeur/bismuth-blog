@@ -16,20 +16,20 @@ variants:
 tags:
   - Angular
   - TypeScript strict
-  - Code Review
   - Technical Leadership
-  - Software Architecture
-  - CI/CD
+  - Code Review
+  - Legacy Modernization
 secondaryTags:
   - Nx
   - NgRx
-  - Legacy Modernization
-  - Agile Methodologies
-  - Product Collaboration
-  - Code Quality
   - Java/Spring
   - NestJS
   - Technical Debt Reduction
+  - CI/CD
+  - Product Collaboration
+  - Angular Material
+  - DevExtreme
+  - Code Quality
 environment:
   languages:
     - Angular
@@ -59,7 +59,7 @@ Lead Tech **Angular** / **Java** sur ERP agricole legacy : pilotage opérationne
 :::
 
 :::career-channel
-Lead Tech sur un ERP métier agricole utilisé par 50 à 100 utilisateurs, dans un contexte legacy complexe mêlant Angular, Java, Spring 2, PowerBuilder, Oracle 9 et infrastructures vieillissantes. Mon rôle consiste à accompagner l’équipe, structurer les pratiques techniques et moderniser progressivement le socle applicatif sans interruption de service.
+Lead Tech sur un ERP métier agricole utilisé par 50 à 100 utilisateurs, dans un contexte legacy complexe mêlant Angular, Java, Spring 2, PowerBuilder, Oracle 9 et infrastructures vieillissantes. Mon rôle consiste à accompagner l’équipe, contribuer directement aux sujets techniques structurants et moderniser progressivement le socle applicatif sans interruption de service.
 
 - **Leadership opérationnel** d’une équipe de 3 développeurs fullstack : organisation des sprints, clarification des sujets, revue de code et arbitrages techniques.
 - **Modernisation du frontend** : migration Angular 15 → 21, mise à jour de DevExtreme et préparation d’une migration vers Angular Material, avec garde-fous et conventions pour faire cohabiter les deux.
@@ -70,14 +70,22 @@ Lead Tech sur un ERP métier agricole utilisé par 50 à 100 utilisateurs, dans 
 :::
 
 :::detailed
-Lead Tech sur un ERP de gestion et vente de produits agricoles, utilisé par 50 à 100 utilisateurs, dans un environnement legacy complexe mêlant **Angular**, **Java**, Spring 2, PowerBuilder, Oracle 9, Tomcat et infrastructure Windows Server vieillissante.
+Lead Tech sur un ERP de gestion et vente de produits agricoles, utilisé par 50 à 100 utilisateurs, dans un environnement legacy complexe mêlant **Angular**, **Java**/Spring 2, PowerBuilder, Oracle 9, Tomcat et infrastructure Windows Server vieillissante.
 
-- **Leadership opérationnel** d’une équipe de 3 développeurs fullstack : organisation des sprints, clarification des sujets, revue de code, arbitrages techniques et diffusion des bonnes pratiques de développement.
-- **Modernisation progressive du frontend** : migration Angular 15 → 21, mise à jour de DevExtreme et préparation d’une migration vers Angular Material, avec mise en place des garde-fous et conventions nécessaires à la coexistence des deux bibliothèques graphiques.
-- **Renforcement progressif de la qualité du code** : TypeScript strict, ESLint strict, Prettier et conventions de code, introduits progressivement pour réduire les bugs, homogénéiser le code, améliorer la lisibilité et standardiser les pratiques.
-- **Standardisation du développement avec Nx** : schematics, conventions et structuration du workspace pour faciliter les migrations, accélérer la génération de code et préparer la mise en place de futures applications modulaires Angular/NestJS.
-- Introduction de **NgRx** pour structurer la gestion d’état, améliorer la lisibilité du code et fiabiliser les parcours applicatifs complexes.
+L’objectif de la mission est de moderniser progressivement le socle applicatif, renforcer les pratiques de développement et sécuriser les livraisons, tout en maintenant l’existant en production.
+
+**Leadership & delivery**
+- **Leadership opérationnel** d’une équipe de 3 développeurs fullstack : organisation des sprints, clarification des sujets, revue de code, arbitrages techniques et diffusion des bonnes pratiques.
 - Collaboration avec le produit pour affiner les besoins, challenger les solutions, aider à la priorisation, lotir le scope et sécuriser les livraisons.
-- **Résolution de points de blocage techniques** autour du code, de la CI/CD et des processus de livraison.
-- **Définition d’une approche de modernisation incrémentale**, conciliant maintien en production du legacy, intégration de nouvelles briques techniques et réduction progressive de la dette.
+- Résolution de points de blocage techniques autour du code, de la CI/CD et des processus de livraison.
+
+**Modernisation frontend**
+- **Modernisation progressive du frontend** : migration Angular 15 → 21, mise à jour de DevExtreme et préparation d’une migration vers Angular Material.
+- Mise en place de garde-fous et conventions pour faire cohabiter progressivement DevExtreme et Angular Material.
+- Introduction de **NgRx** pour structurer la gestion d’état, améliorer la lisibilité du code et fiabiliser les parcours applicatifs complexes.
+
+**Qualité & socle technique**
+- **Renforcement progressif de la qualité du code** : TypeScript strict, ESLint strict, Prettier et conventions de développement.
+- Standardisation du développement avec **Nx** : schematics, conventions et structuration du workspace pour faciliter les migrations, accélérer la génération de code et préparer de futures applications modulaires Angular/NestJS.
+- Définition d’une approche de modernisation incrémentale conciliant maintien en production du legacy, intégration de nouvelles briques techniques et réduction progressive de la dette.
 :::

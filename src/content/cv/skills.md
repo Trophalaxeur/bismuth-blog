@@ -4,13 +4,16 @@ type: skills
 priority: 20
 skills:
   leadership:
-    - Revue de code
     - Coaching technique
     - Architecture applicative
     - Qualité logicielle
+    - Technical Roadmap
+    - Technical Decision Making
+    - Legacy Modernization
+    - Technical Debt Management
   frontend:
     - Angular
-    - TypeScript strict
+    - Tupescript
     - RxJS
     - NgRx
     - Nx
@@ -22,21 +25,42 @@ skills:
     - PHP/Symfony
     - Python
     - Java
+  delivery:
+    - Engineering Management
+    - Team Leadership
+    - Recruiting
+    - Onboarding
+    - Delivery Management
+    - Stakeholder Management
+    - Product Collaboration
+  quality:
+    - Code Review
+    - Code Quality
+    - TypeScript strict
+    - ESLint
+    - Prettier
+    - CI/CD
+    - Unit / E2E Testing (Cypress / Playwright)
+    - API Contracts (Swagger / OpenAPI)
+  devops:
+    - GitHub
+    - GitLab
+    - Bitbucket
+    - Docker
+    - Linux
+    - Nginx
+    - Apache
+    - AWS
   databases:
     - MySQL
     - PostgreSQL
     - Oracle
-    - MongoDB
-  devops:
-    - Docker
-    - Jenkins
-    - GitHub
-    - GitLab
-    - Bitbucket
-    - GNU/Linux
-    - Nginx
-    - Apache
-    - AWS
+  ia:
+    - Claude Code
+    - GitHub Copilot
+    - Agents IA
+    - Skills
+    - Usage assisté de l’IA pour l’analyse et le développement
   methods:
     - Agile (Scrum / Kanban)
     - Cycle en V itératif
@@ -45,12 +69,7 @@ skills:
     - Jira
     - Notion
     - Confluence
-  ia:
-    - Claude Code
-    - GitHub Copilot
-    - Agents IA
-    - Skills
-    - Usage assisté de l’IA pour l’analyse et le développement
+
 ---
 
 ## Compétences
