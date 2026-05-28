@@ -6,9 +6,7 @@ import { getCollection } from 'astro:content';
 
 const allExperiences = await getCollection('cvExperiences');
 
-const careerChannelExperiences = sortCvExperiences(
-  allExperiences.filter((e) => e.data.variants?.includes('career-channel')),
-);
+const careerChannelExperiences = sortCvExperiences(allExperiences.filter((e) => e.data.variants?.includes('career-channel')));
 
 const experiencesData = careerChannelExperiences.map((exp) => ({
   company: exp.data.company,

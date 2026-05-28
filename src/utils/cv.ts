@@ -42,16 +42,16 @@ export function stripMarkdownForCareerChannel(markdown: string): string {
 }
 
 /**
- * Vocabulaire des termes techniques et concepts structurants à colorier
- * automatiquement en `<span class="cv-tech">` (bleu semi-bold) dans tout le rendu CV.
+ * Vocabulary of technical terms and structuring concepts to automatically colorize
+ * as `<span class="cv-tech">` (semi-bold blue) across the whole CV rendering.
  *
- * Règle "Bleu semi-bold = technologie ou outil central" (grammaire visuelle CV).
- * Ordre : phrases longues d'abord pour éviter les matchs partiels.
+ * Rule: "Semi-bold blue = technology or central tool" (CV visual grammar).
+ * Order: longest phrases first to avoid partial matches.
  *
- * Pour ajouter un terme : insérer en respectant l'ordre décroissant de longueur.
+ * To add a term: insert it while preserving descending length order.
  */
 const TECH_TERMS: string[] = [
-  // Concepts/phrases longues
+  // Long concepts/phrases
   'Architecture applicative',
   'Qualité & delivery',
   'API Integration',
@@ -63,8 +63,8 @@ const TECH_TERMS: string[] = [
   'Agents IA',
   'Angular Material',
   'Bitbucket vers GitHub',
-  // Tech standalone (curation : on garde les techs structurantes du profil,
-  // pas les outils courants ni les techs historiques)
+  // Standalone tech terms (curation: keep profile-shaping technologies,
+  // not common tools or historical technologies).
   'AngularJS',
   'NestJS',
   'NgRx',
@@ -100,25 +100,41 @@ function escapeRegex(s: string): string {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 const sortedTechTerms = [...TECH_TERMS].sort((a, b) => b.length - a.length);
-const techRegex = new RegExp(
-  `(?<![a-zA-Z0-9_-])(${sortedTechTerms.map(escapeRegex).join('|')})(?![a-zA-Z0-9_-])`,
-  'g'
-);
+const techRegex = new RegExp(`(?<![a-zA-Z0-9_-])(${sortedTechTerms.map(escapeRegex).join('|')})(?![a-zA-Z0-9_-])`, 'g');
 
 /**
- * Wrappe les termes techniques connus dans `<span class="cv-tech">` pour qu'ils soient
- * affichés en bleu semi-bold. Ne touche pas au contenu des tags HTML (attributs).
+ * Wraps known technical terms in `<span class="cv-tech">` so they render
+ * in semi-bold blue. Does not touch HTML tag contents (attributes).
  *
- * Limitation : utilise des regex sur du HTML, pas un vrai parser DOM.
- * Cf. docs/next-steps.md.
+ * Limitation: uses regex on HTML, not a real DOM parser.
+ * See docs/next-steps.md.
  */
 export function colorizeTechTerms(html: string): string {
-  // On découpe en alternant tag HTML / texte. On n'applique le regex qu'aux segments texte.
+  // Split into alternating HTML tag / text segments. Apply the regex only to text segments.
   return html.replace(/(<[^>]+>)|([^<]+)/g, (_match, tag: string | undefined, text: string | undefined) => {
     if (tag) return tag;
     return (text ?? '').replace(techRegex, '<span class="cv-tech">$1</span>');
   });
+}
+
+export function colorizePlainTechTerms(text: string): string {
+  let out = '';
+  let lastIndex = 0;
+
+  for (const match of text.matchAll(techRegex)) {
+    const index = match.index ?? 0;
+    const term = match[0];
+    out += escapeHtml(text.slice(lastIndex, index));
+    out += `<span class="cv-tech">${escapeHtml(term)}</span>`;
+    lastIndex = index + term.length;
+  }
+
+  return out + escapeHtml(text.slice(lastIndex));
 }
 
 export async function renderMarkdown(md: string): Promise<string> {
@@ -205,9 +221,9 @@ export interface CvEnvironment {
 }
 
 /** Flattens an experience's environment object into a single comma-separated string.
- *  `methods` (Agile, Cycle en V…) are intentionally excluded: Environnement = stack technique,
- *  pas méthodes de travail (qui apparaissent dans les compétences ou les bullets).
- *  Aucune limite : on affiche tout (la curation se fait dans les frontmatters).
+ *  `methods` (Agile, V-cycle…) are intentionally excluded: environment = technical stack,
+ *  not working methods (which appear in skills or bullets).
+ *  No limit: display everything (curation happens in frontmatter).
  */
 export function flattenEnvironment(env?: CvEnvironment): string {
   if (!env) return '';
@@ -216,7 +232,7 @@ export function flattenEnvironment(env?: CvEnvironment): string {
 
 /**
  * Splits an annotated experience HTML into 3 parts so the card can interleave its own
- * blocks (e.g. the Compétences clés line) between intro, impact and body.
+ * blocks (e.g. the key skills line) between intro, impact and body.
  */
 export function splitExperienceHtmlByParts(html: string): { intro: string; impact: string; body: string } {
   // 1. Impact line if present
@@ -235,9 +251,9 @@ export function splitExperienceHtmlByParts(html: string): { intro: string; impac
   if (envIdx !== -1) {
     return { intro: html.slice(0, envIdx).trim(), impact: '', body: html.slice(envIdx).trim() };
   }
-  // 3. Fallback : place the Compétences line right after the intro paragraphs but BEFORE
-  //    the first detailed content (sub-section header or bullet list). Indispensable pour
-  //    les expériences courtes (sans impact ni environnement).
+  // 3. Fallback: place the skills line right after intro paragraphs but BEFORE
+  //    the first detailed content (sub-section header or bullet list). Required for
+  //    short experiences (without impact or environment).
   const detailStart = html.search(/<p class="cv-subsection"|<ul/);
   if (detailStart !== -1) {
     return { intro: html.slice(0, detailStart).trim(), impact: '', body: html.slice(detailStart).trim() };
@@ -254,25 +270,25 @@ export function splitExperienceHtmlByParts(html: string): { intro: string; impac
 export function annotateExperienceHtml(html: string, envString: string): string {
   let out = html.replace(/<p>(<strong>Impact\s*:?\s*<\/strong>)/g, '<p class="cv-impact">$1');
 
-  // Sub-section headers : paragraphes dont le contenu est UNIQUEMENT un <strong>X</strong>
-  // (CSS `:only-child` ne suffit pas car il ignore les nœuds texte autour).
-  // On marque ces paragraphes avec `cv-subsection` pour qu'ils héritent du style filet-bleu.
+  // Sub-section headers: paragraphs whose content is ONLY `<strong>X</strong>`.
+  // CSS `:only-child` is not enough because it ignores surrounding text nodes.
+  // Mark these paragraphs with `cv-subsection` so they inherit the blue-rule style.
   out = out.replace(/<p>(<strong>[\s\S]*?<\/strong>)<\/p>/g, (match, inner) => {
-    // Exclure les cv-impact déjà traités (ils ont du texte après le strong).
+    // Exclude already-processed cv-impact paragraphs (they have text after the strong tag).
     if (match.includes('class="cv-impact"')) return match;
     return `<p class="cv-subsection">${inner}</p>`;
   });
 
   if (envString) {
-    const envHtml = `<p class="cv-environment"><em>Environnement : ${envString}</em></p>`;
+    // No tech colorization here: the environment line is intentionally discreet metadata
+    // (see visual hierarchy). Only escape to stay XSS-safe.
+    const envHtml = `<p class="cv-environment"><em>Environnement : ${escapeHtml(envString)}</em></p>`;
 
     if (out.includes('class="cv-impact"')) {
       out = out.replace(/(<p class="cv-impact">[\s\S]*?<\/p>)/, `$1${envHtml}`);
     } else {
-      const firstSubSection = out.match(/<p><strong>[^<]+<\/strong><\/p>/);
-      if (firstSubSection) {
-        out = out.replace(firstSubSection[0], `${envHtml}${firstSubSection[0]}`);
-      }
+      const detailStart = out.search(/<p class="cv-subsection"|<ul/);
+      out = detailStart === -1 ? `${out}${envHtml}` : `${out.slice(0, detailStart)}${envHtml}${out.slice(detailStart)}`;
     }
   }
 

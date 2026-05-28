@@ -4,6 +4,7 @@ import CvIcon from './CvIcon.astro';
 
 interface Props {
   company: string;
+  clientLocation?: string;
   employer?: string;
   role: string;
   start: string;
@@ -16,24 +17,11 @@ interface Props {
   variant: 'short' | 'detailed';
   defaultExpanded?: boolean;
 }
-const {
-  company,
-  employer,
-  role,
-  start,
-  end,
-  current,
-  tags,
-  secondaryTags,
-  html,
-  shortHtml = '',
-  variant,
-  defaultExpanded = true,
-} = Astro.props;
+const { company, clientLocation, employer, role, start, end, current, tags, secondaryTags, html, shortHtml = '', variant, defaultExpanded = true } = Astro.props;
 
 const period = formatCvPeriod(start, end, current);
 
-// Compétences clés : ligne texte sobre, primaires + secondaires, +X pour l'overflow.
+// Key skills: restrained text line, primary + secondary skills, +X for overflow.
 const TOTAL_VISIBLE = 8;
 const primaryAll = tags ?? [];
 const secondaryAll = variant === 'short' ? [] : (secondaryTags ?? []);
@@ -43,7 +31,7 @@ const secHidden = secondaryAll.slice(remainingSlots);
 const overflowCount = secHidden.length;
 const hasSkills = primaryAll.length > 0 || secondaryAll.length > 0;
 
-// Découpe le HTML en 3 morceaux pour intercaler la ligne Compétences avant l'Impact.
+// Split the HTML into 3 parts to insert the skills line before Impact.
 const { intro, impact, body } = variant === 'detailed' ? splitExperienceHtmlByParts(html) : { intro: '', impact: '', body: html };
 
 const canCollapse = variant === 'detailed';
@@ -63,7 +51,7 @@ const proseClasses =
 ---
 
 <article
-  class="cv-exp group border-border/70 hover:border-cv-accent hover:bg-muted/30 relative mb-10 rounded-r border-l-2 py-3 pr-3 pl-7 transition-all duration-200 hover:-translate-y-px hover:shadow-sm print:mb-4 print-short:mb-5 print-short:py-2 print-short:pl-5"
+  class="cv-exp group border-border/70 hover:border-cv-accent hover:bg-muted/30 print-short:mb-5 print-short:py-2 print-short:pl-5 relative mb-10 rounded-r border-l-2 py-3 pr-3 pl-7 transition-all duration-200 hover:-translate-y-px hover:shadow-sm print:mb-4"
   data-expanded={defaultExpanded ? 'true' : 'false'}
 >
   <div
@@ -73,14 +61,17 @@ const proseClasses =
 
   <div class="flex flex-col gap-y-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
     <div class="flex min-w-0 flex-col gap-y-0.5">
-      <span class="text-base font-bold leading-snug print-short:text-[13px]">
+      <span class="print-short:text-[13px] text-base leading-snug font-bold">
         {company}
-        {employer && <span class="text-foreground/60 ml-1.5 text-sm font-normal print-short:text-[11px]">({employer})</span>}
+        {employer && <span class="text-foreground/60 print-short:text-[11px] ml-1.5 text-sm font-normal">({employer})</span>}
       </span>
-      <span class="cv-exp-role text-foreground/80 text-sm font-medium leading-snug print-short:text-[12.5px]">{role}</span>
+      <span class="cv-exp-role text-foreground/80 print-short:text-[12.5px] text-sm leading-snug font-medium">{role}</span>
     </div>
-    <div class="flex items-center gap-3 sm:mt-1 sm:shrink-0">
-      <span class="text-foreground/70 text-xs font-semibold tabular-nums sm:text-right sm:whitespace-nowrap print-short:text-[10.5px]">{period}</span>
+    <div class="flex items-start gap-3 sm:mt-1 sm:shrink-0">
+      <div class="flex flex-col gap-0.5 sm:items-end">
+        <span class="text-foreground/70 print-short:text-[10.5px] text-xs font-semibold tabular-nums sm:text-right sm:whitespace-nowrap">{period}</span>
+        {variant === 'detailed' && clientLocation && <span class="text-foreground/45 print-short:hidden text-[11px] leading-tight">{clientLocation}</span>}
+      </div>
       {
         canCollapse && (
           <button
@@ -100,25 +91,20 @@ const proseClasses =
   {
     canCollapse && shortHtml && (
       <div
-        class="cv-exp-collapsed mt-4 text-foreground/75 prose prose-sm dark:prose-invert max-w-none prose-p:my-1.5 prose-p:leading-[1.75] print-short:mt-1 print-short:[&_p]:my-0.5 print-short:[&_p]:leading-[1.35] print-short:[&_p]:text-[11.5px]"
+        class="cv-exp-collapsed text-foreground/75 prose prose-sm dark:prose-invert prose-p:my-1.5 prose-p:leading-[1.75] print-short:mt-1 print-short:[&_p]:my-0.5 print-short:[&_p]:leading-[1.35] print-short:[&_p]:text-[11.5px] mt-4 max-w-none"
         set:html={shortHtml}
       />
     )
   }
 
   <div class="cv-exp-detailed">
-    {intro && <div class={`mt-4 print-short:mt-1.5 ${proseClasses}`} set:html={intro} />}
+    {intro && <div class={`print-short:mt-1.5 mt-4 ${proseClasses}`} set:html={intro} />}
 
     {
       hasSkills && (
-        <div
-          class="cv-skills-line mt-4 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-[13px] leading-[1.65] print-short:mt-1.5"
-          data-expanded="false"
-        >
+        <div class="cv-skills-line print-short:mt-1.5 mt-4 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-[13px] leading-[1.65]" data-expanded="false">
           <span class="cv-skills-label text-foreground/55 text-[12px] font-medium tracking-wide">Compétences clés :</span>
-          {primaryAll.length > 0 && (
-            <span class="text-cv-accent font-semibold">{primaryAll.join(' · ')}</span>
-          )}
+          {primaryAll.length > 0 && <span class="text-cv-accent font-semibold">{primaryAll.join(' · ')}</span>}
           {secVisible.length > 0 && (
             <>
               <span class="text-cv-accent/30 font-normal">·</span>
@@ -146,29 +132,47 @@ const proseClasses =
       )
     }
 
-    {impact && <div class={`mt-2 print-short:mt-1 ${proseClasses}`} set:html={impact} />}
-    {body && <div class={`mt-2 print-short:mt-1 ${proseClasses}`} set:html={body} />}
-    {variant === 'short' && !intro && !impact && !body && html && <div class={`mt-4 print-short:mt-1.5 ${proseClasses}`} set:html={html} />}
+    {impact && <div class={`print-short:mt-1 mt-2 ${proseClasses}`} set:html={impact} />}
+    {body && <div class={`print-short:mt-1 mt-2 ${proseClasses}`} set:html={body} />}
   </div>
 </article>
 
 <style is:global>
   /* Experience card collapse / expand */
-  .cv-exp[data-expanded='false'] .cv-exp-detailed { display: none; }
-  .cv-exp[data-expanded='true'] .cv-exp-collapsed { display: none; }
+  .cv-exp[data-expanded='false'] .cv-exp-detailed {
+    display: none;
+  }
+  .cv-exp[data-expanded='true'] .cv-exp-collapsed {
+    display: none;
+  }
 
   /* Toggle button icon swap driven by parent state */
-  .cv-exp[data-expanded='true'] .cv-exp-icon-collapsed { display: none; }
-  .cv-exp[data-expanded='false'] .cv-exp-icon-expanded { display: none; }
+  .cv-exp[data-expanded='true'] .cv-exp-icon-collapsed {
+    display: none;
+  }
+  .cv-exp[data-expanded='false'] .cv-exp-icon-expanded {
+    display: none;
+  }
 
   /* Skills overflow */
-  .cv-skills-line[data-expanded='false'] .cv-skills-extra { display: none; }
+  .cv-skills-line[data-expanded='false'] .cv-skills-extra {
+    display: none;
+  }
 
   @media print {
-    .cv-exp .cv-exp-collapsed { display: none !important; }
-    .cv-exp .cv-exp-detailed { display: block !important; }
-    .cv-exp-toggle, .cv-skills-toggle { display: none !important; }
-    .cv-skills-extra { display: contents !important; }
+    .cv-exp .cv-exp-collapsed {
+      display: none !important;
+    }
+    .cv-exp .cv-exp-detailed {
+      display: block !important;
+    }
+    .cv-exp-toggle,
+    .cv-skills-toggle {
+      display: none !important;
+    }
+    .cv-skills-extra {
+      display: contents !important;
+    }
   }
 </style>
 

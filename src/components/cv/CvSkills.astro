@@ -7,8 +7,8 @@ interface Props {
 }
 const { skills, variant = 'detailed' } = Astro.props;
 
-// 9 cartes en grille 3×3 — ligne 1 : posture/qualité/delivery ; ligne 2 : stack ; ligne 3 : ops & outillage.
-// `labelShort` est utilisé en print short uniquement (colonne titre plus étroite que le web tabular).
+// 9 cards in a 3×3 grid — row 1: posture/quality/delivery; row 2: stack; row 3: ops & tooling.
+// `labelShort` is used only in short print (title column is narrower than the web tabular layout).
 const CARDS: Array<{ key: string; label: string; labelShort?: string; icon: CvIconName }> = [
   { key: 'leadership', label: 'Leadership technique & architecture', labelShort: 'Leadership & architecture', icon: 'users' },
   { key: 'delivery', label: 'Management & delivery', labelShort: 'Management', icon: 'briefcase' },
@@ -46,27 +46,25 @@ const isShort = variant === 'short';
 ---
 
 <section id="competences" class={isShort ? 'mb-8 print-short:mb-3' : 'mb-14 print:mb-0 print:break-after-page'}>
-  <h2 class="border-cv-accent/40 text-foreground/85 mb-5 border-b-2 pb-2 text-[13px] font-bold tracking-[0.08em] uppercase print-short:mb-2 print-short:pb-1.5">Compétences clés</h2>
+  <h2 class="border-cv-accent/40 text-foreground/85 print-short:mb-2 print-short:pb-1.5 mb-5 border-b-2 pb-2 text-[13px] font-bold tracking-[0.08em] uppercase">
+    Compétences clés
+  </h2>
   {
     cards.length > 0 && isShort && (
-      // Version courte : grille tabulaire compacte, label à gauche / items à droite.
-      // En print, on passe à 2 colonnes de cartes (4 grid columns alternés label/items) pour diviser par 2 le nombre de lignes.
-      <div class="grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-[minmax(180px,220px)_1fr] print-short:grid-cols-[minmax(110px,130px)_1fr_minmax(110px,130px)_1fr] print-short:gap-x-3 print-short:gap-y-1">
+      // Short version: compact tabular grid, label on the left / items on the right.
+      // In print, switch to 2 card columns (4 alternating label/items grid columns) to halve the number of rows.
+      <div class="print-short:grid-cols-[minmax(110px,130px)_1fr_minmax(110px,130px)_1fr] print-short:gap-x-3 print-short:gap-y-1 grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-[minmax(180px,220px)_1fr]">
         {cards.map((card) => (
           <>
-            <h3 class="text-foreground/85 text-[11px] font-bold uppercase tracking-wider leading-snug print-short:text-[10px] print-short:leading-tight">
+            <h3 class="text-foreground/85 print-short:text-[10px] print-short:leading-tight text-[11px] leading-snug font-bold tracking-wider uppercase">
               <span class="print-short:hidden">{card.label}</span>
-              <span class="hidden print-short:inline">{card.labelShort ?? card.label}</span>
+              <span class="print-short:inline hidden">{card.labelShort ?? card.label}</span>
             </h3>
-            <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-[12.5px] leading-snug print-short:text-[10.5px] print-short:gap-x-1.5 print-short:leading-tight">
+            <div class="print-short:text-[10.5px] print-short:gap-x-1.5 print-short:leading-tight flex flex-wrap items-baseline gap-x-2 gap-y-1 text-[12.5px] leading-snug">
               {card.items.map(({ label, primary }, i) => (
                 <>
                   {i > 0 && <span class="text-cv-accent/60 font-semibold">·</span>}
-                  {primary ? (
-                    <span class="text-cv-accent font-semibold">{label}</span>
-                  ) : (
-                    <span class="text-foreground/70">{label}</span>
-                  )}
+                  {primary ? <span class="text-cv-accent font-semibold">{label}</span> : <span class="text-foreground/70">{label}</span>}
                 </>
               ))}
             </div>
@@ -77,7 +75,7 @@ const isShort = variant === 'short';
   }
   {
     cards.length > 0 && !isShort && (
-      // Version détaillée : 9 cartes premium 3×3.
+      // Detailed version: 9 premium cards in a 3×3 grid.
       <div class="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
         {cards.map((card) => (
           <div class="border-border/60 hover:border-cv-accent/40 bg-cv-accent/2 flex flex-col rounded-lg border p-4 transition-colors print:p-3">
@@ -85,17 +83,13 @@ const isShort = variant === 'short';
               <span class="text-cv-accent/70 shrink-0">
                 <CvIcon name={card.icon} size={14} strokeWidth={2} />
               </span>
-              <h3 class="text-foreground text-[13px] font-bold uppercase tracking-wide leading-snug print:text-[11.5px]">{card.label}</h3>
+              <h3 class="text-foreground text-[13px] leading-snug font-bold tracking-wide uppercase print:text-[11.5px]">{card.label}</h3>
             </div>
             <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-[12.5px] leading-[1.65]">
               {card.items.map(({ label, primary }, i) => (
                 <>
                   {i > 0 && <span class="text-cv-accent/40 font-semibold">·</span>}
-                  {primary ? (
-                    <span class="text-cv-accent font-semibold">{label}</span>
-                  ) : (
-                    <span class="text-foreground/70">{label}</span>
-                  )}
+                  {primary ? <span class="text-cv-accent font-semibold">{label}</span> : <span class="text-foreground/70">{label}</span>}
                 </>
               ))}
             </div>

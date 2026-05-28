@@ -27,13 +27,13 @@ const { title = 'CV — Florian Lefevre' } = Astro.props;
         .no-print {
           display: none !important;
         }
-        /* Pas de break-inside global : on laisse les sections/cards se découper
-         * naturellement, l'orphelinage est géré au niveau composant. */
+        /* No global break-inside: sections/cards are allowed to split naturally,
+         * with orphan handling managed at component level. */
 
-        /* PS uniquement : on libère le padding du body (sinon ~8mm de blanc en plus
-         * par-dessus le @page) pour gagner de la zone utile sur la cible 2 pages.
-         * Le data-cv-variant est posé par le script de toggle ci-dessous. */
-        body[data-cv-variant="short"] {
+        /* Short print only: remove body padding (otherwise ~8mm of extra white space
+         * on top of @page) to gain usable area for the 2-page target.
+         * data-cv-variant is set by the toggle script below. */
+        body[data-cv-variant='short'] {
           padding: 0 !important;
         }
       }

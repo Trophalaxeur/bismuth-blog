@@ -2,13 +2,12 @@
 import type { ImageMetadata } from 'astro';
 import { Image } from 'astro:assets';
 import ObfuscatedEmail from '@/components/ObfuscatedEmail.astro';
-import { colorizeTechTerms } from '@/utils';
+import { colorizePlainTechTerms } from '@/utils';
 
 interface Props {
   name: string;
   title: string;
   baseline?: string;
-  positioning?: string[];
   image?: string;
   location: string;
   contact: { email: string; phone?: string; github?: string; linkedin?: string };
@@ -27,30 +26,36 @@ if (image && !resolvedImage) {
 const displayUrl = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 ---
 
-<header id="profil" class="border-border/40 mb-6 border-b pb-5 print:mb-3 print:pb-3 print-short:mb-2 print-short:pb-2">
+<header id="profil" class="border-border/40 print-short:mb-2 print-short:pb-2 mb-6 border-b pb-5 print:mb-3 print:pb-3">
   <h1 class="sr-only">{name} — {title}</h1>
 
-  <div class="grid items-start gap-6 sm:grid-cols-[1fr_minmax(180px,220px)] sm:gap-6 print:gap-4 print-short:gap-3">
+  <div class="print-short:gap-3 grid items-start gap-6 sm:grid-cols-[1fr_minmax(180px,220px)] sm:gap-6 print:gap-4">
     <div class="min-w-0">
       {
         showSwitch ? (
-          <p class="text-foreground text-3xl font-black tracking-tight sm:text-[2.25rem] sm:leading-[1.1] print-short:text-[1.75rem] print-short:leading-tight" aria-hidden="true">
+          <p class="text-foreground print-short:text-[1.75rem] print-short:leading-tight text-3xl font-black tracking-tight sm:text-[2.25rem] sm:leading-[1.1]" aria-hidden="true">
             {title}
           </p>
         ) : (
           <>
-            <p class="text-foreground text-4xl font-black tracking-tight print-short:text-2xl print-short:leading-tight" aria-hidden="true">{name}</p>
-            <p class="text-foreground/85 mt-3 text-2xl font-bold tracking-tight print-short:mt-1.5 print-short:text-[1.35rem] print-short:font-bold" aria-hidden="true">{title}</p>
+            <p class="text-foreground print-short:text-2xl print-short:leading-tight text-4xl font-black tracking-tight" aria-hidden="true">
+              {name}
+            </p>
+            <p class="text-foreground/85 print-short:mt-1.5 print-short:text-[1.35rem] print-short:font-bold mt-3 text-2xl font-bold tracking-tight" aria-hidden="true">
+              {title}
+            </p>
           </>
         )
       }
-      {baseline && (
-        <p class="text-foreground/70 mt-2 text-[14px] font-medium tracking-tight print-short:mt-1 print-short:text-[11.5px]" set:html={colorizeTechTerms(baseline)} />
-      )}
+      {
+        baseline && (
+          <p class="text-foreground/70 print-short:mt-1 print-short:text-[11.5px] mt-2 text-[14px] font-medium tracking-tight" set:html={colorizePlainTechTerms(baseline)} />
+        )
+      }
       {
         bioHtml && (
           <div
-            class="prose prose-sm dark:prose-invert mt-5 max-w-none prose-p:my-2 prose-p:leading-[1.75] prose-p:text-foreground/85 print-short:mt-2 print-short:[&_p]:my-1 print-short:[&_p]:leading-[1.45] print-short:[&_p]:text-[11.5px]"
+            class="prose prose-sm dark:prose-invert prose-p:my-2 prose-p:leading-[1.75] prose-p:text-foreground/85 print-short:mt-2 print-short:[&_p]:my-1 print-short:[&_p]:leading-[1.45] print-short:[&_p]:text-[11.5px] mt-5 max-w-none"
             set:html={bioHtml}
           />
         )
@@ -67,11 +72,11 @@ const displayUrl = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').repl
             height={128}
             loading="lazy"
             decoding="async"
-            class="ring-border/60 h-28 w-28 shrink-0 rounded-full object-cover object-top shadow-sm ring-1 print-short:h-20 print-short:w-20"
+            class="ring-border/60 print-short:h-20 print-short:w-20 h-28 w-28 shrink-0 rounded-full object-cover object-top shadow-sm ring-1"
           />
         )
       }
-      <div class="text-muted-foreground flex flex-col gap-y-2 text-xs sm:items-end print-short:gap-y-1 print-short:text-[10px]">
+      <div class="text-muted-foreground print-short:gap-y-1 print-short:text-[10px] flex flex-col gap-y-2 text-xs sm:items-end">
         <span class="flex items-center gap-x-2 sm:flex-row-reverse">
           <svg xmlns="http://www.w3.org/2000/svg" class="text-cv-accent/80 h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24"
             ><path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7m0 9.5a2.5 2.5 0 0 1 0-5a2.5 2.5 0 0 1 0 5"></path></svg
@@ -129,12 +134,26 @@ const displayUrl = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').repl
   {
     showSwitch && (
       <nav class="text-muted-foreground mt-4 flex flex-wrap justify-between gap-x-3 text-[11px] whitespace-nowrap sm:hidden" aria-label="Sections">
-        <a href="#profil" class="hover:text-cv-accent transition-colors">Profil</a>
-        {variant === 'detailed' && <a href="#domaines" class="hover:text-cv-accent transition-colors">Domaines</a>}
-        <a href="#competences" class="hover:text-cv-accent transition-colors">Compétences</a>
-        <a href="#experiences" class="hover:text-cv-accent transition-colors">Expériences</a>
-        <a href="#formation" class="hover:text-cv-accent transition-colors">Formation</a>
-        <a href="#projets" class="hover:text-cv-accent transition-colors">Projets</a>
+        <a href="#profil" class="hover:text-cv-accent transition-colors">
+          Profil
+        </a>
+        {variant === 'detailed' && (
+          <a href="#domaines" class="hover:text-cv-accent transition-colors">
+            Domaines
+          </a>
+        )}
+        <a href="#competences" class="hover:text-cv-accent transition-colors">
+          Compétences
+        </a>
+        <a href="#experiences" class="hover:text-cv-accent transition-colors">
+          Expériences
+        </a>
+        <a href="#formation" class="hover:text-cv-accent transition-colors">
+          Formation
+        </a>
+        <a href="#projets" class="hover:text-cv-accent transition-colors">
+          Projets
+        </a>
       </nav>
     )
   }

@@ -28,8 +28,7 @@ const domainsEntry = find('domains');
 const summaryEntry = find('summary');
 const interestsEntry = find('interests');
 
-const render = async (entry: (typeof allSections)[number] | undefined) =>
-  entry ? renderMarkdown(extractVariantMarkdown(entry.body ?? '', variant)) : '';
+const render = async (entry: (typeof allSections)[number] | undefined) => (entry ? renderMarkdown(extractVariantMarkdown(entry.body ?? '', variant)) : '');
 
 const [profileHtml, educationHtml, projectsHtml, extraInfoHtml, summaryHtml, interestsHtml] = await Promise.all([
   render(profileEntry),
@@ -42,10 +41,12 @@ const [profileHtml, educationHtml, projectsHtml, extraInfoHtml, summaryHtml, int
 
 const domains = domainsEntry ? parseDomains(extractVariantMarkdown(domainsEntry.body ?? '', variant)) : [];
 
-// Load, filter and sort experiences
+// Load, filter and sort experiences.
+// The `variants` allowlist is applied for both variants (short AND detailed):
+// an experience without `variants` is always displayed (fallback), otherwise it
+// must explicitly declare the current variant.
 const allExperiences = await getCollection('cvExperiences');
-const visibleExperiences =
-  variant === 'short' ? allExperiences.filter((e) => !e.data.variants || e.data.variants.includes('short')) : allExperiences;
+const visibleExperiences = allExperiences.filter((e) => !e.data.variants || e.data.variants.includes(variant));
 
 const sortedExperiences = sortCvExperiences(visibleExperiences);
 
@@ -58,6 +59,7 @@ const experiencesData = await Promise.all(
     const shortHtml = variant === 'detailed' ? await renderMarkdown(extractVariantMarkdown(exp.body ?? '', 'short')) : '';
     return {
       company: exp.data.company,
+      clientLocation: exp.data.clientLocation,
       employer: exp.data.employer,
       role: exp.data.role,
       start: exp.data.start,

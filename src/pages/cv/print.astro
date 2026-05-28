@@ -10,14 +10,14 @@ import CvPage from '@/components/cv/CvPage.astro';
   <div id="variant-detailed" style="display:none">
     <CvPage variant="detailed" showSwitch={false} />
   </div>
-</CvPrintLayout>
 
-<script>
-  const params = new URLSearchParams(window.location.search);
-  const variant = params.get('variant') === 'detailed' ? 'detailed' : 'short';
-  document.body.dataset.cvVariant = variant;
-  if (variant === 'detailed') {
-    document.getElementById('variant-short')!.style.display = 'none';
-    document.getElementById('variant-detailed')!.style.display = 'block';
-  }
-</script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const variant = params.get('variant') === 'detailed' ? 'detailed' : 'short';
+    document.body.dataset.cvVariant = variant;
+    if (variant === 'detailed') {
+      document.getElementById('variant-short')!.style.display = 'none';
+      document.getElementById('variant-detailed')!.style.display = 'block';
+    }
+  </script>
+</CvPrintLayout>

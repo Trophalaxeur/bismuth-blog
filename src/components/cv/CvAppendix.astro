@@ -32,9 +32,9 @@ const titleTextClasses = 'text-foreground/85 text-[11.5px] font-bold uppercase t
 
 {
   hasAny && (
-    <section class="border-border/40 mt-10 border-t pt-10 print:break-before-page print-short:break-before-auto print-short:mt-4 print-short:pt-4">
-      <div class="grid grid-cols-1 gap-x-10 gap-y-10 lg:grid-cols-[1fr_2fr_1fr] print-short:grid-cols-[1.4fr_1.6fr_1fr] print-short:gap-x-5 print-short:gap-y-3">
-        {/* Col 1 — Formation */}
+    <section class="border-border/40 print-short:break-before-auto print-short:mt-4 print-short:pt-4 mt-10 border-t pt-10 print:break-before-page">
+      <div class="print-short:grid-cols-[1.4fr_1.6fr_1fr] print-short:gap-x-5 print-short:gap-y-3 grid grid-cols-1 gap-x-10 gap-y-10 lg:grid-cols-[1fr_2fr_1fr]">
+        {/* Column 1 — Education */}
         {formation?.html && (
           <div id={formation.id} class="break-inside-avoid">
             <div class={titleWrapClasses}>
@@ -45,7 +45,7 @@ const titleTextClasses = 'text-foreground/85 text-[11.5px] font-bold uppercase t
           </div>
         )}
 
-        {/* Col 2 — Projets personnels (largeur double) */}
+        {/* Column 2 — Personal projects (double width) */}
         {projects?.html && (
           <div id={projects.id} class="break-inside-avoid">
             <div class={titleWrapClasses}>
@@ -56,9 +56,9 @@ const titleTextClasses = 'text-foreground/85 text-[11.5px] font-bold uppercase t
           </div>
         )}
 
-        {/* Col 3 — Infos complémentaires + Centres d'intérêt empilés */}
+        {/* Column 3 — Additional information + stacked interests */}
         {(extraInfo?.html || interests?.html) && (
-          <div class="flex flex-col gap-y-8 print-short:gap-y-3">
+          <div class="print-short:gap-y-3 flex flex-col gap-y-8">
             {extraInfo?.html && (
               <div id={extraInfo.id} class="break-inside-avoid">
                 <div class={titleWrapClasses}>

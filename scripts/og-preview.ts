@@ -3,8 +3,8 @@
 // Output: tmp/og-preview-site.png and tmp/og-preview-article.png
 import { mkdirSync, writeFileSync } from 'node:fs';
 
-import { renderOgImage } from '../src/utils/og-image.ts';
 import { siteConfig } from '../src/site.config.ts';
+import { renderOgImage } from '../src/utils/og-image.ts';
 
 mkdirSync('./tmp', { recursive: true });
 
