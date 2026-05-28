@@ -8,6 +8,7 @@ role: "Consultant fullstack Odoo"
 start: "2017-10"
 end: "2021-04"
 priority: 50
+section: complementary
 variants:
   - short
   - career-channel
@@ -37,11 +38,11 @@ environment:
 ---
 
 :::short
-Consultant fullstack sur l’ERP **Odoo** : montée en compétence rapide sur **Python**, développement de modules métier **Python/HTML/CSS**, estimation, livraison au forfait et suivi des évolutions.
+**Consultant fullstack** sur l’ERP Odoo : **montée en compétence rapide** sur Python, développement de modules métier Python/HTML/CSS, estimation, **livraison au forfait** et **suivi des évolutions**.
 :::
 
 :::career-channel
-Consultant fullstack pour Scopea sur des développements spécifiques autour de l’ERP Odoo, avec montée en compétence rapide sur Python et le framework Odoo. Intervention au forfait, de l’analyse du besoin à la mise en production, sur des modules métier, corrections et évolutions applicatives.
+Consultant fullstack pour Scopea sur des développements spécifiques autour de l’ERP Odoo, avec montée en compétences rapide sur Python et le framework Odoo. Intervention au forfait, de l’analyse du besoin à la mise en production, sur des modules métier, corrections et évolutions applicatives.
 
 - Prise en main rapide de l’écosystème Odoo et du développement Python/HTML/CSS.
 - Développement de modules métier spécifiques pour adapter Odoo à des processus clients non couverts par le standard.
@@ -52,7 +53,7 @@ Consultant fullstack pour Scopea sur des développements spécifiques autour de 
 
 
 :::detailed
-Consultant fullstack pour Scopea sur des développements spécifiques autour de l’ERP **Odoo**, avec montée en compétence rapide sur **Python** et le framework Odoo.
+Consultant fullstack pour Scopea sur des développements spécifiques autour de l’ERP **Odoo**, avec montée en compétences rapide sur **Python** et le framework Odoo.
 
 Intervention au forfait, dans un contexte cycle en V, sur des demandes clients variées allant de la correction de bugs au développement de modules métier complets.
 

@@ -1,0 +1,85 @@
+---
+import CvIcon, { type CvIconName } from './CvIcon.astro';
+
+interface Block {
+  title: string;
+  html: string;
+  id?: string;
+  icon?: CvIconName;
+}
+
+interface Props {
+  formation?: Block;
+  projects?: Block;
+  extraInfo?: Block;
+  interests?: Block;
+}
+const { formation, projects, extraInfo, interests } = Astro.props;
+
+const hasAny = !!(formation?.html || projects?.html || extraInfo?.html || interests?.html);
+
+const contentClasses =
+  'text-foreground/75 text-[13px] leading-[1.7] ' +
+  '[&_p]:my-1.5 [&_ul]:my-1 [&_ul]:list-disc [&_ul]:pl-4 [&_li]:my-1.5 [&_li]:leading-[1.65] ' +
+  '[&_strong]:text-foreground [&_strong]:font-bold ' +
+  '[&_em]:italic [&_em]:text-foreground/55 [&_em]:text-[12px] ' +
+  '[&_h3]:text-[13px] [&_h3]:font-bold [&_h3]:mt-4 [&_h3]:mb-1 [&_h3]:text-foreground ' +
+  'print-short:text-[10.5px] print-short:leading-[1.35] print-short:[&_li]:my-0.5 print-short:[&_li]:leading-[1.35] print-short:[&_h3]:text-[11px] print-short:[&_h3]:mt-2 print-short:[&_em]:text-[10px]';
+
+const titleWrapClasses = 'text-cv-accent/70 mb-4 flex items-center gap-2.5 print-short:mb-1.5 print-short:gap-2 print-short:[&_svg]:h-4 print-short:[&_svg]:w-4';
+const titleTextClasses = 'text-foreground/85 text-[11.5px] font-bold uppercase tracking-widest leading-none translate-y-px print-short:text-[10px]';
+---
+
+{
+  hasAny && (
+    <section class="border-border/40 mt-10 border-t pt-10 print:break-before-page print-short:break-before-auto print-short:mt-4 print-short:pt-4">
+      <div class="grid grid-cols-1 gap-x-10 gap-y-10 lg:grid-cols-[1fr_2fr_1fr] print-short:grid-cols-[1.4fr_1.6fr_1fr] print-short:gap-x-5 print-short:gap-y-3">
+        {/* Col 1 — Formation */}
+        {formation?.html && (
+          <div id={formation.id} class="break-inside-avoid">
+            <div class={titleWrapClasses}>
+              {formation.icon && <CvIcon name={formation.icon} size={22} strokeWidth={2} />}
+              <h3 class={titleTextClasses}>{formation.title}</h3>
+            </div>
+            <div class={contentClasses} set:html={formation.html} />
+          </div>
+        )}
+
+        {/* Col 2 — Projets personnels (largeur double) */}
+        {projects?.html && (
+          <div id={projects.id} class="break-inside-avoid">
+            <div class={titleWrapClasses}>
+              {projects.icon && <CvIcon name={projects.icon} size={22} strokeWidth={2} />}
+              <h3 class={titleTextClasses}>{projects.title}</h3>
+            </div>
+            <div class={contentClasses} set:html={projects.html} />
+          </div>
+        )}
+
+        {/* Col 3 — Infos complémentaires + Centres d'intérêt empilés */}
+        {(extraInfo?.html || interests?.html) && (
+          <div class="flex flex-col gap-y-8 print-short:gap-y-3">
+            {extraInfo?.html && (
+              <div id={extraInfo.id} class="break-inside-avoid">
+                <div class={titleWrapClasses}>
+                  {extraInfo.icon && <CvIcon name={extraInfo.icon} size={22} strokeWidth={2} />}
+                  <h3 class={titleTextClasses}>{extraInfo.title}</h3>
+                </div>
+                <div class={contentClasses} set:html={extraInfo.html} />
+              </div>
+            )}
+            {interests?.html && (
+              <div id={interests.id} class="break-inside-avoid">
+                <div class={titleWrapClasses}>
+                  {interests.icon && <CvIcon name={interests.icon} size={22} strokeWidth={2} />}
+                  <h3 class={titleTextClasses}>{interests.title}</h3>
+                </div>
+                <div class={contentClasses} set:html={interests.html} />
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </section>
+  )
+}

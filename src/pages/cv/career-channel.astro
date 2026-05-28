@@ -16,6 +16,7 @@ const experiencesData = careerChannelExperiences.map((exp) => ({
   start: exp.data.start,
   end: exp.data.end,
   current: exp.data.current,
+  tags: exp.data.tags,
   text: stripMarkdownForCareerChannel(extractVariantMarkdown(exp.body ?? '', 'career-channel')),
 }));
 ---

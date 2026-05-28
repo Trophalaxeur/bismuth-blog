@@ -4,10 +4,11 @@ type: experience
 company: "LivingObjects"
 clientLocation: "Toulouse"
 employer: "Ausy"
-role: "Ingénieur études et développement"
+role: "Développeur frontend AngularJS"
 start: "2015-10"
 end: "2017-10"
 priority: 80
+section: complementary
 variants:
   - short
   - career-channel
@@ -43,11 +44,11 @@ environment:
 ---
 
 :::short
-Développement **AngularJS** sur une application web de monitoring réseau complexe : dashboards et graphiques **Highcharts** personnalisables, rapports PDF planifiables et montée en compétence rapide au sein d’une équipe frontend expérimentée.
+Développement AngularJS sur une application web de monitoring réseau complexe : **dashboards personnalisables** et graphiques Highcharts, **rapports PDF** planifiables et **montée en compétence rapide** au sein d’une équipe frontend expérimentée.
 :::
 
 :::career-channel
-Développeur frontend sur une application web de monitoring réseau en AngularJS, avec de fortes contraintes de visualisation de données, de performance et de restitution sous forme de dashboards et rapports personnalisables.
+Développeur frontend sur une application web de monitoring réseau en AngularJS, avec fortes contraintes de visualisation de données, de performance et de restitution sous forme de dashboards et rapports personnalisables.
 
 - Développement et maintenance d’une application AngularJS utilisée par plusieurs centaines d’utilisateurs.
 - Réalisation de dashboards personnalisables, intégrant graphiques Highcharts, tableaux et formulaires de paramétrage avancé.
@@ -56,7 +57,7 @@ Développeur frontend sur une application web de monitoring réseau en AngularJS
 :::
 
 :::detailed
-Développeur frontend sur une application web de monitoring réseau en **AngularJS**, utilisée par plusieurs centaines d’utilisateurs, avec de fortes contraintes de visualisation de données, de performance et de restitution sous forme de dashboards et rapports personnalisables.
+Développeur frontend sur une application web de monitoring réseau en **AngularJS**, utilisée par plusieurs centaines d’utilisateurs, avec fortes contraintes de visualisation de données, de performance et de restitution sous forme de dashboards et rapports personnalisables.
 
 - Développement et maintenance d’une application **AngularJS** au sein d’une équipe frontend expérimentée.
 - Réalisation de dashboards personnalisables, intégrant graphiques **Highcharts**, tableaux et formulaires de paramétrage avancé.

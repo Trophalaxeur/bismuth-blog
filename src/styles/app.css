@@ -4,6 +4,21 @@
 
 @variant dark (&:where(.dark, .dark *));
 
+/* `print-short:` = règles print appliquées uniquement à la version courte imprimée
+ * (`#variant-short` sur la page /cv/print). Permet d'isoler les compressions PS
+ * de la version longue PD qui doit garder son layout aéré.
+ *
+ * Le `&` est résolu par Tailwind v4 à la compilation ; stylelint ne le sait pas
+ * et signale un faux positif "missing scoping root" — désactivé localement. */
+@custom-variant print-short {
+  @media print {
+    /* stylelint-disable-next-line nesting-selector-no-missing-scoping-root */
+    &:where(#variant-short, #variant-short *) {
+      @slot;
+    }
+  }
+}
+
 @theme inline {
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
@@ -113,5 +128,117 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     background-repeat: repeat;
     background-size: 300px 300px;
+  }
+}
+
+/* CV — Vocabulaire tech : termes coloriés automatiquement via colorizeTechTerms().
+ * Règle "Bleu semi-bold = technologie ou outil central" de la grammaire visuelle.
+ * Le !important sur font-weight neutralise l'éventuel <strong> parent (qui mettrait 700)
+ * pour garantir le rendu "semi-bold" (600) quand un terme tech est inclus dans une phrase en gras. */
+.cv-tech {
+  color: hsl(var(--cv-accent));
+  font-weight: 600 !important;
+}
+
+/* CV — règles d'impression PDF / papier.
+ * - Tous les boutons d'interaction (toggles) sont masqués.
+ * - Les compétences cachées derrière "+X" deviennent visibles.
+ * - Les expériences sont forcées en mode déplié (peu importe leur data-expanded).
+ * - Chaque grande section démarre sur une nouvelle page (sauf le header).
+ */
+@media print {
+  /* Layout web : on cache la nav, le footer, le ThemeProvider et tout ce qui n'est pas le CV. */
+  body > main > header,
+  body > main > footer,
+  body::before {
+    display: none !important;
+  }
+
+  body > main {
+    max-width: none !important;
+    width: 100% !important;
+    padding: 0 !important;
+  }
+
+  /* Pas d'ombres ni de fonds décoratifs en print. */
+  * {
+    box-shadow: none !important;
+  }
+
+  /* Boutons d'interaction masqués */
+  .cv-exp-toggle,
+  .cv-master-toggle,
+  .cv-skills-toggle {
+    display: none !important;
+  }
+
+  /* Compétences overflow toujours visibles */
+  .cv-skills-extra {
+    display: contents !important;
+  }
+
+  /* Expériences toujours dépliées, peu importe data-expanded */
+  .cv-exp .cv-exp-detailed {
+    display: block !important;
+  }
+
+  .cv-exp .cv-exp-collapsed {
+    display: none !important;
+  }
+
+  /* On laisse les cards d'expérience se couper si nécessaire (volonté éditoriale :
+   * les expériences longues sont forcément coupées entre 2 pages). */
+
+  /* Anti-orphelinage : un sous-titre d'expérience (.cv-subsection) ne doit pas
+   * rester seul en bas de page sans au moins une puce dessous. */
+  .cv-subsection {
+    break-after: avoid;
+    break-inside: avoid;
+  }
+
+  /* L'en-tête d'une carte expérience (entreprise / rôle / période) doit rester
+   * collé à l'intro qui la suit. */
+  .cv-exp > div:first-child {
+    break-after: avoid;
+  }
+
+  /* Compression print du corps des expériences : taille, leading et marges réduits
+   * pour atteindre la cible "CV court = 2 pages". Scopé à #variant-short pour
+   * ne pas impacter le dossier de compétences détaillé (PD). */
+  #variant-short .cv-exp .prose p,
+  #variant-short .cv-exp .prose li {
+    font-size: 11.5px;
+    line-height: 1.45;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+  }
+
+  #variant-short .cv-exp .prose ul,
+  #variant-short .cv-exp .prose ol {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+  }
+
+  #variant-short .cv-exp .cv-skills-line {
+    font-size: 11px;
+    margin-top: 0.5rem;
+  }
+
+  /* Sous-titres internes (Modernisation frontend, etc.) plus compacts. */
+  #variant-short .cv-exp .cv-subsection {
+    margin-top: 0.75rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+
+  /* Print short uniquement (page /cv/print, variant=short) :
+   * - Le label "Compétences clés :" est redondant avec le contexte → masqué.
+   * - Le rôle est mis en valeur (noir / semi-bold) pour faciliter la lecture recruteur. */
+  #variant-short .cv-skills-label {
+    display: none;
+  }
+
+  #variant-short .cv-exp-role {
+    color: hsl(var(--foreground));
+    font-weight: 600;
   }
 }

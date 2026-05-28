@@ -1,6 +1,6 @@
 import { glob } from 'astro/loaders';
-import { defineCollection } from 'astro:content';
 import { z } from 'zod';
+import { defineCollection } from 'astro:content';
 
 function removeDupsAndLowerCase(array: string[]) {
   if (!array.length) return array;
@@ -49,6 +49,7 @@ const cvExperiences = defineCollection({
     current: z.boolean().optional().default(false),
     priority: z.number().optional().default(50),
     variants: z.array(z.string()).optional(),
+    section: z.string().optional(),
     tags: z.array(z.string()).optional(),
     secondaryTags: z.array(z.string()).optional(),
     environment: z
@@ -66,7 +67,7 @@ const cvSections = defineCollection({
   loader: glob({ pattern: '*.md', base: './src/content/cv' }),
   schema: z.object({
     schemaVersion: z.number().optional(),
-    type: z.enum(['profile', 'skills', 'education', 'projects', 'extra-info']),
+    type: z.enum(['profile', 'domains', 'skills', 'education', 'projects', 'extra-info', 'interests', 'summary']),
     priority: z.number().optional(),
     // profile
     name: z.string().optional(),
@@ -77,7 +78,7 @@ const cvSections = defineCollection({
     contact: z.object({ email: z.string(), phone: z.string().optional(), github: z.string().optional(), linkedin: z.string().optional() }).optional(),
     positioning: z.array(z.string()).optional(),
     // skills
-    skills: z.record(z.string(), z.array(z.string())).optional(),
+    skills: z.record(z.string(), z.union([z.string(), z.array(z.string())])).optional(),
   }),
 });
 

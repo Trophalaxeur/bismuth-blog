@@ -15,6 +15,7 @@ import CvPage from '@/components/cv/CvPage.astro';
 <script>
   const params = new URLSearchParams(window.location.search);
   const variant = params.get('variant') === 'detailed' ? 'detailed' : 'short';
+  document.body.dataset.cvVariant = variant;
   if (variant === 'detailed') {
     document.getElementById('variant-short')!.style.display = 'none';
     document.getElementById('variant-detailed')!.style.display = 'block';

@@ -8,6 +8,7 @@ role: "Consultant PHP/Symfony fullstack"
 start: "2020-08"
 end: "2020-08"
 priority: 40
+section: complementary
 variants:
   - career-channel
   - detailed
@@ -37,7 +38,7 @@ environment:
 ---
 
 :::career-channel
-Mission courte de développement PHP/Symfony chez Joorney, avec prise en main rapide d’une application métier existante et intervention opérationnelle sur le code.
+Consultant PHP/Symfony fullstack pour une mission courte chez Joorney, avec prise en main rapide d’une application métier existante et intervention opérationnelle sur le code.
 
 - Développement PHP/Symfony sur une application de génération de business plans.
 - Audit du code existant et identification de pistes d’amélioration techniques.
@@ -46,7 +47,7 @@ Mission courte de développement PHP/Symfony chez Joorney, avec prise en main ra
 :::
 
 :::detailed
-Mission courte de développement **PHP/Symfony** chez Joorney, avec prise en main rapide d’une application métier existante et intervention opérationnelle sur le code.
+Consultant **PHP/Symfony** fullstack pour une mission courte chez Joorney, avec prise en main rapide d’une application métier existante et intervention opérationnelle sur le code.
 
 L’objectif était d’apporter rapidement de la valeur : corrections, audit technique, améliorations applicatives et évolutions fonctionnelles.
 

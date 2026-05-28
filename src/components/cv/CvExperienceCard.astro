@@ -1,8 +1,10 @@
 ---
-import { formatCvPeriod } from '@/utils';
+import { formatCvPeriod, splitExperienceHtmlByParts } from '@/utils';
+import CvIcon from './CvIcon.astro';
 
 interface Props {
   company: string;
+  employer?: string;
   role: string;
   start: string;
   end?: string;
@@ -10,52 +12,187 @@ interface Props {
   tags?: string[];
   secondaryTags?: string[];
   html: string;
+  shortHtml?: string;
   variant: 'short' | 'detailed';
+  defaultExpanded?: boolean;
 }
-const { company, role, start, end, current, tags, secondaryTags, html, variant } = Astro.props;
+const {
+  company,
+  employer,
+  role,
+  start,
+  end,
+  current,
+  tags,
+  secondaryTags,
+  html,
+  shortHtml = '',
+  variant,
+  defaultExpanded = true,
+} = Astro.props;
 
 const period = formatCvPeriod(start, end, current);
-const visibleTags = tags ? tags.slice(0, variant === 'short' ? 5 : tags.length) : [];
+
+// Compétences clés : ligne texte sobre, primaires + secondaires, +X pour l'overflow.
+const TOTAL_VISIBLE = 8;
+const primaryAll = tags ?? [];
+const secondaryAll = variant === 'short' ? [] : (secondaryTags ?? []);
+const remainingSlots = Math.max(0, TOTAL_VISIBLE - primaryAll.length);
+const secVisible = secondaryAll.slice(0, remainingSlots);
+const secHidden = secondaryAll.slice(remainingSlots);
+const overflowCount = secHidden.length;
+const hasSkills = primaryAll.length > 0 || secondaryAll.length > 0;
+
+// Découpe le HTML en 3 morceaux pour intercaler la ligne Compétences avant l'Impact.
+const { intro, impact, body } = variant === 'detailed' ? splitExperienceHtmlByParts(html) : { intro: '', impact: '', body: html };
+
+const canCollapse = variant === 'detailed';
+
+const proseClasses =
+  'prose prose-sm dark:prose-invert max-w-none ' +
+  'prose-p:my-2.5 prose-p:leading-[1.8] ' +
+  'prose-ul:my-3 ' +
+  'prose-li:my-1.5 prose-li:leading-[1.85] ' +
+  'prose-strong:text-foreground/95 ' +
+  '[&_.cv-impact]:my-3 [&_.cv-impact]:text-foreground/75 [&_.cv-impact]:text-[12.5px] ' +
+  '[&_.cv-environment]:my-3 [&_.cv-environment]:text-foreground/50 [&_.cv-environment]:text-[12.5px] ' +
+  '[&_.cv-environment_em]:italic ' +
+  '[&_.cv-subsection]:mt-10 [&_.cv-subsection]:mb-2.5 [&_.cv-subsection]:border-l-2 [&_.cv-subsection]:border-cv-accent/50 [&_.cv-subsection]:pl-3 ' +
+  '[&_.cv-subsection_strong]:text-foreground/90 [&_.cv-subsection_strong]:text-[13.5px] [&_.cv-subsection_strong]:tracking-wide [&_.cv-subsection_strong]:font-semibold ' +
+  'first:[&_.cv-subsection]:mt-0';
 ---
 
 <article
-  class="group border-border/70 hover:border-cv-accent hover:bg-muted/30 relative mb-10 break-inside-avoid rounded-r border-l-2 py-3 pr-3 pl-7 transition-all duration-200 hover:-translate-y-px hover:shadow-sm"
+  class="cv-exp group border-border/70 hover:border-cv-accent hover:bg-muted/30 relative mb-10 rounded-r border-l-2 py-3 pr-3 pl-7 transition-all duration-200 hover:-translate-y-px hover:shadow-sm print:mb-4 print-short:mb-5 print-short:py-2 print-short:pl-5"
+  data-expanded={defaultExpanded ? 'true' : 'false'}
 >
   <div
     class="border-cv-accent/50 bg-background group-hover:border-cv-accent group-hover:bg-cv-accent/15 absolute top-4.5 -left-1.25 h-2 w-2 rounded-full border transition-all duration-200"
   >
   </div>
-  <div class="flex flex-col gap-y-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4 sm:gap-y-0">
-    <div class="flex flex-col gap-y-0.5 sm:flex-row sm:items-baseline sm:gap-x-2.5">
-      <span class="text-base leading-snug font-bold">{company}</span>
-      <span class="text-foreground/85 text-sm font-medium">{role}</span>
+
+  <div class="flex flex-col gap-y-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+    <div class="flex min-w-0 flex-col gap-y-0.5">
+      <span class="text-base font-bold leading-snug print-short:text-[13px]">
+        {company}
+        {employer && <span class="text-foreground/60 ml-1.5 text-sm font-normal print-short:text-[11px]">({employer})</span>}
+      </span>
+      <span class="cv-exp-role text-foreground/80 text-sm font-medium leading-snug print-short:text-[12.5px]">{role}</span>
     </div>
-    <span class="text-muted-foreground text-[11px] tabular-nums sm:w-36 sm:shrink-0 sm:text-right">{period}</span>
+    <div class="flex items-center gap-3 sm:mt-1 sm:shrink-0">
+      <span class="text-foreground/70 text-xs font-semibold tabular-nums sm:text-right sm:whitespace-nowrap print-short:text-[10.5px]">{period}</span>
+      {
+        canCollapse && (
+          <button
+            type="button"
+            class="cv-exp-toggle border-cv-accent/40 text-cv-accent hover:bg-cv-accent/10 hover:border-cv-accent inline-flex h-7 w-7 items-center justify-center rounded-md border transition-colors print:hidden"
+            aria-expanded={defaultExpanded ? 'true' : 'false'}
+            aria-label="Replier / déplier l'expérience"
+          >
+            <CvIcon name="chevron-up" size={16} strokeWidth={2.5} class="cv-exp-icon-expanded" />
+            <CvIcon name="chevron-down" size={16} strokeWidth={2.5} class="cv-exp-icon-collapsed" />
+          </button>
+        )
+      }
+    </div>
   </div>
+
   {
-    visibleTags.length > 0 && (
-      <div class="mt-2.5 flex flex-wrap gap-1.5">
-        {visibleTags.map((tag) => (
-          <span class="bg-cv-accent/12 text-cv-accent/90 inline-flex h-6 items-center rounded-full px-2.5 text-[11px] font-medium">{tag}</span>
-        ))}
-      </div>
-    )
-  }
-  {
-    secondaryTags && secondaryTags.length > 0 && (
-      <div class="mt-1.5 flex flex-wrap gap-1.5">
-        {secondaryTags.map((tag) => (
-          <span class="text-cv-accent/90 inline-flex h-6 items-center rounded-full px-2.5 text-[11px] font-medium">{tag}</span>
-        ))}
-      </div>
-    )
-  }
-  {
-    html && (
+    canCollapse && shortHtml && (
       <div
-        class="prose prose-sm dark:prose-invert prose-p:my-1.5 prose-p:leading-[1.75] prose-ul:my-1.5 prose-li:my-0.5 prose-li:leading-[1.75] mt-3 max-w-[90ch]"
-        set:html={html}
+        class="cv-exp-collapsed mt-4 text-foreground/75 prose prose-sm dark:prose-invert max-w-none prose-p:my-1.5 prose-p:leading-[1.75] print-short:mt-1 print-short:[&_p]:my-0.5 print-short:[&_p]:leading-[1.35] print-short:[&_p]:text-[11.5px]"
+        set:html={shortHtml}
       />
     )
   }
+
+  <div class="cv-exp-detailed">
+    {intro && <div class={`mt-4 print-short:mt-1.5 ${proseClasses}`} set:html={intro} />}
+
+    {
+      hasSkills && (
+        <div
+          class="cv-skills-line mt-4 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-[13px] leading-[1.65] print-short:mt-1.5"
+          data-expanded="false"
+        >
+          <span class="cv-skills-label text-foreground/55 text-[12px] font-medium tracking-wide">Compétences clés :</span>
+          {primaryAll.length > 0 && (
+            <span class="text-cv-accent font-semibold">{primaryAll.join(' · ')}</span>
+          )}
+          {secVisible.length > 0 && (
+            <>
+              <span class="text-cv-accent/30 font-normal">·</span>
+              <span class="text-cv-accent/70">{secVisible.join(' · ')}</span>
+            </>
+          )}
+          {overflowCount > 0 && (
+            <span class="cv-skills-extra contents" aria-hidden="true">
+              <span class="text-cv-accent/30 font-normal">·</span>
+              <span class="text-cv-accent/70">{secHidden.join(' · ')}</span>
+            </span>
+          )}
+          {overflowCount > 0 && (
+            <button
+              type="button"
+              class="cv-skills-toggle border-cv-accent/30 hover:bg-cv-accent/10 text-cv-accent ml-1 inline-flex h-5 items-center rounded-full border border-dashed px-2 text-[11px] font-medium transition-colors print:hidden"
+              data-collapsed-label={`+${overflowCount}`}
+              data-expanded-label="−"
+              aria-expanded="false"
+            >
+              +{overflowCount}
+            </button>
+          )}
+        </div>
+      )
+    }
+
+    {impact && <div class={`mt-2 print-short:mt-1 ${proseClasses}`} set:html={impact} />}
+    {body && <div class={`mt-2 print-short:mt-1 ${proseClasses}`} set:html={body} />}
+    {variant === 'short' && !intro && !impact && !body && html && <div class={`mt-4 print-short:mt-1.5 ${proseClasses}`} set:html={html} />}
+  </div>
 </article>
+
+<style is:global>
+  /* Experience card collapse / expand */
+  .cv-exp[data-expanded='false'] .cv-exp-detailed { display: none; }
+  .cv-exp[data-expanded='true'] .cv-exp-collapsed { display: none; }
+
+  /* Toggle button icon swap driven by parent state */
+  .cv-exp[data-expanded='true'] .cv-exp-icon-collapsed { display: none; }
+  .cv-exp[data-expanded='false'] .cv-exp-icon-expanded { display: none; }
+
+  /* Skills overflow */
+  .cv-skills-line[data-expanded='false'] .cv-skills-extra { display: none; }
+
+  @media print {
+    .cv-exp .cv-exp-collapsed { display: none !important; }
+    .cv-exp .cv-exp-detailed { display: block !important; }
+    .cv-exp-toggle, .cv-skills-toggle { display: none !important; }
+    .cv-skills-extra { display: contents !important; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.cv-exp-toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const article = btn.closest<HTMLElement>('.cv-exp');
+      if (!article) return;
+      const next = article.dataset.expanded === 'true' ? 'false' : 'true';
+      article.dataset.expanded = next;
+      btn.setAttribute('aria-expanded', String(next === 'true'));
+    });
+  });
+
+  document.querySelectorAll<HTMLButtonElement>('.cv-skills-toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const block = btn.closest<HTMLElement>('.cv-skills-line');
+      if (!block) return;
+      const next = block.dataset.expanded === 'true' ? 'false' : 'true';
+      block.dataset.expanded = next;
+      btn.textContent = next === 'true' ? (btn.dataset.expandedLabel ?? '−') : (btn.dataset.collapsedLabel ?? '+');
+      btn.setAttribute('aria-expanded', String(next === 'true'));
+      const extra = block.querySelector<HTMLElement>('.cv-skills-extra');
+      if (extra) extra.setAttribute('aria-hidden', String(next !== 'true'));
+    });
+  });
+</script>

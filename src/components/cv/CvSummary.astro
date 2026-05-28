@@ -1,0 +1,29 @@
+---
+/**
+ * Bloc "Synthèse opérationnelle" affiché en haut de la page CV détaillée.
+ *
+ * Contenu attendu dans `summary.md` : une liste à puces (`<ul>`) OU un ou plusieurs paragraphes (`<p>`).
+ * Le composant style les deux cas pour garder un rendu sobre et premium :
+ *  - `<ul>` : list-disc, marker bleu accent, 1.5rem d'indentation.
+ *  - `<p>`  : taille texte normale, leading 1.7.
+ *
+ * Le titre "Synthèse opérationnelle" est volontairement hardcodé ici (et pas dans le markdown)
+ * pour conserver l'autorité éditoriale côté composant : si on veut le renommer un jour,
+ * c'est un endroit unique.
+ */
+interface Props {
+  html: string;
+}
+const { html } = Astro.props;
+---
+
+<div class="border-cv-accent/20 bg-cv-accent/5 mb-12 rounded-lg border px-6 py-5">
+  <p class="text-cv-accent/80 mb-3 text-[11px] font-bold uppercase tracking-widest">Synthèse opérationnelle</p>
+  <div
+    class="text-foreground/85 text-sm leading-[1.7]
+      [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1.5 [&_ul]:m-0
+      [&_li]:leading-[1.7] [&_li]:marker:text-cv-accent/50
+      [&_p]:my-1.5"
+    set:html={html}
+  />
+</div>

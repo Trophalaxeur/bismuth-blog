@@ -15,23 +15,23 @@ priority: 80
 
 Mise en place d’un homelab d’expérimentation pour tester des architectures, automatiser des déploiements et héberger des services personnels avec une approche Infrastructure as Code.
 
-**Environnement** : Proxmox, Terraform, Ansible, GNU/Linux.
+*Environnement : Proxmox, Terraform, Ansible, GNU/Linux.*
 
 ### Outillage IA
 
 Expérimentation d’agents IA et workflows Claude Code / GitHub Copilot pour l’aide à la rédaction, la revue et l’automatisation de tâches techniques.
 
-**Environnement** : Claude, ChatGPT, Github Copilot.
+*Environnement : Claude, ChatGPT, Github Copilot.*
 
 ### Application d'édition de film slowmotion
 
 Développement bénévole frontend Vue.js pour une application de création de film slowmotion.
 
-**Environnement** : Vue.js, HTML, CSS, GitHub, Docker, GNU/Linux.
+*Environnement : Vue.js, HTML, CSS, GitHub, Docker, GNU/Linux.*
 
 ### Site de mariage
 
 Réalisation d'un site avec identification, formulaire de présence et scripts d'extraction des données vers Google Sheets.
 
-**Environnement** : React, Node.js, HTML, CSS, Git, Docker, AWS, Firebase, GNU/Linux.
+*Environnement : React, Node.js, HTML, CSS, Git, Docker, AWS, Firebase, GNU/Linux.*
 :::

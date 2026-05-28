@@ -27,11 +27,14 @@ const { title = 'CV — Florian Lefevre' } = Astro.props;
         .no-print {
           display: none !important;
         }
-        article {
-          break-inside: avoid;
-        }
-        section {
-          break-inside: avoid;
+        /* Pas de break-inside global : on laisse les sections/cards se découper
+         * naturellement, l'orphelinage est géré au niveau composant. */
+
+        /* PS uniquement : on libère le padding du body (sinon ~8mm de blanc en plus
+         * par-dessus le @page) pour gagner de la zone utile sur la cible 2 pages.
+         * Le data-cv-variant est posé par le script de toggle ci-dessous. */
+        body[data-cv-variant="short"] {
+          padding: 0 !important;
         }
       }
     </style>
