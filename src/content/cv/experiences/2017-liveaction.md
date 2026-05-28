@@ -4,31 +4,31 @@ type: experience
 company: "LiveAction"
 clientLocation: "Toulouse"
 employer: "Florian Lefevre Consulting"
-role: "Développeur Senior Angular"
+role: "Développeur senior et référent frontend Angular"
 start: "2017-10"
 end: "2019-03"
 priority: 70
+section: complementary
 variants:
   - short
   - career-channel
   - detailed
 tags:
-  - AngularJS
   - Angular
   - TypeScript strict
   - RxJS
   - Data Visualization
+  - PDF Generation
 secondaryTags:
   - ESLint
   - Highcharts
   - D3.js
-  - PDF Generation
   - Docker
   - Java
 environment:
   languages:
     - Angular
-    - AngularJS Migration
+    - AngularJS
     - TypeScript strict
     - HTML
     - CSS
@@ -46,7 +46,7 @@ environment:
 ---
 
 :::short
-Migration d’une application web de monitoring réseau d’**AngularJS** vers **Angular**, avec rôle de référent frontend : TypeScript strict, RxJS, ESLint, dashboards Highcharts/D3.js et rapports PDF.
+**Migration AngularJS vers Angular** d’une application web de monitoring réseau, avec rôle de **référent frontend** : TypeScript strict, RxJS, ESLint, **dashboards** Highcharts/D3.js et **rapports PDF**.
 :::
 
 :::career-channel
@@ -64,6 +64,8 @@ Développeur senior et référent frontend sur une application web de monitoring
 Développeur senior et référent frontend sur une application web de monitoring réseau, dans le cadre d’une migration structurante d’**AngularJS** vers **Angular**.
 
 La mission a consisté à moderniser le socle frontend, remettre à plat les pratiques de développement et améliorer la maintenabilité d’une application riche en dashboards, rapports et visualisation de données.
+
+**Impact :** contribution majeure à la migration AngularJS vers Angular et standardisation des pratiques frontend sur une application de monitoring réseau complexe.
 
 - Contribution majeure à la migration **AngularJS → Angular**, menée sur une application conséquente composée d’une quinzaine de modules, d’une cinquantaine de pages et de plusieurs centaines de composants.
 - Mise en place de **TypeScript strict**, d’ESLint et de conventions Angular/RxJS afin de renforcer la fiabilité du typage, limiter les erreurs et améliorer la lisibilité du code.

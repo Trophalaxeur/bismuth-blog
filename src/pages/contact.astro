@@ -8,7 +8,7 @@ const meta = {
   description: 'Me contacter par email ou via le formulaire',
 };
 
-// Formspree endpoint — remplacer YOUR_FORM_ID par l'ID obtenu sur https://formspree.io
+// Formspree endpoint — replace YOUR_FORM_ID with the ID from https://formspree.io
 const FORM_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
 ---
 
@@ -35,7 +35,7 @@ const FORM_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
 
       <div class="border-border bg-muted/50 flex items-start gap-3 rounded-lg border px-4 py-3 font-mono text-xs">
         <svg xmlns="http://www.w3.org/2000/svg" class="text-muted-foreground mt-0.5 h-4 w-4 shrink-0" viewBox="0 0 24 24">
-          <path fill="currentColor" d="M13 14h-2v-4h2m0 8h-2v-2h2M1 21h22L12 2z"/>
+          <path fill="currentColor" d="M13 14h-2v-4h2m0 8h-2v-2h2M1 21h22L12 2z"></path>
         </svg>
         <div>
           <p class="text-foreground"><span class="text-cv-accent">warning</span> En développement</p>
@@ -49,7 +49,7 @@ const FORM_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
           <input type="hidden" name="_subject" value="Contact depuis flefevre.fr" />
           <input type="hidden" name="_form_loaded_at" id="form-loaded-at" value="" />
 
-          {/* Honeypot — masqué visuellement et accessible aux bots uniquement */}
+          {/* Honeypot — visually hidden and available only to bots */}
           <div class="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
             <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
           </div>
@@ -100,11 +100,11 @@ const FORM_ENDPOINT = 'https://formspree.io/f/YOUR_FORM_ID';
 </PageLayout>
 
 <script>
-  // Timestamp d'affichage du formulaire — un envoi en moins de 3s = bot probable
+  // Form display timestamp — a submission in less than 3s is probably a bot
   const loadedAtField = document.getElementById('form-loaded-at') as HTMLInputElement | null;
   if (loadedAtField) loadedAtField.value = String(Date.now());
 
-  // Validation rapide côté client : honeypot + délai minimal
+  // Quick client-side validation: honeypot + minimum delay
   const form = document.getElementById('contact-form') as HTMLFormElement | null;
   const status = document.getElementById('form-status') as HTMLParagraphElement | null;
 

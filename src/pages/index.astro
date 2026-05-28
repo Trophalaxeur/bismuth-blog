@@ -59,9 +59,7 @@ const allPostsByDate = sortMDByDate(allPosts).slice(0, MAX_POSTS);
         <Section title="Derniers articles">
           <ul class="flex flex-col gap-y-2">
             {allPostsByDate.map((p) => (
-              <li class="flex flex-col gap-x-2 sm:flex-row">
-                <PostPreview post={p} />
-              </li>
+              <PostPreview post={p} />
             ))}
           </ul>
         </Section>

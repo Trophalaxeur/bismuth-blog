@@ -84,16 +84,11 @@ function leftBar(): SatoriEl {
 }
 
 function topRow(): SatoriEl {
-  return box({ alignItems: 'center' }, [
-    img(BISMUTH_SRC, 104, 124),
-    span(SITE_NAME, { color: C.accent, fontSize: 44, fontWeight: 700, marginLeft: 14 }),
-  ]);
+  return box({ alignItems: 'center' }, [img(BISMUTH_SRC, 104, 124), span(SITE_NAME, { color: C.accent, fontSize: 44, fontWeight: 700, marginLeft: 14 })]);
 }
 
 function bottomUrl(): SatoriEl {
-  return box({ justifyContent: 'flex-end' }, [
-    span(SITE_URL, { color: C.muted, fontSize: 36 }),
-  ]);
+  return box({ justifyContent: 'flex-end' }, [span(SITE_URL, { color: C.muted, fontSize: 36 })]);
 }
 
 function tagPill(tag: string): SatoriEl {
@@ -107,7 +102,7 @@ function tagPill(tag: string): SatoriEl {
       paddingRight: 12,
       marginRight: 8,
     },
-    [span(tag, { color: C.accent, fontSize: 18 })],
+    [span(tag, { color: C.accent, fontSize: 18 })]
   );
 }
 
@@ -142,26 +137,15 @@ function articleCard(title: string, description: string, date: string, tags: str
         span(ROLE, { color: C.accent, fontSize: 20, fontWeight: 700, marginTop: 4 }),
       ]),
       box({ justifyContent: 'space-between', alignItems: 'center' }, [
-        box({ alignItems: 'center' }, [
-          ...visibleTags.map(tagPill),
-          span(date, { color: C.muted, fontSize: 20, marginLeft: visibleTags.length > 0 ? 4 : 0 }),
-        ]),
+        box({ alignItems: 'center' }, [...visibleTags.map(tagPill), span(date, { color: C.muted, fontSize: 20, marginLeft: visibleTags.length > 0 ? 4 : 0 })]),
         span(SITE_URL, { color: C.muted, fontSize: 24 }),
       ]),
     ]),
   ]);
 }
 
-export async function renderOgImage(opts: {
-  title?: string;
-  description?: string;
-  date?: string;
-  tags?: string[];
-  isArticle?: boolean;
-}): Promise<ArrayBuffer> {
-  const element = opts.isArticle
-    ? articleCard(opts.title ?? '', opts.description ?? '', opts.date ?? '', opts.tags ?? [])
-    : siteCard(opts.description ?? '');
+export async function renderOgImage(opts: { title?: string; description?: string; date?: string; tags?: string[]; isArticle?: boolean }): Promise<ArrayBuffer> {
+  const element = opts.isArticle ? articleCard(opts.title ?? '', opts.description ?? '', opts.date ?? '', opts.tags ?? []) : siteCard(opts.description ?? '');
 
   const svg = await satori(element, {
     width: W,

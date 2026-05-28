@@ -1,37 +1,148 @@
 ---
 import CvExperienceCard from './CvExperienceCard.astro';
+import CvIcon from './CvIcon.astro';
+
+// Narrative-importance order: recent/significant → foundational → appendices.
+const SECTION_ORDER = ['main', 'production', 'complementary', 'early'] as const;
+type SectionKey = (typeof SECTION_ORDER)[number];
+
+const SECTION_META: Record<SectionKey, { label: string; id: string; openByDefault: boolean }> = {
+  main: { label: 'Expériences principales', id: 'experiences-principales', openByDefault: true },
+  production: { label: 'Expérience fondatrice production', id: 'experiences-production', openByDefault: true },
+  complementary: { label: 'Expériences complémentaires', id: 'experiences-complementaires', openByDefault: false },
+  early: { label: 'Stages & premières missions', id: 'experiences-stages', openByDefault: false },
+};
+
+interface Experience {
+  company: string;
+  clientLocation?: string;
+  employer?: string;
+  role: string;
+  start: string;
+  end?: string;
+  current?: boolean;
+  tags?: string[];
+  secondaryTags?: string[];
+  html: string;
+  shortHtml?: string;
+  section?: string;
+}
 
 interface Props {
-  experiences: Array<{
-    company: string;
-    role: string;
-    start: string;
-    end?: string;
-    current?: boolean;
-    tags?: string[];
-    secondaryTags?: string[];
-    html: string;
-  }>;
+  experiences: Experience[];
   variant: 'short' | 'detailed';
 }
 const { experiences, variant } = Astro.props;
+
+const groups =
+  variant === 'detailed'
+    ? SECTION_ORDER.map((key, i) => ({
+        key,
+        label: SECTION_META[key].label,
+        id: i === 0 ? 'experiences' : SECTION_META[key].id,
+        openByDefault: SECTION_META[key].openByDefault,
+        items: experiences.filter((e) => (e.section ?? 'complementary') === key),
+      })).filter((g) => g.items.length > 0)
+    : null;
+
+const titleClass = 'border-cv-accent/40 text-foreground/85 border-b-2 pb-3 text-[13px] font-bold tracking-[0.08em] uppercase print-short:pb-1.5';
 ---
 
-<section id="experiences" class="mb-12">
-  <h2 class="border-border/60 text-foreground/70 mb-6 border-b pb-2 text-xs font-bold tracking-[0.12em] uppercase">Expériences professionnelles</h2>
-  {
-    experiences.map((exp) => (
-      <CvExperienceCard
-        company={exp.company}
-        role={exp.role}
-        start={exp.start}
-        end={exp.end}
-        current={exp.current}
-        tags={exp.tags}
-        secondaryTags={exp.secondaryTags}
-        html={exp.html}
-        variant={variant}
-      />
+{
+  groups ? (
+    groups.map((group) => (
+      <section id={group.id} class="cv-exp-section mb-14 print:mb-0" data-expanded={group.openByDefault ? 'true' : 'false'}>
+        <div class="cv-exp-section-head mb-8 flex items-end justify-between gap-4 print:mb-3">
+          <h2 class={titleClass + ' grow'}>{group.label}</h2>
+          <button
+            type="button"
+            class="cv-master-toggle border-cv-accent/40 text-cv-accent hover:bg-cv-accent/10 hover:border-cv-accent inline-flex h-7 w-7 shrink-0 items-center justify-center self-end rounded-md border transition-colors print:hidden"
+            aria-expanded={group.openByDefault ? 'true' : 'false'}
+            aria-label="Tout déplier / tout replier"
+          >
+            <CvIcon name="chevron-up" size={16} strokeWidth={2.5} class="cv-master-icon-expanded" />
+            <CvIcon name="chevron-down" size={16} strokeWidth={2.5} class="cv-master-icon-collapsed" />
+          </button>
+        </div>
+        {group.items.map((exp) => (
+          <CvExperienceCard
+            company={exp.company}
+            clientLocation={exp.clientLocation}
+            employer={exp.employer}
+            role={exp.role}
+            start={exp.start}
+            end={exp.end}
+            current={exp.current}
+            tags={exp.tags}
+            secondaryTags={exp.secondaryTags}
+            html={exp.html}
+            shortHtml={exp.shortHtml}
+            variant={variant}
+            defaultExpanded={group.openByDefault}
+          />
+        ))}
+      </section>
     ))
+  ) : (
+    <section id="experiences" class="print-short:mb-3 mb-14">
+      <h2 class={titleClass + ' print-short:mb-3 mb-8'}>Expériences professionnelles</h2>
+      {experiences.map((exp) => (
+        <CvExperienceCard
+          company={exp.company}
+          clientLocation={exp.clientLocation}
+          employer={exp.employer}
+          role={exp.role}
+          start={exp.start}
+          end={exp.end}
+          current={exp.current}
+          tags={exp.tags}
+          secondaryTags={exp.secondaryTags}
+          html={exp.html}
+          shortHtml={exp.shortHtml}
+          variant={variant}
+        />
+      ))}
+    </section>
+  )
+}
+
+<style is:global>
+  .cv-exp-section[data-expanded='true'] .cv-master-icon-collapsed {
+    display: none;
   }
-</section>
+  .cv-exp-section[data-expanded='false'] .cv-master-icon-expanded {
+    display: none;
+  }
+
+  @media print {
+    /* Page break BEFORE each section except the first → no double break with Appendix. */
+    .cv-exp-section + .cv-exp-section {
+      break-before: page;
+    }
+    /* Glue section title block to the first experience card. */
+    .cv-exp-section-head {
+      break-after: avoid;
+      break-inside: avoid;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.cv-master-toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const section = btn.closest<HTMLElement>('.cv-exp-section');
+      if (!section) return;
+      const cards = section.querySelectorAll<HTMLElement>('.cv-exp');
+      if (cards.length === 0) return;
+      const allExpanded = [...cards].every((c) => c.dataset.expanded === 'true');
+      const next = allExpanded ? 'false' : 'true';
+      cards.forEach((c) => {
+        c.dataset.expanded = next;
+        const cardBtn = c.querySelector<HTMLButtonElement>('.cv-exp-toggle');
+        if (cardBtn) cardBtn.setAttribute('aria-expanded', String(next === 'true'));
+      });
+      section.dataset.expanded = next;
+      btn.setAttribute('aria-expanded', String(next === 'true'));
+    });
+  });
+</script>

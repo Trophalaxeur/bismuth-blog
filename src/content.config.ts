@@ -48,7 +48,8 @@ const cvExperiences = defineCollection({
     end: z.string().optional(),
     current: z.boolean().optional().default(false),
     priority: z.number().optional().default(50),
-    variants: z.array(z.string()).optional(),
+    variants: z.array(z.enum(['short', 'detailed', 'career-channel'])).optional(),
+    section: z.enum(['main', 'production', 'complementary', 'early']).optional(),
     tags: z.array(z.string()).optional(),
     secondaryTags: z.array(z.string()).optional(),
     environment: z
@@ -66,7 +67,7 @@ const cvSections = defineCollection({
   loader: glob({ pattern: '*.md', base: './src/content/cv' }),
   schema: z.object({
     schemaVersion: z.number().optional(),
-    type: z.enum(['profile', 'skills', 'education', 'projects', 'extra-info']),
+    type: z.enum(['profile', 'domains', 'skills', 'education', 'projects', 'extra-info', 'interests', 'summary']),
     priority: z.number().optional(),
     // profile
     name: z.string().optional(),
@@ -76,8 +77,20 @@ const cvSections = defineCollection({
     location: z.string().optional(),
     contact: z.object({ email: z.string(), phone: z.string().optional(), github: z.string().optional(), linkedin: z.string().optional() }).optional(),
     positioning: z.array(z.string()).optional(),
+    variants: z
+      .object({
+        default: z.enum(['short', 'detailed']).optional(),
+        available: z.array(z.enum(['short', 'detailed'])).optional(),
+      })
+      .optional(),
+    pdf: z
+      .object({
+        short: z.object({ filename: z.string(), pageTarget: z.number().optional() }).optional(),
+        detailed: z.object({ filename: z.string(), pageTarget: z.number().optional() }).optional(),
+      })
+      .optional(),
     // skills
-    skills: z.record(z.string(), z.array(z.string())).optional(),
+    skills: z.record(z.string(), z.union([z.string(), z.array(z.string())])).optional(),
   }),
 });
 

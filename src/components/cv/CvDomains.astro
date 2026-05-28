@@ -1,0 +1,32 @@
+---
+import type { CvDomain } from '@/utils';
+import CvIcon, { type CvIconName } from './CvIcon.astro';
+
+interface Props {
+  domains: CvDomain[];
+}
+const { domains } = Astro.props;
+---
+
+{
+  domains.length > 0 && (
+    <section id="domaines" class="mb-14 print:mb-3 print:break-before-page">
+      <h2 class="border-cv-accent/40 text-foreground/85 mb-8 border-b-2 pb-3 text-[13px] font-bold tracking-[0.08em] uppercase print:mb-3 print:pb-2">Domaines d'intervention</h2>
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 print:gap-2">
+        {domains.map((d) => (
+          <div class="border-border/60 hover:border-cv-accent/40 group rounded-lg border bg-transparent p-5 transition-colors print:p-2.5">
+            <div class="flex items-start gap-3.5 print:gap-2.5">
+              <div class="text-cv-accent/70 shrink-0">
+                <CvIcon name={d.icon as CvIconName} size={24} strokeWidth={1.75} />
+              </div>
+              <div class="min-w-0">
+                <h3 class="text-foreground text-[13.5px] leading-snug font-bold print:text-[12px]">{d.title}</h3>
+                <p class="text-foreground/80 mt-1.5 text-[12.5px] leading-[1.6] print:mt-1 print:text-[11px] print:leading-normal">{d.description}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}

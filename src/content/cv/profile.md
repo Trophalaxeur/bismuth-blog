@@ -2,8 +2,8 @@
 schemaVersion: 1
 type: profile
 name: "Florian Lefevre"
-title: "Lead Tech / Engineering Manager"
-baseline: "Software Engineering Manager • Tech Lead • Angular Architect • Lead Frontend Engineer "
+title: "Lead Tech / Engineering Manager hands-on"
+baseline: "Angular · TypeScript strict · NestJS · Architecture applicative · Qualité & delivery"
 image: "/images/profil_2.png"
 location: "Région Toulousaine"
 contact:
@@ -31,14 +31,13 @@ positioning:
 ---
 
 :::short
-Lead Tech / Software Engineering Manager (hands-on) fullstack, spécialisé dans la conception, l'architecture, la maintenance et l'évolution d'applications métier. Expérience confirmée sur Angular, TypeScript, RxJS, NgRx et Nx, avec un positionnement orienté qualité, accompagnement d'équipes et responsabilité technique.
+**Lead Tech / Engineering Manager hands-on**, spécialisé **Angular**, **TypeScript strict** et **NestJS**, j’accompagne les équipes dans la conception d’applications web métier robustes, avec une forte exigence sur l’**architecture**, la **qualité**, le **delivery** et l’usage maîtrisé de l’**IA assistée**.
 :::
 
 :::detailed
+**Lead Tech / Engineering Manager hands-on**, spécialisé dans la **conception**, le **développement** et l’**évolution d’applications web métier**, avec une forte expertise Angular, TypeScript strict et NestJS.
 
-Lead Tech / Software Engineering Manager (hands-on) fullstack, spécialisé sur les technologies Web et, notamment, Angular, TypeScript et NestJS, j’accompagne les équipes dans la conception, le développement, la structuration et l’évolution d’applications métier robustes et maintenables.
+J’accompagne les équipes sur l’**architecture applicative**, la **qualité du code**, la revue, le **delivery** et la **montée en compétence**, en gardant une implication concrète dans les choix techniques.
 
-Mon approche combine conception, architecture, développement, revue de code, méthodes agiles et accompagnement technique, avec pour objectif : livrer efficacement tout en faisant progresser la qualité et l’autonomie des équipes.
-
-J’intègre progressivement l’IA, notamment Claude Code, GitHub Copilot, agents et skills, comme assistant technique pour accélérer l’analyse et le développement sans déléguer les choix d’ingénierie.
+J’intègre l’IA assistée, notamment Claude Code, GitHub Copilot, agents et skills, comme levier d’analyse, de développement, de documentation et d’amélioration continue, tout en gardant la **maîtrise des choix d’ingénierie**.
 :::

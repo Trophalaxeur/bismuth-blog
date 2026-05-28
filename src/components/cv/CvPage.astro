@@ -1,14 +1,13 @@
 ---
 import { getCollection } from 'astro:content';
-import { extractVariantMarkdown, renderMarkdown, sortCvExperiences } from '@/utils';
+import { annotateExperienceHtml, extractVariantMarkdown, flattenEnvironment, parseDomains, renderMarkdown, sortCvExperiences } from '@/utils';
 import type { CvVariant } from '@/utils';
 import CvHeader from './CvHeader.astro';
-import CvProfile from './CvProfile.astro';
+import CvDomains from './CvDomains.astro';
+import CvSummary from './CvSummary.astro';
 import CvSkills from './CvSkills.astro';
 import CvExperienceList from './CvExperienceList.astro';
-import CvEducation from './CvEducation.astro';
-import CvProjects from './CvProjects.astro';
-import CvExtraInfo from './CvExtraInfo.astro';
+import CvAppendix from './CvAppendix.astro';
 
 interface Props {
   variant: Exclude<CvVariant, 'career-channel'>;
@@ -25,29 +24,68 @@ const skillsEntry = find('skills');
 const educationEntry = find('education');
 const projectsEntry = find('projects');
 const extraInfoEntry = find('extra-info');
+const domainsEntry = find('domains');
+const summaryEntry = find('summary');
+const interestsEntry = find('interests');
 
 const render = async (entry: (typeof allSections)[number] | undefined) => (entry ? renderMarkdown(extractVariantMarkdown(entry.body ?? '', variant)) : '');
 
-const [profileHtml, educationHtml, projectsHtml, extraInfoHtml] = await Promise.all([render(profileEntry), render(educationEntry), render(projectsEntry), render(extraInfoEntry)]);
+const [profileHtml, educationHtml, projectsHtml, extraInfoHtml, summaryHtml, interestsHtml] = await Promise.all([
+  render(profileEntry),
+  render(educationEntry),
+  render(projectsEntry),
+  render(extraInfoEntry),
+  render(summaryEntry),
+  render(interestsEntry),
+]);
 
-// Load, filter and sort experiences
+const domains = domainsEntry ? parseDomains(extractVariantMarkdown(domainsEntry.body ?? '', variant)) : [];
+
+// Load, filter and sort experiences.
+// The `variants` allowlist is applied for both variants (short AND detailed):
+// an experience without `variants` is always displayed (fallback), otherwise it
+// must explicitly declare the current variant.
 const allExperiences = await getCollection('cvExperiences');
-const visibleExperiences = variant === 'short' ? allExperiences.filter((e) => !e.data.variants || e.data.variants.includes('short')) : allExperiences;
+const visibleExperiences = allExperiences.filter((e) => !e.data.variants || e.data.variants.includes(variant));
 
 const sortedExperiences = sortCvExperiences(visibleExperiences);
 
 const experiencesData = await Promise.all(
-  sortedExperiences.map(async (exp) => ({
-    company: exp.data.company,
-    role: exp.data.role,
-    start: exp.data.start,
-    end: exp.data.end,
-    current: exp.data.current,
-    tags: exp.data.tags,
-    secondaryTags: exp.data.secondaryTags,
-    html: await renderMarkdown(extractVariantMarkdown(exp.body ?? '', variant)),
-  }))
+  sortedExperiences.map(async (exp) => {
+    const rawHtml = await renderMarkdown(extractVariantMarkdown(exp.body ?? '', variant));
+    const envString = variant === 'detailed' ? flattenEnvironment(exp.data.environment) : '';
+    const html = variant === 'detailed' ? annotateExperienceHtml(rawHtml, envString) : rawHtml;
+    // For the detailed page, also render the short-variant body so the card can collapse to a summary view.
+    // Fallback: experiences without a :::short block (e.g. early/complementary missions) would otherwise
+    // render as an empty collapsed card — use the first detailed paragraph as the collapsed summary.
+    let shortHtml = '';
+    if (variant === 'detailed') {
+      shortHtml = await renderMarkdown(extractVariantMarkdown(exp.body ?? '', 'short'));
+      if (!shortHtml.trim()) shortHtml = rawHtml.match(/<p[^>]*>[\s\S]*?<\/p>/)?.[0] ?? '';
+    }
+    return {
+      company: exp.data.company,
+      clientLocation: exp.data.clientLocation,
+      employer: exp.data.employer,
+      role: exp.data.role,
+      start: exp.data.start,
+      end: exp.data.end,
+      current: exp.data.current,
+      tags: exp.data.tags,
+      secondaryTags: exp.data.secondaryTags,
+      section: exp.data.section,
+      html,
+      shortHtml,
+    };
+  })
 );
+
+const appendix = {
+  formation: { title: 'Formation', html: educationHtml, id: 'formation', icon: 'graduation-cap' as const },
+  projects: { title: 'Projets personnels & expérimentations', html: projectsHtml, id: 'projets', icon: 'code-2' as const },
+  extraInfo: { title: 'Informations complémentaires', html: extraInfoHtml, id: 'infos', icon: 'info' as const },
+  interests: { title: "Centres d'intérêt", html: interestsHtml, id: 'interets', icon: 'heart' as const },
+};
 ---
 
 {
@@ -61,13 +99,13 @@ const experiencesData = await Promise.all(
       contact={profileEntry.data.contact ?? { email: '' }}
       variant={variant}
       showSwitch={showSwitch}
+      bioHtml={profileHtml}
     />
   )
 }
 
-<CvProfile html={profileHtml} />
-<CvSkills skills={skillsEntry?.data.skills ?? {}} />
+{variant === 'detailed' && summaryHtml && <CvSummary html={summaryHtml} />}
+{variant === 'detailed' && domains.length > 0 && <CvDomains domains={domains} />}
+<CvSkills skills={skillsEntry?.data.skills ?? {}} variant={variant} />
 <CvExperienceList experiences={experiencesData} variant={variant} />
-<CvEducation html={educationHtml} />
-{projectsHtml && <CvProjects html={projectsHtml} />}
-{extraInfoHtml && <CvExtraInfo html={extraInfoHtml} />}
+<CvAppendix formation={appendix.formation} projects={appendix.projects} extraInfo={appendix.extraInfo} interests={appendix.interests} />

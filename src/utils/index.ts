@@ -1,8 +1,21 @@
-export { extractVariantMarkdown, renderMarkdown, stripMarkdownForCareerChannel, formatCvPeriod, sortCvExperiences, CAREER_CHANNEL_MAX_CHARS } from './cv';
-export type { CvVariant } from './cv';
-export { renderOgImage } from './og-image';
+export {
+  CAREER_CHANNEL_MAX_CHARS,
+  annotateExperienceHtml,
+  colorizePlainTechTerms,
+  colorizeTechTerms,
+  extractVariantMarkdown,
+  flattenEnvironment,
+  formatCvPeriod,
+  parseDomains,
+  renderMarkdown,
+  sortCvExperiences,
+  splitExperienceHtmlByParts,
+  stripMarkdownForCareerChannel,
+} from './cv';
+export type { CvDomain, CvEnvironment, CvVariant } from './cv';
 export { getFormattedDate } from './date';
 export { generateToc } from './generateToc';
 export type { TocItem } from './generateToc';
+export { renderOgImage } from './og-image';
 export { getAllPosts, getUniqueTags, getUniqueTagsWithCount, sortMDByDate } from './post';
 export { cn } from './tailwind';

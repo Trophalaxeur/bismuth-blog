@@ -11,6 +11,4 @@ priority: 100
 :::detailed
 - Anglais professionnel, TOEIC 780, expérience en équipe internationale.
 - Permis A et B, véhicules personnels.
-- Engagement associatif : trésorier et membre actif d’Air-EISTI pendant 4 ans.
-- Plongée subaquatique, niveau 2.
 :::

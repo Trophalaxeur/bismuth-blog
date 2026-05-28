@@ -1,0 +1,26 @@
+---
+/**
+ * Operational summary block displayed at the top of the detailed CV page.
+ *
+ * Expected content in `summary.md`: a bullet list (`<ul>`) OR one or more paragraphs (`<p>`).
+ * The component styles both cases to keep a restrained, premium rendering:
+ *  - `<ul>`: list-disc, blue accent marker, 1.5rem indentation.
+ *  - `<p>`: normal text size, leading 1.7.
+ *
+ * The operational summary title is intentionally hardcoded here (not in markdown)
+ * to keep editorial ownership on the component side: if it needs renaming later,
+ * this is the single place to do it.
+ */
+interface Props {
+  html: string;
+}
+const { html } = Astro.props;
+---
+
+<div class="border-cv-accent/20 bg-cv-accent/5 mb-12 rounded-lg border px-6 py-5">
+  <p class="text-cv-accent/80 mb-3 text-[11px] font-bold tracking-widest uppercase">Synthèse opérationnelle</p>
+  <div
+    class="text-foreground/85 [&_li]:marker:text-cv-accent/50 text-sm leading-[1.7] [&_li]:leading-[1.7] [&_p]:my-1.5 [&_ul]:m-0 [&_ul]:list-disc [&_ul]:space-y-1.5 [&_ul]:pl-5"
+    set:html={html}
+  />
+</div>

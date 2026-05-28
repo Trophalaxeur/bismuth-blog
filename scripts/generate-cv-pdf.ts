@@ -1,5 +1,5 @@
-import { preview } from 'astro';
 import { chromium, type Browser } from '@playwright/test';
+import { preview } from 'astro';
 import path from 'path';
 
 const ROOT = path.resolve(import.meta.dirname, '..');
@@ -7,8 +7,7 @@ const ROOT = path.resolve(import.meta.dirname, '..');
 const PORT = (() => {
   const raw = process.env.PREVIEW_PORT ?? '4322';
   const port = parseInt(raw, 10);
-  if (Number.isNaN(port) || port < 1 || port > 65535)
-    throw new Error(`Invalid PREVIEW_PORT: "${raw}"`);
+  if (Number.isNaN(port) || port < 1 || port > 65535) throw new Error(`Invalid PREVIEW_PORT: "${raw}"`);
   return port;
 })();
 

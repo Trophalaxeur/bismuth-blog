@@ -3,10 +3,11 @@ schemaVersion: 1
 type: experience
 company: "EADS Cassidian"
 clientLocation: "Colomiers"
-role: "Stage de développement"
-start: "2010"
-end: "2010"
+role: "Stagiaire ingénieur  Java/J2EE"
+start: "2010-06"
+end: "2010-10"
 priority: 120
+section: early
 variants:
   - career-channel
   - detailed
@@ -23,14 +24,14 @@ secondaryTags:
 ---
 
 :::career-channel
-Stage ingénieur chez EADS Cassidian autour de la conception et du développement d’une plateforme web de documentation en Java/J2EE.
+Ingénieur stagiaire en développement chez EADS Cassidian autour de la conception et du développement d’une plateforme web de documentation en Java/J2EE.
 
 - Développement applicatif en Java/J2EE, HTML, CSS et jQuery.
 - Production du rapport de stage, schémas d’architecture, schémas de base de données et documentation technique.
 :::
 
 :::detailed
-Stage ingénieur chez EADS Cassidian autour de la conception et du développement d’une plateforme web de documentation en **Java/J2EE**.
+Ingénieur stagiaire en développement chez EADS Cassidian autour de la conception et du développement d’une plateforme web de documentation en **Java/J2EE**.
 
 - Développement applicatif en **Java/J2EE**, HTML, CSS et jQuery.
 - Participation à la conception de l’application et à la structuration des fonctionnalités.
