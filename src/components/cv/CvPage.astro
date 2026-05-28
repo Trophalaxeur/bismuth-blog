@@ -56,7 +56,13 @@ const experiencesData = await Promise.all(
     const envString = variant === 'detailed' ? flattenEnvironment(exp.data.environment) : '';
     const html = variant === 'detailed' ? annotateExperienceHtml(rawHtml, envString) : rawHtml;
     // For the detailed page, also render the short-variant body so the card can collapse to a summary view.
-    const shortHtml = variant === 'detailed' ? await renderMarkdown(extractVariantMarkdown(exp.body ?? '', 'short')) : '';
+    // Fallback: experiences without a :::short block (e.g. early/complementary missions) would otherwise
+    // render as an empty collapsed card — use the first detailed paragraph as the collapsed summary.
+    let shortHtml = '';
+    if (variant === 'detailed') {
+      shortHtml = await renderMarkdown(extractVariantMarkdown(exp.body ?? '', 'short'));
+      if (!shortHtml.trim()) shortHtml = rawHtml.match(/<p[^>]*>[\s\S]*?<\/p>/)?.[0] ?? '';
+    }
     return {
       company: exp.data.company,
       clientLocation: exp.data.clientLocation,

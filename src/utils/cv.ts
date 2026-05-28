@@ -111,8 +111,8 @@ const techRegex = new RegExp(`(?<![a-zA-Z0-9_-])(${sortedTechTerms.map(escapeReg
  * Wraps known technical terms in `<span class="cv-tech">` so they render
  * in semi-bold blue. Does not touch HTML tag contents (attributes).
  *
- * Limitation: uses regex on HTML, not a real DOM parser.
- * See docs/next-steps.md.
+ * Limitation: uses regex on HTML, not a real DOM parser (acceptable for the
+ * trusted, author-controlled markdown rendered here).
  */
 export function colorizeTechTerms(html: string): string {
   // Split into alternating HTML tag / text segments. Apply the regex only to text segments.
