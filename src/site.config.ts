@@ -27,7 +27,7 @@ export const siteConfig: SiteConfig = {
   },
 };
 
-export const menuLinks: Array<{ title: string; path: string }> = [
+export const menuLinks: Array<{ title: string; path: string; devOnly?: boolean }> = [
   {
     title: 'Home',
     path: '/',
@@ -39,6 +39,7 @@ export const menuLinks: Array<{ title: string; path: string }> = [
   {
     title: 'Blog',
     path: '/blog/',
+    devOnly: true,
   },
   {
     title: 'Contact',

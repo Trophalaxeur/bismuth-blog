@@ -11,7 +11,7 @@ import { menuLinks, siteConfig } from '@/site-config';
     <div class="flex flex-row items-center justify-center gap-x-3 sm:gap-x-7">
       {
         menuLinks
-          .filter(({ path }) => path !== '/')
+          .filter(({ path, devOnly }) => path !== '/' && (!devOnly || import.meta.env.DEV))
           .map(({ title, path }) => (
             <a href={path} class="hover:text-foreground/75 flex-none text-sm font-medium sm:text-[1.05rem]" aria-label="Nav Menu Item">
               {title}
