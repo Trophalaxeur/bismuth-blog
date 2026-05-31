@@ -20,6 +20,8 @@ const { title = 'CV — Florian Lefevre' } = Astro.props;
         body {
           -webkit-print-color-adjust: exact;
           print-color-adjust: exact;
+          /* White paper for all print variants (overrides the faint bg-background). */
+          background-color: #fff !important;
         }
         a[href]::after {
           content: none;

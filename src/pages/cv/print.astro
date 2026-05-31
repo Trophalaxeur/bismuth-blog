@@ -18,6 +18,13 @@ import CvPage from '@/components/cv/CvPage.astro';
     if (variant === 'detailed') {
       document.getElementById('variant-short')!.style.display = 'none';
       document.getElementById('variant-detailed')!.style.display = 'block';
+    } else {
+      // Short variant: tighter 10mm page margins (vs the layout's 15mm default)
+      // to fit the printed short CV onto 2 pages. Scoped here so the detailed
+      // dossier and the live print of detailed keep the airier 15mm margins.
+      const style = document.createElement('style');
+      style.textContent = '@media print{@page{margin:10mm}}';
+      document.head.appendChild(style);
     }
   </script>
 </CvPrintLayout>

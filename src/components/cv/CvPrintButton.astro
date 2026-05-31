@@ -7,13 +7,13 @@ const { variant } = Astro.props;
 
 <a
   href={`/cv/print?variant=${variant}`}
-  class="border-border hover:bg-border relative rounded-md border p-1.5 transition-all"
+  class="border-border hover:bg-border focus-visible:ring-cv-accent rounded-md border p-1.5 transition-all focus-visible:ring-2 focus-visible:outline-none"
   target="_blank"
   rel="noopener noreferrer"
   aria-label="Imprimer / Exporter en PDF"
   title="Imprimer / Exporter en PDF"
 >
-  <svg xmlns="http://www.w3.org/2000/svg" class="h-[1.2rem] w-[1.2rem]" viewBox="0 0 24 24">
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-[1.2rem] w-[1.2rem]" viewBox="0 0 24 24" aria-hidden="true">
     <path
       fill="currentColor"
       d="M18 3H6a1 1 0 0 0-1 1v4H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h1v2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2h1a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-1V4a1 1 0 0 0-1-1m-1 16H7v-4h10zm0-10H7V5h10zM5 13a1 1 0 1 1 0-2a1 1 0 0 1 0 2"

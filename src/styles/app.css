@@ -46,18 +46,23 @@
   --color-cv-accent: hsl(var(--cv-accent));
 }
 
+/* `font-display: block` (vs `swap`) blocks layout until Satoshi is loaded,
+ * preventing a fallback-then-swap render that scrambles glyph positions in
+ * the generated PDF's text layer. Web cost: a brief invisible-text period on
+ * cold loads (capped at ~3s; in practice imperceptible since the font is
+ * served locally from /fonts/). Cached visits are instant. */
 @font-face {
   font-family: Satoshi;
   src: url('/fonts/Satoshi-Variable.ttf');
   font-style: normal;
-  font-display: swap;
+  font-display: block;
 }
 
 @font-face {
   font-family: Satoshi;
   src: url('/fonts/Satoshi-VariableItalic.ttf');
   font-style: italic;
-  font-display: swap;
+  font-display: block;
 }
 
 @layer base {
@@ -167,10 +172,21 @@
     box-shadow: none !important;
   }
 
-  /* Hidden interaction buttons */
+  /* Chromium's PDF emitter renders uppercase text with non-zero letter-spacing
+   * (tracking) with visible inter-glyph gaps — e.g. "COMPÉT ENCES" instead of
+   * "COMPÉTENCES" on tracked section titles and skill column labels. Zeroing
+   * letter-spacing on uppercase elements in print eliminates the artifact.
+   * The screen visuals are untouched (rule scoped to @media print); titles
+   * print slightly tighter but cleanly joined. */
+  .uppercase {
+    letter-spacing: 0 !important;
+  }
+
+  /* Hidden interaction buttons (toggles + career-channel copy buttons) */
   .cv-exp-toggle,
   .cv-master-toggle,
-  .cv-skills-toggle {
+  .cv-skills-toggle,
+  .copy-btn {
     display: none !important;
   }
 
