@@ -53,14 +53,14 @@ const isShort = variant === 'short';
     cards.length > 0 && isShort && (
       // Short version: compact tabular grid, label on the left / items on the right.
       // In print, switch to 2 card columns (4 alternating label/items grid columns) to halve the number of rows.
-      <div class="print-short:grid-cols-[minmax(110px,130px)_1fr_minmax(110px,130px)_1fr] print-short:gap-x-3 print-short:gap-y-1 grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-[minmax(180px,220px)_1fr]">
+      <div class="print-short:grid-cols-[minmax(100px,120px)_1fr_minmax(100px,120px)_1fr] print-short:gap-x-3 print-short:gap-y-1 grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-[minmax(180px,220px)_1fr]">
         {cards.map((card) => (
           <>
             <h3 class="text-foreground/85 print-short:text-[10px] print-short:leading-tight text-[11px] leading-snug font-bold tracking-wider uppercase">
               <span class="print-short:hidden">{card.label}</span>
               <span class="print-short:inline hidden">{card.labelShort ?? card.label}</span>
             </h3>
-            <div class="print-short:text-[10.5px] print-short:gap-x-1.5 print-short:leading-tight flex flex-wrap items-baseline gap-x-2 gap-y-1 text-[12.5px] leading-snug">
+            <div class="print-short:text-[10.5px] print-short:gap-x-1.5 print-short:leading-tight flex flex-wrap content-start items-baseline gap-x-2 gap-y-1 text-[12.5px] leading-snug">
               {card.items.map(({ label, primary }, i) => (
                 <>
                   {i > 0 && <span class="text-cv-accent/60 font-semibold">·</span>}

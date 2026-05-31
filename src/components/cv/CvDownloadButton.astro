@@ -1,0 +1,21 @@
+---
+interface Props {
+  href: string;
+  /** Filename suggested to the browser when saving (download attribute). */
+  filename: string;
+  label?: string;
+}
+const { href, filename, label = 'Télécharger le PDF' } = Astro.props;
+---
+
+<a
+  href={href}
+  download={filename}
+  class="border-border hover:bg-border focus-visible:ring-cv-accent rounded-md border p-1.5 transition-all focus-visible:ring-2 focus-visible:outline-none"
+  aria-label={label}
+  title={label}
+>
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-[1.2rem] w-[1.2rem]" viewBox="0 0 24 24" aria-hidden="true">
+    <path fill="currentColor" d="M19 9h-4V3H9v6H5l7 7zM5 18v2h14v-2z"></path>
+  </svg>
+</a>
