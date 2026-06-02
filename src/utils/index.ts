@@ -6,6 +6,7 @@ export {
   extractVariantMarkdown,
   flattenEnvironment,
   formatCvPeriod,
+  getCareerChannelExperiencesData,
   parseDomains,
   renderMarkdown,
   sortCvExperiences,

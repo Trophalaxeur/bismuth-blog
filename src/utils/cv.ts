@@ -1,3 +1,4 @@
+import { getCollection } from 'astro:content';
 import rehypeStringify from 'rehype-stringify';
 import remarkGfm from 'remark-gfm';
 import remarkParse from 'remark-parse';
@@ -293,4 +294,20 @@ export function annotateExperienceHtml(html: string, envString: string): string 
   }
 
   return out;
+}
+
+/** Returns the mapped data array for all career-channel CV experiences, ready to pass to CvCareerChannelCard. */
+export async function getCareerChannelExperiencesData() {
+  const all = await getCollection('cvExperiences');
+  return sortCvExperiences(all.filter((e) => e.data.variants?.includes('career-channel'))).map(
+    (exp) => ({
+      company: exp.data.company,
+      role: exp.data.role,
+      start: exp.data.start,
+      end: exp.data.end,
+      current: exp.data.current,
+      tags: exp.data.tags,
+      text: stripMarkdownForCareerChannel(extractVariantMarkdown(exp.body ?? '', 'career-channel')),
+    }),
+  );
 }

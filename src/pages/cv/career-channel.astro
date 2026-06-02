@@ -2,22 +2,9 @@
 import PageLayout from '@/layouts/BaseLayout.astro';
 import CvCareerChannelCard from '@/components/cv/CvCareerChannelCard.astro';
 import CvActions from '@/components/cv/CvActions.astro';
-import { extractVariantMarkdown, stripMarkdownForCareerChannel, sortCvExperiences } from '@/utils';
-import { getCollection } from 'astro:content';
+import { getCareerChannelExperiencesData } from '@/utils';
 
-const allExperiences = await getCollection('cvExperiences');
-
-const careerChannelExperiences = sortCvExperiences(allExperiences.filter((e) => e.data.variants?.includes('career-channel')));
-
-const experiencesData = careerChannelExperiences.map((exp) => ({
-  company: exp.data.company,
-  role: exp.data.role,
-  start: exp.data.start,
-  end: exp.data.end,
-  current: exp.data.current,
-  tags: exp.data.tags,
-  text: stripMarkdownForCareerChannel(extractVariantMarkdown(exp.body ?? '', 'career-channel')),
-}));
+const experiencesData = await getCareerChannelExperiencesData();
 ---
 
 <PageLayout
