@@ -1,7 +1,7 @@
 ---
 import PageLayout from '@/layouts/BaseLayout.astro';
 import CvCareerChannelCard from '@/components/cv/CvCareerChannelCard.astro';
-import CvDownloadButton from '@/components/cv/CvDownloadButton.astro';
+import CvActions from '@/components/cv/CvActions.astro';
 import { extractVariantMarkdown, stripMarkdownForCareerChannel, sortCvExperiences } from '@/utils';
 import { getCollection } from 'astro:content';
 
@@ -26,7 +26,7 @@ const experiencesData = careerChannelExperiences.map((exp) => ({
     description: 'Descriptions de mes expériences professionnelles prêtes à copier-coller',
   }}
 >
-  <CvDownloadButton slot="headerActions" href="/cv-career-channel.pdf" filename="florian-lefevre-reseau.pdf" label="Télécharger le PDF réseau" />
+  <CvActions slot="headerActions" variant="career-channel" />
   <div class="w-full">
     <div class="mb-7">
       <h1 class="text-foreground text-2xl font-bold tracking-tight">Format réseau professionnel</h1>

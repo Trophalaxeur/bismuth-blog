@@ -1,6 +1,21 @@
 ---
 import CvPrintLayout from '@/layouts/CvPrintLayout.astro';
 import CvPage from '@/components/cv/CvPage.astro';
+import CvCareerChannelCard from '@/components/cv/CvCareerChannelCard.astro';
+import { extractVariantMarkdown, stripMarkdownForCareerChannel, sortCvExperiences } from '@/utils';
+import { getCollection } from 'astro:content';
+
+const allExperiences = await getCollection('cvExperiences');
+const careerChannelExperiences = sortCvExperiences(allExperiences.filter((e) => e.data.variants?.includes('career-channel')));
+const careerChannelData = careerChannelExperiences.map((exp) => ({
+  company: exp.data.company,
+  role: exp.data.role,
+  start: exp.data.start,
+  end: exp.data.end,
+  current: exp.data.current,
+  tags: exp.data.tags,
+  text: stripMarkdownForCareerChannel(extractVariantMarkdown(exp.body ?? '', 'career-channel')),
+}));
 ---
 
 <CvPrintLayout>
@@ -10,14 +25,21 @@ import CvPage from '@/components/cv/CvPage.astro';
   <div id="variant-detailed" style="display:none">
     <CvPage variant="detailed" showSwitch={false} />
   </div>
+  <div id="variant-career-channel" style="display:none">
+    {careerChannelData.map((exp) => <CvCareerChannelCard {...exp} />)}
+  </div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
-    const variant = params.get('variant') === 'detailed' ? 'detailed' : 'short';
+    const raw = params.get('variant');
+    const variant = raw === 'detailed' ? 'detailed' : raw === 'career-channel' ? 'career-channel' : 'short';
     document.body.dataset.cvVariant = variant;
     if (variant === 'detailed') {
       document.getElementById('variant-short')!.style.display = 'none';
       document.getElementById('variant-detailed')!.style.display = 'block';
+    } else if (variant === 'career-channel') {
+      document.getElementById('variant-short')!.style.display = 'none';
+      document.getElementById('variant-career-channel')!.style.display = 'block';
     } else {
       // Short variant: tighter 10mm page margins (vs the layout's 15mm default)
       // to fit the printed short CV onto 2 pages. Scoped here so the detailed
