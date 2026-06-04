@@ -1,0 +1,12 @@
+---
+import PageLayout from '@/layouts/BaseLayout.astro';
+import CvPage from '@/components/cv/CvPage.astro';
+import CvActions from '@/components/cv/CvActions.astro';
+---
+
+<PageLayout meta={{ title: 'CV — Detailed portfolio', description: "Florian Lefevre's full competency portfolio" }}>
+  <CvActions slot="headerActions" variant="detailed" />
+  <div class="w-full">
+    <CvPage variant="detailed" />
+  </div>
+</PageLayout>

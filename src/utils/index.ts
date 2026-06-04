@@ -1,3 +1,5 @@
+export { getCvLabels } from './cv-labels';
+export type { CvLabels } from './cv-labels';
 export {
   CAREER_CHANNEL_MAX_CHARS,
   annotateExperienceHtml,
@@ -6,6 +8,7 @@ export {
   extractVariantMarkdown,
   flattenEnvironment,
   formatCvPeriod,
+  getCareerChannelExperiencesData,
   parseDomains,
   renderMarkdown,
   sortCvExperiences,

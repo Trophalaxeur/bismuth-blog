@@ -13,7 +13,7 @@ export default defineConfig({
 	site: 'https://flefevre.fr',
 	integrations: [
 		expressiveCode(expressiveCodeOptions),
-		sitemap(),
+		sitemap({ filter: (page) => !page.includes('/print') }),
 		mdx()
 	],
 	vite: {
@@ -36,6 +36,11 @@ export default defineConfig({
 				className: ['']
 			}
 		}
+	},
+	i18n: {
+		defaultLocale: 'fr',
+		locales: ['fr', 'en'],
+		routing: { prefixDefaultLocale: false },
 	},
 	prefetch: true,
 	output: 'static'

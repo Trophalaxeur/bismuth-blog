@@ -1,3 +1,4 @@
+import { getCollection } from 'astro:content';
 import rehypeStringify from 'rehype-stringify';
 import remarkGfm from 'remark-gfm';
 import remarkParse from 'remark-parse';
@@ -145,24 +146,25 @@ export async function renderMarkdown(md: string): Promise<string> {
 /** Max characters for a career channel experience description (e.g. LinkedIn limit). */
 export const CAREER_CHANNEL_MAX_CHARS = 2000;
 
-function formatCvDate(yyyyMM: string): string {
+function formatCvDate(yyyyMM: string, locale: string): string {
   if (!yyyyMM.includes('-')) {
     return yyyyMM; // Year-only format: display as-is
   }
   const [year, month] = yyyyMM.split('-');
   const d = new Date(Number(year), Number(month) - 1);
-  return d.toLocaleDateString('fr-FR', { month: 'short', year: 'numeric' });
+  return d.toLocaleDateString(locale === 'en' ? 'en-GB' : 'fr-FR', { month: 'short', year: 'numeric' });
 }
 
 /**
  * Formats a CV experience period.
  * - With end: "mmm. yyyy — mmm. yyyy"
- * - Ongoing:  "mmm. yyyy — Aujourd'hui"
+ * - Ongoing:  "mmm. yyyy — Today / Aujourd'hui"
  * - No end:   "mmm. yyyy" (no trailing separator)
  */
-export function formatCvPeriod(start: string, end?: string, current?: boolean): string {
-  const startLabel = formatCvDate(start);
-  const endLabel = current ? "Aujourd'hui" : end ? formatCvDate(end) : '';
+export function formatCvPeriod(start: string, end?: string, current?: boolean, locale = 'fr'): string {
+  const startLabel = formatCvDate(start, locale);
+  const today = locale === 'en' ? 'Today' : "Aujourd'hui";
+  const endLabel = current ? today : end ? formatCvDate(end, locale) : '';
   if (!endLabel || endLabel === startLabel) return startLabel;
   return `${startLabel} — ${endLabel}`;
 }
@@ -182,10 +184,10 @@ export interface CvDomain {
 }
 
 const DOMAIN_ICON_MAP: Array<{ test: RegExp; icon: string }> = [
-  { test: /conception/i, icon: 'compass' },
-  { test: /modernisation/i, icon: 'arrow-up-circle' },
+  { test: /conception|design/i, icon: 'compass' },
+  { test: /modernisation|moderniz/i, icon: 'arrow-up-circle' },
   { test: /architecture/i, icon: 'layers' },
-  { test: /qualit[eé]/i, icon: 'shield-check' },
+  { test: /qualit[eé]|quality/i, icon: 'shield-check' },
   { test: /leadership/i, icon: 'users' },
   { test: /delivery/i, icon: 'target' },
   { test: /management/i, icon: 'briefcase' },
@@ -267,7 +269,7 @@ export function splitExperienceHtmlByParts(html: string): { intro: string; impac
  * - Inserts a discreet "Environnement : ..." italic line right after the impact paragraph
  *   (or, if there's no impact, before the first sub-section header).
  */
-export function annotateExperienceHtml(html: string, envString: string): string {
+export function annotateExperienceHtml(html: string, envString: string, locale = 'fr'): string {
   let out = html.replace(/<p>(<strong>Impact\s*:?\s*<\/strong>)/g, '<p class="cv-impact">$1');
 
   // Sub-section headers: paragraphs whose content is ONLY `<strong>X</strong>`.
@@ -282,7 +284,8 @@ export function annotateExperienceHtml(html: string, envString: string): string 
   if (envString) {
     // No tech colorization here: the environment line is intentionally discreet metadata
     // (see visual hierarchy). Only escape to stay XSS-safe.
-    const envHtml = `<p class="cv-environment"><em>Environnement : ${escapeHtml(envString)}</em></p>`;
+    const envLabel = locale === 'en' ? 'Environment' : 'Environnement';
+    const envHtml = `<p class="cv-environment"><em>${envLabel} : ${escapeHtml(envString)}</em></p>`;
 
     if (out.includes('class="cv-impact"')) {
       out = out.replace(/(<p class="cv-impact">[\s\S]*?<\/p>)/, `$1${envHtml}`);
@@ -293,4 +296,25 @@ export function annotateExperienceHtml(html: string, envString: string): string 
   }
 
   return out;
+}
+
+/** Returns the mapped data array for all career-channel CV experiences, ready to pass to CvCareerChannelCard. */
+export async function getCareerChannelExperiencesData(locale = 'fr') {
+  const all = await getCollection('cvExperiences');
+  const localeEntries = all.filter((e) => e.id.startsWith(`${locale}/`));
+  return Promise.all(
+    sortCvExperiences(localeEntries.filter((e) => e.data.variants?.includes('career-channel'))).map(async (exp) => {
+      const md = extractVariantMarkdown(exp.body ?? '', 'career-channel');
+      return {
+        company: exp.data.company,
+        role: exp.data.role,
+        start: exp.data.start,
+        end: exp.data.end,
+        current: exp.data.current,
+        tags: exp.data.tags,
+        text: stripMarkdownForCareerChannel(md),
+        html: await renderMarkdown(md),
+      };
+    }),
+  );
 }

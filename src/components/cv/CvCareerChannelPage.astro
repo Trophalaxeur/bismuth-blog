@@ -1,0 +1,126 @@
+---
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import PageLayout from '@/layouts/BaseLayout.astro';
+import CvCareerChannelCard from './CvCareerChannelCard.astro';
+import CvActions from './CvActions.astro';
+import CvSkills from './CvSkills.astro';
+import { extractVariantMarkdown, getCareerChannelExperiencesData, getCvLabels, renderMarkdown, stripMarkdownForCareerChannel } from '@/utils';
+import { getCollection } from 'astro:content';
+
+const locale = Astro.currentLocale ?? 'fr';
+const L = getCvLabels(locale);
+const [experiencesData, allSections] = await Promise.all([getCareerChannelExperiencesData(locale), getCollection('cvSections')]);
+
+const localeSections = allSections.filter((e) => e.id.startsWith(`${locale}/`));
+const profileEntry = localeSections.find((e) => e.data.type === 'profile');
+const skillsEntry = localeSections.find((e) => e.data.type === 'skills');
+
+const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/*.{png,jpg,jpeg,webp}', { eager: true });
+const profileImage = profileEntry?.data.image ? images[`/src/assets${profileEntry.data.image}`]?.default : undefined;
+
+const bioMd = profileEntry ? extractVariantMarkdown(profileEntry.body ?? '', 'short') : '';
+const bioHtml = bioMd ? await renderMarkdown(bioMd) : '';
+const bioText = stripMarkdownForCareerChannel(bioMd);
+const titleText = profileEntry?.data.title ?? '';
+const profileName = profileEntry?.data.name ?? '';
+
+const SVG_CLIPBOARD = `<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>`;
+---
+
+<PageLayout meta={{ title: L.careerChannel.pageTitle, description: L.careerChannel.pageDescription }}>
+  <CvActions slot="headerActions" variant="career-channel" />
+  <div class="w-full">
+
+    <!-- Page intro banner -->
+    <p class="text-muted-foreground border-border/40 mb-8 rounded-lg border px-5 py-3.5 text-sm leading-relaxed print:hidden" set:html={L.careerChannel.pageIntro} />
+
+    <!-- Profile section -->
+    {
+      profileEntry && (
+        <section class="border-border/40 mb-8 rounded-lg border p-5">
+          <h1 class="sr-only">{profileName} — {titleText}</h1>
+          <div class="flex items-start gap-5">
+            {profileImage && (
+              <div class="relative shrink-0">
+                <Image
+                  src={profileImage}
+                  alt={profileName}
+                  width={80}
+                  height={80}
+                  loading="eager"
+                  decoding="async"
+                  class="ring-border/60 h-20 w-20 rounded-full object-cover object-top shadow-sm ring-1"
+                />
+                <a
+                  href={profileImage.src}
+                  download="florian-lefevre-photo.webp"
+                  class="bg-background ring-border text-muted-foreground hover:text-cv-accent absolute -bottom-1.5 -right-1.5 flex h-6 w-6 items-center justify-center rounded-full shadow ring-1 transition-colors print:hidden"
+                  aria-label={L.downloadPhoto}
+                  title={L.downloadPhoto}
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                  </svg>
+                </a>
+              </div>
+            )}
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <p class="text-foreground text-lg font-black tracking-tight">{titleText}</p>
+                <button
+                  class="copy-btn text-muted-foreground hover:text-cv-accent hover:bg-cv-accent/10 focus-visible:ring-cv-accent shrink-0 rounded p-1 transition-colors focus-visible:ring-2 focus-visible:outline-none print:hidden"
+                  data-text={titleText}
+                  aria-label={L.copy}
+                  title={L.copy}
+                >
+                  <Fragment set:html={SVG_CLIPBOARD} />
+                </button>
+              </div>
+              {bioHtml && (
+                <div class="mt-3 flex items-start gap-3">
+                  <div
+                    class="prose prose-sm dark:prose-invert prose-p:my-1.5 prose-p:leading-[1.75] prose-strong:text-foreground/95 text-foreground/80 min-w-0 flex-1 max-w-none"
+                    set:html={bioHtml}
+                  />
+                  <button
+                    class="copy-btn bg-cv-accent/12 text-cv-accent hover:bg-cv-accent/25 focus-visible:ring-cv-accent flex shrink-0 items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none print:hidden"
+                    data-text={bioText}
+                    aria-label={L.copy}
+                    title={L.copy}
+                  >
+                    <Fragment set:html={SVG_CLIPBOARD} />
+                    {L.copy}
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      )
+    }
+
+    <!-- Skills (collapsible by default on career-channel) -->
+    <CvSkills skills={skillsEntry?.data.skills ?? {}} variant="short" collapsible={true} />
+
+    <!-- Experiences -->
+    <section id="experiences" class="mb-14">
+      <div class="border-cv-accent/40 mb-8 flex items-end justify-between gap-4 border-b-2 pb-3">
+        <h2 class="text-foreground/85 text-[13px] font-bold tracking-[0.08em] uppercase">{L.careerChannel.expTitle}</h2>
+        <p class="text-muted-foreground print:hidden text-xs" set:html={L.careerChannel.copyHelp} />
+      </div>
+      <div>
+        {experiencesData.map((exp) => <CvCareerChannelCard {...exp} />)}
+      </div>
+    </section>
+
+  </div>
+</PageLayout>
+
+<style>
+  @media print {
+    @page { margin: 15mm; }
+  }
+</style>

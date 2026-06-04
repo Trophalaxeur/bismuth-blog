@@ -1,17 +1,23 @@
 ---
+import { getCvLabels } from '@/utils';
+
 interface Props {
-  variant: 'short' | 'detailed';
+  variant: 'short' | 'detailed' | 'career-channel';
 }
 const { variant } = Astro.props;
+
+const locale = Astro.currentLocale ?? 'fr';
+const printBase = locale === 'en' ? '/en/cv/print' : '/cv/print';
+const label = getCvLabels(locale).printExport;
 ---
 
 <a
-  href={`/cv/print?variant=${variant}`}
+  href={`${printBase}?variant=${variant}`}
   class="border-border hover:bg-border focus-visible:ring-cv-accent rounded-md border p-1.5 transition-all focus-visible:ring-2 focus-visible:outline-none"
   target="_blank"
   rel="noopener noreferrer"
-  aria-label="Imprimer / Exporter en PDF"
-  title="Imprimer / Exporter en PDF"
+  aria-label={label}
+  title={label}
 >
   <svg xmlns="http://www.w3.org/2000/svg" class="h-[1.2rem] w-[1.2rem]" viewBox="0 0 24 24" aria-hidden="true">
     <path

@@ -1,0 +1,47 @@
+---
+import { getCvLabels } from '@/utils';
+
+const locale = Astro.currentLocale ?? 'fr';
+const L = getCvLabels(locale);
+
+// Build alternate locale URL from the current URL
+const currentPath = Astro.url.pathname;
+const frPath = currentPath.replace(/^\/en(\/|$)/, '/');
+const enPath = currentPath.startsWith('/en') ? currentPath : `/en${currentPath}`;
+
+const searchParams = Astro.url.search;
+---
+
+<div class="border-border flex items-stretch rounded-md border" aria-label={L.langSwitcher}>
+  <a
+    href={frPath + searchParams}
+    class={`flex items-center justify-center px-2 py-1.5 transition-colors rounded-l-md ${locale === 'fr' ? 'bg-cv-accent/10' : 'hover:bg-border'}`}
+    aria-label={L.langFrLabel}
+    aria-current={locale === 'fr' ? 'true' : undefined}
+    title={L.langFrLabel}
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21 15" width="21" height="15" role="img" aria-hidden="true" class="rounded-[2px]">
+      <rect width="7" height="15" fill="#002395" />
+      <rect x="7" width="7" height="15" fill="#fff" />
+      <rect x="14" width="7" height="15" fill="#ED2939" />
+    </svg>
+  </a>
+  <a
+    href={enPath + searchParams}
+    class={`flex items-center justify-center border-border border-l px-2 py-1.5 transition-colors rounded-r-md ${locale === 'en' ? 'bg-cv-accent/10' : 'hover:bg-border'}`}
+    aria-label={L.langEnLabel}
+    aria-current={locale === 'en' ? 'true' : undefined}
+    title={L.langEnLabel}
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="21" height="15" role="img" aria-hidden="true" class="rounded-[2px]">
+      <clipPath id="cv-flag-clip">
+        <path d="M0 0v30h60V0z" />
+      </clipPath>
+      <path d="M0 0v30h60V0z" fill="#012169" />
+      <path d="M0 0l60 30m0-30L0 30" stroke="#fff" stroke-width="6" />
+      <path d="M0 0l60 30m0-30L0 30" stroke="#C8102E" stroke-width="4" clip-path="url(#cv-flag-clip)" />
+      <path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10" />
+      <path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6" />
+    </svg>
+  </a>
+</div>

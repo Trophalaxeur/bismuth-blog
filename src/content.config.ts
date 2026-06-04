@@ -36,7 +36,7 @@ const post = defineCollection({
 });
 
 const cvExperiences = defineCollection({
-  loader: glob({ pattern: '*.md', base: './src/content/cv/experiences' }),
+  loader: glob({ pattern: '*/experiences/*.md', base: './src/content/cv' }),
   schema: z.object({
     schemaVersion: z.number().optional(),
     type: z.literal('experience'),
@@ -64,7 +64,7 @@ const cvExperiences = defineCollection({
 });
 
 const cvSections = defineCollection({
-  loader: glob({ pattern: '*.md', base: './src/content/cv' }),
+  loader: glob({ pattern: '*/*.md', base: './src/content/cv' }),
   schema: z.object({
     schemaVersion: z.number().optional(),
     type: z.enum(['profile', 'domains', 'skills', 'education', 'projects', 'extra-info', 'interests', 'summary']),
