@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { annotateExperienceHtml, extractVariantMarkdown, flattenEnvironment, parseDomains, renderMarkdown, sortCvExperiences } from '@/utils';
+import { annotateExperienceHtml, extractVariantMarkdown, flattenEnvironment, getCvLabels, parseDomains, renderMarkdown, sortCvExperiences } from '@/utils';
 import type { CvVariant } from '@/utils';
 import CvHeader from './CvHeader.astro';
 import CvDomains from './CvDomains.astro';
@@ -15,9 +15,13 @@ interface Props {
 }
 const { variant, showSwitch = true } = Astro.props;
 
-// Load sections
+const locale = Astro.currentLocale ?? 'fr';
+const L = getCvLabels(locale);
+
+// Load sections for the current locale (IDs are prefixed: `fr/profile.md`)
 const allSections = await getCollection('cvSections');
-const find = (type: string) => allSections.find((e) => e.data.type === type);
+const localeSections = allSections.filter((e) => e.id.startsWith(`${locale}/`));
+const find = (type: string) => localeSections.find((e) => e.data.type === type);
 
 const profileEntry = find('profile');
 const skillsEntry = find('skills');
@@ -46,7 +50,7 @@ const domains = domainsEntry ? parseDomains(extractVariantMarkdown(domainsEntry.
 // an experience without `variants` is always displayed (fallback), otherwise it
 // must explicitly declare the current variant.
 const allExperiences = await getCollection('cvExperiences');
-const visibleExperiences = allExperiences.filter((e) => !e.data.variants || e.data.variants.includes(variant));
+const visibleExperiences = allExperiences.filter((e) => e.id.startsWith(`${locale}/`) && (!e.data.variants || e.data.variants.includes(variant)));
 
 const sortedExperiences = sortCvExperiences(visibleExperiences);
 
@@ -54,7 +58,7 @@ const experiencesData = await Promise.all(
   sortedExperiences.map(async (exp) => {
     const rawHtml = await renderMarkdown(extractVariantMarkdown(exp.body ?? '', variant));
     const envString = variant === 'detailed' ? flattenEnvironment(exp.data.environment) : '';
-    const html = variant === 'detailed' ? annotateExperienceHtml(rawHtml, envString) : rawHtml;
+    const html = variant === 'detailed' ? annotateExperienceHtml(rawHtml, envString, locale) : rawHtml;
     // For the detailed page, also render the short-variant body so the card can collapse to a summary view.
     // Fallback: experiences without a :::short block (e.g. early/complementary missions) would otherwise
     // render as an empty collapsed card — use the first detailed paragraph as the collapsed summary.
@@ -81,10 +85,10 @@ const experiencesData = await Promise.all(
 );
 
 const appendix = {
-  formation: { title: 'Formation', html: educationHtml, id: 'formation', icon: 'graduation-cap' as const },
-  projects: { title: 'Projets personnels & expérimentations', html: projectsHtml, id: 'projets', icon: 'code-2' as const },
-  extraInfo: { title: 'Informations complémentaires', html: extraInfoHtml, id: 'infos', icon: 'info' as const },
-  interests: { title: "Centres d'intérêt", html: interestsHtml, id: 'interets', icon: 'heart' as const },
+  formation: { title: L.appendix.education, html: educationHtml, id: 'formation', icon: 'graduation-cap' as const },
+  projects: { title: L.appendix.projects, html: projectsHtml, id: 'projets', icon: 'code-2' as const },
+  extraInfo: { title: L.appendix.extraInfo, html: extraInfoHtml, id: 'infos', icon: 'info' as const },
+  interests: { title: L.appendix.interests, html: interestsHtml, id: 'interets', icon: 'heart' as const },
 };
 ---
 

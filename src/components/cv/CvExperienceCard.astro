@@ -1,5 +1,5 @@
 ---
-import { formatCvPeriod, splitExperienceHtmlByParts } from '@/utils';
+import { formatCvPeriod, splitExperienceHtmlByParts, getCvLabels } from '@/utils';
 import CvIcon from './CvIcon.astro';
 
 interface Props {
@@ -19,7 +19,9 @@ interface Props {
 }
 const { company, clientLocation, employer, role, start, end, current, tags, secondaryTags, html, shortHtml = '', variant, defaultExpanded = true } = Astro.props;
 
-const period = formatCvPeriod(start, end, current);
+const locale = Astro.currentLocale ?? 'fr';
+const L = getCvLabels(locale);
+const period = formatCvPeriod(start, end, current, locale);
 
 // Key skills: restrained text line, primary + secondary skills, +X for overflow.
 const TOTAL_VISIBLE = 8;
@@ -78,7 +80,7 @@ const proseClasses =
             type="button"
             class="cv-exp-toggle border-cv-accent/40 text-cv-accent hover:bg-cv-accent/10 hover:border-cv-accent inline-flex h-7 w-7 items-center justify-center rounded-md border transition-colors print:hidden"
             aria-expanded={defaultExpanded ? 'true' : 'false'}
-            aria-label="Replier / déplier l'expérience"
+            aria-label={L.collapseExpandExp}
           >
             <CvIcon name="chevron-up" size={16} strokeWidth={2.5} class="cv-exp-icon-expanded" />
             <CvIcon name="chevron-down" size={16} strokeWidth={2.5} class="cv-exp-icon-collapsed" />
@@ -103,7 +105,7 @@ const proseClasses =
     {
       hasSkills && (
         <div class="cv-skills-line print-short:mt-1.5 mt-4 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-[13px] leading-[1.65]" data-expanded="false">
-          <span class="cv-skills-label text-foreground/55 text-[12px] font-medium tracking-wide">Compétences clés :</span>
+          <span class="cv-skills-label text-foreground/55 text-[12px] font-medium tracking-wide">{L.keySkillsLine}</span>
           {primaryAll.length > 0 && <span class="text-cv-accent font-semibold">{primaryAll.join(' · ')}</span>}
           {secVisible.length > 0 && (
             <>

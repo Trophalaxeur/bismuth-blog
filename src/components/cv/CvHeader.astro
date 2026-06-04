@@ -2,7 +2,7 @@
 import type { ImageMetadata } from 'astro';
 import { Image } from 'astro:assets';
 import ObfuscatedEmail from '@/components/ObfuscatedEmail.astro';
-import { colorizePlainTechTerms } from '@/utils';
+import { colorizePlainTechTerms, getCvLabels } from '@/utils';
 
 interface Props {
   name: string;
@@ -16,6 +16,7 @@ interface Props {
   bioHtml?: string;
 }
 const { name, title, baseline, image, location, contact, variant, showSwitch = true, bioHtml } = Astro.props;
+const L = getCvLabels(Astro.currentLocale);
 
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/*.{png,jpg,jpeg,webp}', { eager: true });
 const resolvedImage = image ? images[`/src/assets${image}`]?.default : undefined;
@@ -135,24 +136,24 @@ const displayUrl = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').repl
     showSwitch && (
       <nav class="text-muted-foreground mt-4 flex flex-wrap justify-between gap-x-3 text-[11px] whitespace-nowrap sm:hidden" aria-label="Sections">
         <a href="#profil" class="hover:text-cv-accent transition-colors">
-          Profil
+          {L.nav.profile}
         </a>
         {variant === 'detailed' && (
           <a href="#domaines" class="hover:text-cv-accent transition-colors">
-            Domaines
+            {L.nav.areas}
           </a>
         )}
         <a href="#competences" class="hover:text-cv-accent transition-colors">
-          Compétences
+          {L.nav.skills}
         </a>
         <a href="#experiences" class="hover:text-cv-accent transition-colors">
-          Expériences
+          {L.nav.experience}
         </a>
         <a href="#formation" class="hover:text-cv-accent transition-colors">
-          Formation
+          {L.nav.education}
         </a>
         <a href="#projets" class="hover:text-cv-accent transition-colors">
-          Projets
+          {L.nav.projects}
         </a>
       </nav>
     )

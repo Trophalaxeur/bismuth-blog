@@ -1,25 +1,24 @@
 ---
 import CvIcon, { type CvIconName } from './CvIcon.astro';
+import { getCvLabels } from '@/utils';
 
 interface Props {
   skills: Record<string, string | string[]>;
   variant?: 'short' | 'detailed';
+  collapsible?: boolean;
 }
-const { skills, variant = 'detailed' } = Astro.props;
+const { skills, variant = 'detailed', collapsible = false } = Astro.props;
 
-// 9 cards in a 3×3 grid — row 1: posture/quality/delivery; row 2: stack; row 3: ops & tooling.
-// `labelShort` is used only in short print (title column is narrower than the web tabular layout).
-const CARDS: Array<{ key: string; label: string; labelShort?: string; icon: CvIconName }> = [
-  { key: 'leadership', label: 'Leadership technique & architecture', labelShort: 'Leadership & architecture', icon: 'users' },
-  { key: 'delivery', label: 'Management & delivery', labelShort: 'Management', icon: 'briefcase' },
-  { key: 'quality', label: 'Qualité & industrialisation', labelShort: 'Qualité', icon: 'shield-check' },
-  { key: 'frontend', label: 'Frontend', icon: 'layout' },
-  { key: 'backend', label: 'Backend & Fullstack', labelShort: 'Backend', icon: 'server' },
-  { key: 'databases', label: 'Bases de données', icon: 'database' },
-  { key: 'devops', label: 'DevOps & production', labelShort: 'DevOps', icon: 'git-branch' },
-  { key: 'toolsMethods', label: 'Outils & Méthodes', labelShort: 'Outils', icon: 'settings' },
-  { key: 'ia', label: 'IA assistée & automatisation', labelShort: 'IA assistée', icon: 'cpu' },
-];
+const L = getCvLabels(Astro.currentLocale);
+
+// Icons keyed by card key — order and icons stay constant across locales.
+const CARD_ICONS: Record<string, CvIconName> = {
+  leadership: 'users', delivery: 'briefcase', quality: 'shield-check',
+  frontend: 'layout', backend: 'server', databases: 'database',
+  devops: 'git-branch', toolsMethods: 'settings', ia: 'cpu',
+};
+
+const CARDS = L.skillCards.map((c) => ({ ...c, icon: CARD_ICONS[c.key] ?? 'circle' }));
 
 const toArray = (value: string | string[] | undefined): string[] => {
   if (!value) return [];
@@ -45,57 +44,105 @@ const cards = CARDS.map((c) => ({ ...c, items: toArray(skills[c.key]).map(parseS
 const isShort = variant === 'short';
 ---
 
-<section id="competences" class={isShort ? 'mb-8 print-short:mb-3' : 'mb-14 print:mb-0 print:break-after-page'}>
-  <h2 class="border-cv-accent/40 text-foreground/85 print-short:mb-2 print-short:pb-1.5 mb-5 border-b-2 pb-2 text-[13px] font-bold tracking-[0.08em] uppercase">
-    Compétences clés
-  </h2>
-  {
-    cards.length > 0 && isShort && (
-      // Short version: compact tabular grid, label on the left / items on the right.
-      // In print, switch to 2 card columns (4 alternating label/items grid columns) to halve the number of rows.
-      <div class="print-short:grid-cols-[minmax(100px,120px)_1fr_minmax(100px,120px)_1fr] print-short:gap-x-3 print-short:gap-y-1 grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-[minmax(180px,220px)_1fr]">
-        {cards.map((card) => (
-          <>
-            <h3 class="text-foreground/85 print-short:text-[10px] print-short:leading-tight text-[11px] leading-snug font-bold tracking-wider uppercase">
-              <span class="print-short:hidden">{card.label}</span>
-              <span class="print-short:inline hidden">{card.labelShort ?? card.label}</span>
-            </h3>
-            <div class="print-short:text-[10.5px] print-short:gap-x-1.5 print-short:leading-tight flex flex-wrap content-start items-baseline gap-x-2 gap-y-1 text-[12.5px] leading-snug">
-              {card.items.map(({ label, primary }, i) => (
-                <>
-                  {i > 0 && <span class="text-cv-accent/60 font-semibold">·</span>}
-                  {primary ? <span class="text-cv-accent font-semibold">{label}</span> : <span class="text-foreground/70">{label}</span>}
-                </>
-              ))}
+<section
+  id="competences"
+  class={isShort ? 'mb-8 print-short:mb-3' : 'mb-14 print:mb-0 print:break-after-page'}
+  data-cv-skills-expanded={collapsible ? 'false' : undefined}
+>
+  <div class="border-cv-accent/40 print-short:mb-2 print-short:pb-1.5 mb-5 flex items-center justify-between border-b-2 pb-2">
+    <h2 class="text-foreground/85 text-[13px] font-bold tracking-[0.08em] uppercase">
+      {L.keySkills}
+    </h2>
+    {collapsible && (
+      <button
+        type="button"
+        class="cv-skills-toggle border-cv-accent/40 text-cv-accent hover:bg-cv-accent/10 hover:border-cv-accent inline-flex h-7 w-7 items-center justify-center rounded-md border transition-colors print:hidden"
+        aria-expanded="false"
+        aria-controls="competences"
+        aria-label={L.toggleSkills}
+      >
+        <CvIcon name="chevron-up" size={16} strokeWidth={2.5} class="cv-skills-icon-expanded" />
+        <CvIcon name="chevron-down" size={16} strokeWidth={2.5} class="cv-skills-icon-collapsed" />
+      </button>
+    )}
+  </div>
+  <div class="cv-skills-body">
+    {
+      cards.length > 0 && isShort && (
+        // Short version: compact tabular grid, label on the left / items on the right.
+        // In print, switch to 2 card columns (4 alternating label/items grid columns) to halve the number of rows.
+        <div class="print-short:grid-cols-[minmax(100px,120px)_1fr_minmax(100px,120px)_1fr] print-short:gap-x-3 print-short:gap-y-1 grid grid-cols-1 gap-x-6 gap-y-2 sm:grid-cols-[minmax(180px,220px)_1fr]">
+          {cards.map((card) => (
+            <>
+              <h3 class="text-foreground/85 print-short:text-[10px] print-short:leading-tight text-[11px] leading-snug font-bold tracking-wider uppercase">
+                <span class="print-short:hidden">{card.label}</span>
+                <span class="print-short:inline hidden">{card.labelShort ?? card.label}</span>
+              </h3>
+              <div class="print-short:text-[10.5px] print-short:gap-x-1.5 print-short:leading-tight flex flex-wrap content-start items-baseline gap-x-2 gap-y-1 text-[12.5px] leading-snug">
+                {card.items.map(({ label, primary }, i) => (
+                  <>
+                    {i > 0 && <span class="text-cv-accent/60 font-semibold">·</span>}
+                    {primary ? <span class="text-cv-accent font-semibold">{label}</span> : <span class="text-foreground/70">{label}</span>}
+                  </>
+                ))}
+              </div>
+            </>
+          ))}
+        </div>
+      )
+    }
+    {
+      cards.length > 0 && !isShort && (
+        // Detailed version: 9 premium cards in a 3×3 grid.
+        <div class="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
+          {cards.map((card) => (
+            <div class="border-border/60 hover:border-cv-accent/40 bg-cv-accent/2 flex flex-col rounded-lg border p-4 transition-colors print:p-3">
+              <div class="mb-2.5 flex items-center gap-2 print:mb-1.5">
+                <span class="text-cv-accent/70 shrink-0">
+                  <CvIcon name={card.icon} size={14} strokeWidth={2} />
+                </span>
+                <h3 class="text-foreground text-[13px] leading-snug font-bold tracking-wide uppercase print:text-[11.5px]">{card.label}</h3>
+              </div>
+              <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-[12.5px] leading-[1.65]">
+                {card.items.map(({ label, primary }, i) => (
+                  <>
+                    {i > 0 && <span class="text-cv-accent/40 font-semibold">·</span>}
+                    {primary ? <span class="text-cv-accent font-semibold">{label}</span> : <span class="text-foreground/70">{label}</span>}
+                  </>
+                ))}
+              </div>
             </div>
-          </>
-        ))}
-      </div>
-    )
-  }
-  {
-    cards.length > 0 && !isShort && (
-      // Detailed version: 9 premium cards in a 3×3 grid.
-      <div class="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3">
-        {cards.map((card) => (
-          <div class="border-border/60 hover:border-cv-accent/40 bg-cv-accent/2 flex flex-col rounded-lg border p-4 transition-colors print:p-3">
-            <div class="mb-2.5 flex items-center gap-2 print:mb-1.5">
-              <span class="text-cv-accent/70 shrink-0">
-                <CvIcon name={card.icon} size={14} strokeWidth={2} />
-              </span>
-              <h3 class="text-foreground text-[13px] leading-snug font-bold tracking-wide uppercase print:text-[11.5px]">{card.label}</h3>
-            </div>
-            <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1 text-[12.5px] leading-[1.65]">
-              {card.items.map(({ label, primary }, i) => (
-                <>
-                  {i > 0 && <span class="text-cv-accent/40 font-semibold">·</span>}
-                  {primary ? <span class="text-cv-accent font-semibold">{label}</span> : <span class="text-foreground/70">{label}</span>}
-                </>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
-    )
-  }
+          ))}
+        </div>
+      )
+    }
+  </div>
 </section>
+
+<style is:global>
+  [data-cv-skills-expanded='false'] .cv-skills-body {
+    display: none;
+  }
+  [data-cv-skills-expanded='true'] .cv-skills-icon-collapsed,
+  [data-cv-skills-expanded='false'] .cv-skills-icon-expanded {
+    display: none;
+  }
+  @media print {
+    /* Always expand skills when printing regardless of collapsed state */
+    [data-cv-skills-expanded] .cv-skills-body {
+      display: block !important;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.cv-skills-toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const section = btn.closest<HTMLElement>('[data-cv-skills-expanded]');
+      if (!section) return;
+      const next = section.dataset.cvSkillsExpanded === 'true' ? 'false' : 'true';
+      section.dataset.cvSkillsExpanded = next;
+      btn.setAttribute('aria-expanded', next);
+    });
+  });
+</script>

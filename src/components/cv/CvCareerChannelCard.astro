@@ -1,5 +1,6 @@
 ---
-import { formatCvPeriod, CAREER_CHANNEL_MAX_CHARS } from '@/utils';
+import { formatCvPeriod, CAREER_CHANNEL_MAX_CHARS, getCvLabels } from '@/utils';
+import CvIcon from './CvIcon.astro';
 
 interface Props {
   company: string;
@@ -8,139 +9,158 @@ interface Props {
   end?: string;
   current?: boolean;
   tags?: string[];
-  /** Plain text, Markdown already stripped — ready to paste into a career channel platform. */
+  /** Plain text, Markdown already stripped — copied to clipboard. */
   text: string;
+  /** Rendered HTML for display (career-channel variant markdown). */
+  html: string;
 }
-const { company, role, start, end, current, tags, text } = Astro.props;
+const { company, role, start, end, current, tags, text, html } = Astro.props;
 
-const period = formatCvPeriod(start, end, current);
-// Use code points (spread) rather than .length (UTF-16 units) to correctly count
-// non-BMP characters (emoji, etc.).
+const locale = Astro.currentLocale ?? 'fr';
+const L = getCvLabels(locale);
+const period = formatCvPeriod(start, end, current, locale);
 const charCount = [...text].length;
 const isOverLimit = charCount > CAREER_CHANNEL_MAX_CHARS;
+
+const SVG_CLIPBOARD = `<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>`;
 ---
 
-<details open class="border-cv-accent/40 bg-cv-accent/5 mb-10 rounded-lg border-2 p-6">
-  <summary class="mb-4 cursor-pointer list-none">
-    <!-- Header: identity + copy buttons -->
-    <div class="flex flex-wrap items-start justify-between gap-3">
-      <div class="flex min-w-0 items-start gap-2">
-        <div class="min-w-0">
-          <p class="text-foreground text-sm leading-snug font-bold">
-            {company}
-            <span class="text-foreground/65 font-normal">· {role}</span>
-          </p>
-          <p class="text-muted-foreground mt-0.5 text-xs tabular-nums">{period}</p>
-        </div>
+<article
+  class="cv-exp group border-border/70 hover:border-cv-accent hover:bg-muted/30 relative mb-10 rounded-r border-l-2 py-3 pr-3 pl-7 transition-all duration-200 hover:-translate-y-px hover:shadow-sm"
+  data-expanded="true"
+>
+  <div
+    class="border-cv-accent/50 bg-background group-hover:border-cv-accent group-hover:bg-cv-accent/15 absolute top-4.5 -left-1.25 h-2 w-2 rounded-full border transition-all duration-200"
+  >
+  </div>
+
+  <!-- Header row: company/role · period + copy + collapse -->
+  <div class="flex flex-col gap-y-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+    <div class="flex min-w-0 flex-col gap-y-0.5">
+      <span class="text-base leading-snug font-bold">{company}</span>
+      <span class="flex items-center gap-1.5">
+        <span class="text-foreground/80 text-sm leading-snug font-medium">{role}</span>
         <!--
-          Copy role button — copies the role title only (company is a separate field on most platforms).
-          SVG is intentionally inline: Astro cannot share markup between the template and the <script>
-          block; a third copy lives in ICON_CLIPBOARD below for the post-click restore animation.
+          Copy role button — copies the job title only.
         -->
         <button
           class="copy-btn text-muted-foreground hover:text-cv-accent hover:bg-cv-accent/10 focus-visible:ring-cv-accent mt-0.5 shrink-0 rounded p-1 transition-colors focus-visible:ring-2 focus-visible:outline-none"
           data-text={role}
-          aria-label={`Copier le poste : ${role}`}
-          title="Copier le titre du poste"
+          aria-label={`${L.copy}: ${role}`}
+          title={`${L.copy} ${role}`}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-3.5 w-3.5"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <rect width="8" height="4" x="8" y="2" rx="1"></rect>
-            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-          </svg>
+          <Fragment set:html={SVG_CLIPBOARD} />
         </button>
-      </div>
+      </span>
+    </div>
+
+    <div class="flex items-center gap-2 sm:mt-1 sm:shrink-0">
+      <span class="text-foreground/70 text-xs font-semibold tabular-nums sm:whitespace-nowrap">{period}</span>
 
       <!-- Copy description button -->
       <button
-        class="copy-btn bg-cv-accent/12 text-cv-accent hover:bg-cv-accent/25 focus-visible:ring-cv-accent shrink-0 rounded-md p-2 transition-colors focus-visible:ring-2 focus-visible:outline-none"
+        class="copy-btn bg-cv-accent/12 text-cv-accent hover:bg-cv-accent/25 focus-visible:ring-cv-accent flex shrink-0 items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
         data-text={text}
-        aria-label={`Copier la description de ${company}`}
-        title="Copier la description"
+        aria-label={`${L.copy}: ${company}`}
+        title={L.copy}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-4 w-4"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <rect width="8" height="4" x="8" y="2" rx="1"></rect>
-          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-        </svg>
+        <Fragment set:html={SVG_CLIPBOARD} />
+        {L.copy}
+      </button>
+
+      <!-- Collapse toggle -->
+      <button
+        type="button"
+        class="cv-exp-toggle border-cv-accent/40 text-cv-accent hover:bg-cv-accent/10 hover:border-cv-accent inline-flex h-7 w-7 items-center justify-center rounded-md border transition-colors"
+        aria-expanded="true"
+        aria-label={L.collapseExpandExp}
+      >
+        <CvIcon name="chevron-up" size={16} strokeWidth={2.5} class="cv-exp-icon-expanded" />
+        <CvIcon name="chevron-down" size={16} strokeWidth={2.5} class="cv-exp-icon-collapsed" />
       </button>
     </div>
-
-    {
-      tags && tags.length > 0 && (
-        <div class="mt-3 flex flex-wrap gap-1.5">
-          {tags.map((tag) => (
-            <span class="bg-cv-accent/20 text-cv-accent inline-flex h-6 items-center rounded-full px-2.5 text-[11px] font-medium">{tag}</span>
-          ))}
-        </div>
-      )
-    }
-  </summary>
-
-  <!-- Body: plain text, no overflow, no monospace -->
-  <div
-    class="text-foreground/80 border-cv-accent/20 bg-cv-accent/5 rounded-md border p-4 text-sm leading-relaxed"
-    style="white-space: pre-wrap; word-break: break-word; overflow-wrap: break-word;"
-  >
-    {text}
   </div>
 
-  <!-- Footer: character counter -->
-  <p class={`mt-2.5 text-right text-[11px] tabular-nums ${isOverLimit ? 'font-semibold text-red-500' : 'text-muted-foreground'}`}>
-    {charCount.toLocaleString('fr-FR')} / {CAREER_CHANNEL_MAX_CHARS.toLocaleString('fr-FR')} caractères
-    {isOverLimit && ' — dépasse la limite de la plateforme'}
-  </p>
-</details>
-
-<style>
-  details > summary {
-    list-style: none;
+  {
+    tags && tags.length > 0 && (
+      <div class="mt-3 flex flex-wrap gap-1.5">
+        {tags.map((tag) => (
+          <span class="bg-cv-accent/20 text-cv-accent inline-flex h-6 items-center rounded-full px-2.5 text-[11px] font-medium">{tag}</span>
+        ))}
+      </div>
+    )
   }
-  details > summary::-webkit-details-marker {
+
+  <!-- Collapsible body -->
+  <div class="cv-exp-detailed">
+    {
+      html && (
+        <div
+          class="prose prose-sm dark:prose-invert prose-p:my-2.5 prose-p:leading-[1.8] prose-ul:my-3 prose-li:my-1.5 prose-li:leading-[1.85] prose-strong:text-foreground/95 mt-4 max-w-none"
+          set:html={html}
+        />
+      )
+    }
+    <p
+      class={`mt-2.5 text-right text-[11px] tabular-nums ${isOverLimit ? 'font-semibold text-red-500' : 'text-muted-foreground'}`}
+    >
+      {charCount.toLocaleString(L.dateLocale)} / {CAREER_CHANNEL_MAX_CHARS.toLocaleString(L.dateLocale)} {L.characters}
+      {isOverLimit && ` ${L.overLimit}`}
+    </p>
+  </div>
+</article>
+
+<style is:global>
+  .cv-exp[data-expanded='false'] .cv-exp-detailed {
     display: none;
+  }
+  .cv-exp[data-expanded='true'] .cv-exp-icon-collapsed {
+    display: none;
+  }
+  .cv-exp[data-expanded='false'] .cv-exp-icon-expanded {
+    display: none;
+  }
+
+  @media print {
+    .cv-exp .cv-exp-detailed {
+      display: block !important;
+    }
+    .cv-exp-toggle {
+      display: none !important;
+    }
   }
 </style>
 
 <script>
-  // Hardcoded SVG constants — no user data is ever interpolated here (no XSS risk).
-  // h-4 w-4 is used for both buttons on restore; the role button loses its h-3.5 after click,
-  // which is acceptable given the 2 s timeout.
-  const ICON_CLIPBOARD = `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>`;
-  const ICON_CHECK = `<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
+  const ICON_CHECK = `<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
 
   document.querySelectorAll<HTMLButtonElement>('.copy-btn').forEach((btn) => {
+    const originalHtml = btn.innerHTML;
+    const hasLabel = btn.textContent?.trim() !== '';
     btn.addEventListener('click', async (e) => {
-      // Prevent the click from bubbling to <summary> and toggling the <details>
       e.stopPropagation();
       const text = btn.dataset.text ?? '';
       try {
         await navigator.clipboard.writeText(text);
-        btn.innerHTML = ICON_CHECK;
-        // ! modifier needed to override the button's base text-color utility classes
+        btn.innerHTML = hasLabel ? `${ICON_CHECK} ✓` : ICON_CHECK;
         btn.classList.add('!text-green-600', 'dark:!text-green-400');
         setTimeout(() => {
-          btn.innerHTML = ICON_CLIPBOARD;
+          btn.innerHTML = originalHtml;
           btn.classList.remove('!text-green-600', 'dark:!text-green-400');
         }, 2000);
       } catch {
-        // Clipboard API unavailable — shouldn't happen in this usage context
+        // Clipboard API unavailable
       }
+    });
+  });
+
+  document.querySelectorAll<HTMLButtonElement>('.cv-exp-toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const article = btn.closest<HTMLElement>('.cv-exp');
+      if (!article) return;
+      const next = article.dataset.expanded === 'true' ? 'false' : 'true';
+      article.dataset.expanded = next;
+      btn.setAttribute('aria-expanded', String(next === 'true'));
     });
   });
 </script>

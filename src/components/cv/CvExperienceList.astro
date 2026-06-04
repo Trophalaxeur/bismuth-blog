@@ -1,16 +1,19 @@
 ---
 import CvExperienceCard from './CvExperienceCard.astro';
 import CvIcon from './CvIcon.astro';
+import { getCvLabels } from '@/utils';
+
+const L = getCvLabels(Astro.currentLocale);
 
 // Narrative-importance order: recent/significant → foundational → appendices.
 const SECTION_ORDER = ['main', 'production', 'complementary', 'early'] as const;
 type SectionKey = (typeof SECTION_ORDER)[number];
 
 const SECTION_META: Record<SectionKey, { label: string; id: string; openByDefault: boolean }> = {
-  main: { label: 'Expériences principales', id: 'experiences-principales', openByDefault: true },
-  production: { label: 'Expérience fondatrice production', id: 'experiences-production', openByDefault: true },
-  complementary: { label: 'Expériences complémentaires', id: 'experiences-complementaires', openByDefault: false },
-  early: { label: 'Stages & premières missions', id: 'experiences-stages', openByDefault: false },
+  main: { label: L.expSections.main, id: 'experiences-principales', openByDefault: true },
+  production: { label: L.expSections.production, id: 'experiences-production', openByDefault: true },
+  complementary: { label: L.expSections.complementary, id: 'experiences-complementaires', openByDefault: false },
+  early: { label: L.expSections.early, id: 'experiences-stages', openByDefault: false },
 };
 
 interface Experience {
@@ -58,7 +61,7 @@ const titleClass = 'border-cv-accent/40 text-foreground/85 border-b-2 pb-3 text-
             type="button"
             class="cv-master-toggle border-cv-accent/40 text-cv-accent hover:bg-cv-accent/10 hover:border-cv-accent inline-flex h-7 w-7 shrink-0 items-center justify-center self-end rounded-md border transition-colors print:hidden"
             aria-expanded={group.openByDefault ? 'true' : 'false'}
-            aria-label="Tout déplier / tout replier"
+            aria-label={L.expandCollapseAll}
           >
             <CvIcon name="chevron-up" size={16} strokeWidth={2.5} class="cv-master-icon-expanded" />
             <CvIcon name="chevron-down" size={16} strokeWidth={2.5} class="cv-master-icon-collapsed" />
@@ -85,7 +88,7 @@ const titleClass = 'border-cv-accent/40 text-foreground/85 border-b-2 pb-3 text-
     ))
   ) : (
     <section id="experiences" class="print-short:mb-3 mb-14">
-      <h2 class={titleClass + ' print-short:mb-3 mb-8'}>Expériences professionnelles</h2>
+      <h2 class={titleClass + ' print-short:mb-3 mb-8'}>{L.expTitle}</h2>
       {experiences.map((exp) => (
         <CvExperienceCard
           company={exp.company}

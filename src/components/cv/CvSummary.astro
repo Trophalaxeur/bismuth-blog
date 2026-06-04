@@ -11,14 +11,17 @@
  * to keep editorial ownership on the component side: if it needs renaming later,
  * this is the single place to do it.
  */
+import { getCvLabels } from '@/utils';
+
 interface Props {
   html: string;
 }
 const { html } = Astro.props;
+const L = getCvLabels(Astro.currentLocale);
 ---
 
 <div class="border-cv-accent/20 bg-cv-accent/5 mb-12 rounded-lg border px-6 py-5">
-  <p class="text-cv-accent/80 mb-3 text-[11px] font-bold tracking-widest uppercase">Synthèse opérationnelle</p>
+  <p class="text-cv-accent/80 mb-3 text-[11px] font-bold tracking-widest uppercase">{L.operationalSummary}</p>
   <div
     class="text-foreground/85 [&_li]:marker:text-cv-accent/50 text-sm leading-[1.7] [&_li]:leading-[1.7] [&_p]:my-1.5 [&_ul]:m-0 [&_ul]:list-disc [&_ul]:space-y-1.5 [&_ul]:pl-5"
     set:html={html}
