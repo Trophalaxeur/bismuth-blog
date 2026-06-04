@@ -42,12 +42,13 @@ const IBM_PLEX_SANS_FACE_CSS = [400, 500, 600, 700]
 // name → page URL to capture. Output is written to public/cv-${name}.pdf so the files
 // are served as static assets (dev + prod) and downloadable from the CV pages.
 const TARGETS = [
-  // printBackground=false on short → fully white paper (no card/body fills); the
-  // blue tech-term text (color) and the experience border accents (border-l)
-  // still print. detailed/career keep their card backgrounds.
+  // printBackground=false → white paper, colored text/borders still render.
   { name: 'short', url: '/cv/print?variant=short', printBackground: false },
   { name: 'detailed', url: '/cv/print?variant=detailed', printBackground: true },
-  { name: 'career-channel', url: '/cv/career-channel', printBackground: true },
+  { name: 'career-channel', url: '/cv/career-channel', printBackground: false },
+  { name: 'short-en', url: '/en/cv/print?variant=short', printBackground: false },
+  { name: 'detailed-en', url: '/en/cv/print?variant=detailed', printBackground: true },
+  { name: 'career-channel-en', url: '/en/cv/career-channel', printBackground: false },
 ] as const;
 
 type Target = (typeof TARGETS)[number];
