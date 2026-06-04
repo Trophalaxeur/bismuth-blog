@@ -20,7 +20,6 @@ npm run lint     # prettier + eslint fix
 ## Conventions
 
 - **Never run Prettier on `.md` files** (no `prettier --write *.md`, no `npm run lint:prettier` on Markdown). Markdown is intentionally excluded from the lint pipeline — keep it that way for ad-hoc edits too.
-- **Never silence a linter error with a disable comment unilaterally.** When an ESLint/Stylelint error has no clean fix, present the problem, the proposed solution, and an alternative — then wait for a decision before touching anything.
 
 ## Project structure
 
@@ -79,9 +78,14 @@ const post = defineCollection({
 
 ```
 /               → Landing page (short bio, markdown-driven)
-/cv/short       → CV — version recruteur (2 pages)
+/cv             → CV — version recruteur (2 pages, French default)
 /cv/detailed    → CV — dossier de compétences (complet)
-/cv/print       → Layout minimal pour export PDF (accepts ?variant=short|detailed)
+/cv/print       → Layout minimal pour export PDF (accepts ?variant=short|detailed|career-channel)
+/cv/career-channel → CV — format réseau professionnel
+/en/cv          → CV — recruiter version (English)
+/en/cv/detailed → CV — detailed portfolio (English)
+/en/cv/print    → Print layout (English)
+/en/cv/career-channel → Professional network format (English)
 /blog           → Blog articles in markdown
 /tools          → Personal tools/stack
 /contact        → Contact form + email
@@ -89,15 +93,56 @@ const post = defineCollection({
 
 ## CV architecture
 
-Single source of truth in `src/content/cv/`:
+Single source of truth in `src/content/cv/`, split by locale:
 
-- Flat files: `profile.md`, `skills.md`, `education.md`, `projects.md`, `extra-info.md`
-- Experiences: `experiences/` — one file per role, named `YYYY-company.md`
-- Two content collections: `cvSections` (flat schema) + `cvExperiences`
-- Variant system: `:::short` / `:::detailed` blocks in markdown, filtered by `extractVariantMarkdown()` in `src/utils/cv.ts`
-- Rendered via `marked` + `set:html` (not standard Astro pipeline — incompatible with custom block syntax)
-- Experiences sorted by `priority` field then `start` date descending (in `CvPage.astro`)
-- Components in `src/components/cv/`: CvPage, CvHeader, CvProfile, CvSkills, CvExperienceList, CvExperienceCard, CvEducation, CvProjects, CvExtraInfo, CvVariantSwitch
+```
+src/content/cv/
+  fr/                      # French (source of truth)
+    profile.md
+    skills.md
+    education.md
+    projects.md
+    extra-info.md
+    interests.md
+    domains.md
+    summary.md
+    experiences/
+      YYYY-company.md      # one file per role
+  en/                      # English (translated — same filenames)
+    profile.md
+    ...
+    experiences/
+      YYYY-company.md
+```
+
+- Two content collections: `cvSections` (glob `*/*.md`) + `cvExperiences` (glob `*/experiences/*.md`)
+- Entry IDs are prefixed by locale: `fr/profile.md`, `en/experiences/2025-bluewhale.md`
+- Components filter by `Astro.currentLocale ?? 'fr'` to select the right locale entries
+- Variant system: `:::short` / `:::detailed` / `:::career-channel` blocks in markdown, filtered by `extractVariantMarkdown()` in `src/utils/cv.ts`
+- Rendered via `unified` (remark/rehype) + `set:html` — not standard Astro pipeline
+- Experiences sorted by `priority` field then `start` date descending
+- Components in `src/components/cv/`: CvPage, CvHeader, CvSkills, CvExperienceList, CvExperienceCard, CvDomains, CvSummary, CvAppendix, CvActions, CvLangSwitch, CvPrintButton, CvDownloadButton, CvCareerChannelCard
+
+## CV i18n
+
+Astro i18n config (`astro.config.mjs`):
+- `defaultLocale: 'fr'` — French served at `/cv/*` (no prefix)
+- English served at `/en/cv/*`
+- `prefixDefaultLocale: false`
+
+To add a translation, create the English file at the same path as the French original but under `src/content/cv/en/`. The file must keep identical frontmatter (same field names and values) — only the markdown body should be translated.
+
+**Rules for translating a CV file from French to English:**
+
+```
+Translate the markdown body from French to English. Keep the following unchanged:
+- All frontmatter (YAML between ---) — do not translate keys or values
+- All :::short, :::detailed, :::career-channel block markers — keep them exactly as-is
+- All **bold** / *italic* / bullet markers — preserve markdown syntax
+- All proper nouns: company names, tool names (Angular, TypeScript, NestJS…), city names
+- All links and email addresses
+Only translate the human-readable prose inside the variant blocks.
+```
 
 ## Site config
 
