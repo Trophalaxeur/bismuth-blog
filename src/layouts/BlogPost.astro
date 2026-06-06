@@ -24,11 +24,12 @@ const slug = getPostSlug(id);
 const socialImage = ogImage ?? `/og-image/${slug}.png`;
 const articleDate = updatedDate?.toISOString() ?? publishDate.toISOString();
 const { headings } = await render(post);
+const blogListUrl = Astro.currentLocale === 'en' ? '/en/blog' : '/blog';
 ---
 
 <PageLayout meta={{ articleDate, description, ogImage: socialImage, title }}>
   <div class="w-full">
-    <Button title="Back" href="/blog" style="button">
+    <Button title="Back" href={blogListUrl} style="button">
       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" slot="icon-before">
         <path fill="currentColor" d="m6.921 12.5l5.792 5.792L12 19l-7-7l7-7l.713.708L6.921 11.5H19v1z"> </path>
       </svg>

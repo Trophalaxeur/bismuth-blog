@@ -9,6 +9,7 @@ function removeDupsAndLowerCase(array: string[]) {
   return Array.from(distinctItems);
 }
 
+// image() is typed as ZodType<any> by Astro's Content Layer API — using unknown breaks image type inference
 const postSchema = ({ image }: { image: () => z.ZodType<any> }) =>
   z.object({
     title: z.string().max(60),
