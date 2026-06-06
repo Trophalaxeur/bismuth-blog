@@ -3,8 +3,11 @@ import { getCollection } from 'astro:content';
 
 export type PostEntry = CollectionEntry<'postFr'> | CollectionEntry<'postEn'>;
 
-/** Derives the URL slug from a collection entry ID. Strips /index suffix for clean URLs. */
+/** Derives the URL slug from a collection entry ID.
+ * Handles GitHub loader format (articles/[slug]/[lang]/index.md) and legacy glob format. */
 export function getPostSlug(id: string): string {
+  const githubMatch = id.match(/^articles\/([^/]+)\/(?:fr|en)\/index\.(md|mdx)$/);
+  if (githubMatch) return githubMatch[1];
   return id.replace(/\/index\.(md|mdx)$/, '').replace(/\.(md|mdx)$/, '');
 }
 
