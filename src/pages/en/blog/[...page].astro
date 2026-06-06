@@ -1,0 +1,65 @@
+---
+export const prerender = true;
+
+import type { GetStaticPaths, Page } from 'astro';
+
+import Button from '@/components/Button.astro';
+import Pagination from '@/components/Paginator.astro';
+import PostPreview from '@/components/blog/PostPreview.astro';
+import PageLayout from '@/layouts/BaseLayout.astro';
+import { getAllPostsEn, sortMDByDate } from '@/utils';
+import type { PostEntry } from '@/utils';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const allPosts = await getAllPostsEn();
+  const allPostsByDate = sortMDByDate(allPosts);
+  return paginate(allPostsByDate, { pageSize: 10 });
+}) satisfies GetStaticPaths;
+
+interface Props {
+  page: Page<PostEntry>;
+}
+
+const { page } = Astro.props;
+
+const meta = {
+  description: 'Articles, experiments and technical notes on web development, homelab and tools.',
+  title: 'Blog',
+};
+
+const paginationProps = {
+  ...(page.url.prev && {
+    prevUrl: { text: `← Previous articles`, url: page.url.prev },
+  }),
+  ...(page.url.next && {
+    nextUrl: { text: `Next articles →`, url: page.url.next },
+  }),
+};
+---
+
+<PageLayout meta={meta}>
+  <div class="w-full">
+    <Button title="Back" href="/en" style="button">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" slot="icon-before">
+        <path fill="currentColor" d="m6.921 12.5l5.792 5.792L12 19l-7-7l7-7l.713.708L6.921 11.5H19v1z"></path>
+      </svg>
+    </Button>
+
+    <h1 class="mt-5 mb-6 text-2xl font-bold">Blog</h1>
+
+    {
+      page.data.length === 0 ? (
+        <p class="text-muted-foreground">No English articles yet. Check back soon.</p>
+      ) : (
+        <section aria-label="Blog posts list">
+          <ul class="flex flex-col gap-y-4 text-start">
+            {page.data.map((p) => (
+              <PostPreview post={p} withDesc baseUrl="/en/blog" />
+            ))}
+          </ul>
+          <Pagination {...paginationProps} />
+        </section>
+      )
+    }
+  </div>
+</PageLayout>

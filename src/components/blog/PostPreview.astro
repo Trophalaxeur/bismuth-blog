@@ -1,16 +1,19 @@
 ---
 import type { HTMLTag, Polymorphic } from 'astro/types';
-import type { CollectionEntry } from 'astro:content';
 
 import FormattedDate from '../FormattedDate.astro';
+import type { PostEntry } from '@/utils';
+import { getPostSlug } from '@/utils';
 
 type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }> & {
-  post: CollectionEntry<'post'>;
+  post: PostEntry;
   withDesc?: boolean;
+  baseUrl?: string;
 };
 
-const { as: Tag = 'div', post, withDesc = false } = Astro.props;
+const { as: Tag = 'div', post, withDesc = false, baseUrl = '/blog' } = Astro.props;
 const postDate = post.data.updatedDate ?? post.data.publishDate;
+const slug = getPostSlug(post.id);
 ---
 
 <li class="flex flex-col gap-2 sm:flex-row sm:gap-x-4 [&_q]:basis-full">
@@ -18,7 +21,7 @@ const postDate = post.data.updatedDate ?? post.data.publishDate;
 
   <Tag>
     {post.data.draft && <span class="text-red-500">(Draft) </span>}
-    <a data-astro-prefetch href={`/blog/${post.id.replace(/\.(md|mdx)$/, '')}/`} class="hover:text-muted-foreground transition-all">
+    <a data-astro-prefetch href={`${baseUrl}/${slug}/`} class="hover:text-muted-foreground transition-all">
       {post.data.title}
     </a>
     {withDesc && <p class="text-muted-foreground line-clamp-3 block text-sm italic">{post.data.description}</p>}

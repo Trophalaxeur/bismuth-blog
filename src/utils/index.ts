@@ -20,5 +20,6 @@ export { getFormattedDate } from './date';
 export { generateToc } from './generateToc';
 export type { TocItem } from './generateToc';
 export { renderOgImage } from './og-image';
-export { getAllPosts, getUniqueTags, getUniqueTagsWithCount, sortMDByDate } from './post';
+export { getAllPosts, getAllPostsEn, getPostSlug, getUniqueTags, getUniqueTagsWithCount, sortMDByDate } from './post';
+export type { PostEntry } from './post';
 export { cn } from './tailwind';

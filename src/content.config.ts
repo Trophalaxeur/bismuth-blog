@@ -9,30 +9,37 @@ function removeDupsAndLowerCase(array: string[]) {
   return Array.from(distinctItems);
 }
 
-const post = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/post' }),
-  schema: ({ image }) =>
-    z.object({
-      title: z.string().max(60),
-      description: z.string().min(50).max(160),
-      publishDate: z
-        .string()
-        .or(z.date())
-        .transform((val) => new Date(val)),
-      updatedDate: z
-        .string()
-        .optional()
-        .transform((str) => (str ? new Date(str) : undefined)),
-      coverImage: z
-        .object({
-          src: image(),
-          alt: z.string(),
-        })
-        .optional(),
-      draft: z.boolean().default(false),
-      tags: z.array(z.string()).default([]).transform(removeDupsAndLowerCase),
-      ogImage: z.string().optional(),
-    }),
+const postSchema = ({ image }: { image: () => z.ZodType<any> }) =>
+  z.object({
+    title: z.string().max(60),
+    description: z.string().min(50).max(160),
+    publishDate: z
+      .string()
+      .or(z.date())
+      .transform((val) => new Date(val)),
+    updatedDate: z
+      .string()
+      .optional()
+      .transform((str) => (str ? new Date(str) : undefined)),
+    coverImage: z
+      .object({
+        src: image(),
+        alt: z.string(),
+      })
+      .optional(),
+    draft: z.boolean().default(false),
+    tags: z.array(z.string()).default([]).transform(removeDupsAndLowerCase),
+    ogImage: z.string().optional(),
+  });
+
+const postFr = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/post/fr' }),
+  schema: postSchema,
+});
+
+const postEn = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/post/en' }),
+  schema: postSchema,
 });
 
 const cvExperiences = defineCollection({
@@ -94,4 +101,4 @@ const cvSections = defineCollection({
   }),
 });
 
-export const collections = { post, cvExperiences, cvSections };
+export const collections = { postFr, postEn, cvExperiences, cvSections };

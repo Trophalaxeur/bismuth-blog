@@ -1,0 +1,27 @@
+vars: {
+  d2-config: {
+    sketch: true
+    theme-id: 105
+    pad: 24
+  }
+}
+
+shape: sequence_diagram
+
+moi: "Moi"
+claude: "Claude Code"
+gh: "GitHub"
+copilot: "Copilot"
+
+moi -> claude: "1. Code la feature"
+claude -> moi: "→ feature + tests qui passent"
+moi -> claude: "2. Review ce que tu as fait"
+claude -> moi: "→ premières remarques"
+moi -> gh: "3. Ouvre la PR"
+gh -> copilot: "trigger review auto"
+copilot -> moi: "→ edge cases, typage, nommage..."
+moi -> claude: "4. Corrige ce que Copilot a remonté"
+claude -> moi: "→ fixes proposés, je valide"
+moi -> gh: "5. Push"
+gh -> copilot: "re-review si besoin"
+copilot -> moi: "→ encore des remarques ? on itère"
