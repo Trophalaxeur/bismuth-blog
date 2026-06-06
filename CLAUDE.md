@@ -152,3 +152,28 @@ Personalise in `src/site.config.ts`:
 - `menuLinks` for nav
 
 Also update `astro.config.mjs` → `site:` with the real domain.
+
+## Content architecture (carbon-notes pipeline)
+
+Content (articles, CV, docs) lives in separate private repos, fetched at build time via custom Astro Content Layer loaders (`src/loaders/github-loader.mjs`).
+
+| Source | Repo | Collection |
+|---|---|---|
+| Articles FR | `Trophalaxeur/carbon-notes` `articles/**/fr/` | `postFr` |
+| Articles EN | `Trophalaxeur/carbon-notes` `articles/**/en/` | `postEn` |
+| CV | `Trophalaxeur/carbon-notes` `cv/{fr,en}/` | `cvSections`, `cvExperiences` |
+| Docs homelab | `Trophalaxeur/homelab-gallium` `docs/` | `docs` (Starlight) |
+| Docs neon | `Trophalaxeur/neon-agents` `docs/` | `docs` (Starlight) |
+
+Auth: `CONTENT_TOKEN` env var (Vercel + local `.env`).
+
+## Publishing content
+
+After committing content in carbon-notes or a docs repo, trigger a Vercel rebuild:
+
+```bash
+blog-publish          # shell alias — preferred (configured in ~/.zshrc)
+vercel deploy --prod  # alternative
+```
+
+bismuth-blog code commits auto-deploy via Vercel git integration. Only content-only changes need a manual trigger.
