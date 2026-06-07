@@ -20,14 +20,14 @@ async function fetchContent(repo, path, token) {
   return res.text();
 }
 
-function parseFrontmatter(content) {
+export function parseFrontmatter(content) {
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
   if (!match) return { data: {}, body: content };
   return { data: jsYaml.load(match[1]) ?? {}, body: match[2] };
 }
 
 // Converts a glob pattern to a RegExp. Supports **, *, {a,b} — sufficient for our path patterns.
-function globToRegex(pattern) {
+export function globToRegex(pattern) {
   let result = '';
   for (let i = 0; i < pattern.length; i++) {
     const c = pattern[i];
@@ -67,6 +67,8 @@ function globToRegex(pattern) {
  * @param {string} [sources.starlightDocsBase] - When set, generates a fake filePath for Starlight
  *   (e.g. "src/content/docs"). Starlight requires filePath for sidebar autogenerate.
  *   The file doesn't need to exist on disk — Starlight only uses the string for path operations.
+ *   Formula: `${starlightDocsBase}/${id}.md` → Starlight strips the base to derive the sidebar group.
+ *   See: carbon-notes/docs/decisions/starlight-content-layer-integration.md for the full decision record.
  */
 export function githubLoader(sources) {
   const sourceList = Array.isArray(sources) ? sources : [sources];
@@ -115,7 +117,8 @@ export function githubLoader(sources) {
           fetched++;
         }
 
-        logger.info(`Fetched ${fetched} new/changed files from ${repo}`);
+        const unchanged = matches.length - fetched;
+        logger.info(`Fetched ${fetched} new/changed, ${unchanged} unchanged from ${repo}`);
       }
     },
   };

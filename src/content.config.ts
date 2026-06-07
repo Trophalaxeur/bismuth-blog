@@ -10,7 +10,7 @@ function removeDupsAndLowerCase(array: string[]) {
   return Array.from(distinctItems);
 }
 
-const CONTENT_TOKEN = import.meta.env.CONTENT_TOKEN as string;
+const CONTENT_TOKEN = import.meta.env.CONTENT_TOKEN;
 const CARBON_NOTES = 'Trophalaxeur/carbon-notes';
 
 // coverImage.src is a CDN URL string — remote content can't use Astro's image() helper

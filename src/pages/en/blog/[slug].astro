@@ -7,6 +7,9 @@ import { render } from 'astro:content';
 import PostLayout from '@/layouts/BlogPost.astro';
 import { getAllPosts, getAllPostsEn, getPostSlug } from '@/utils';
 
+// EN slug pages use FR slugs as the source of truth (FR is always written first).
+// For each FR article, we serve the EN translation if it exists, or fall back to FR.
+// isFallback=true triggers a "not yet translated" notice in BlogPost.astro.
 export const getStaticPaths = (async () => {
   const frPosts = await getAllPosts();
   const enPosts = await getAllPostsEn();
@@ -24,7 +27,7 @@ export const getStaticPaths = (async () => {
 
 type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
-const { entry, isFallback } = Astro.props;
+const { entry, isFallback } = Astro.props as Props;
 const { Content } = await render(entry);
 ---
 

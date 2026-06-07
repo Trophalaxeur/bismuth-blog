@@ -8,6 +8,7 @@ import Button from '@/components/Button.astro';
 import PageLayout from './BaseLayout.astro';
 import type { PostEntry } from '@/utils';
 import { getPostSlug } from '@/utils';
+import { BLOG_PATHS } from '@/site-config';
 
 interface Props {
   post: PostEntry;
@@ -24,7 +25,7 @@ const slug = getPostSlug(id);
 const socialImage = ogImage ?? `/og-image/${slug}.png`;
 const articleDate = updatedDate?.toISOString() ?? publishDate.toISOString();
 const { headings } = await render(post);
-const blogListUrl = Astro.currentLocale === 'en' ? '/en/blog' : '/blog';
+const blogListUrl = Astro.currentLocale === 'en' ? BLOG_PATHS.en : BLOG_PATHS.fr;
 ---
 
 <PageLayout meta={{ articleDate, description, ogImage: socialImage, title }}>

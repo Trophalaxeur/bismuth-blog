@@ -27,6 +27,11 @@ export const siteConfig: SiteConfig = {
   },
 };
 
+export const BLOG_PATHS = {
+  fr: '/blog',
+  en: '/en/blog',
+} as const;
+
 export const menuLinks: Array<{ title: string; path: string; devOnly?: boolean }> = [
   {
     title: 'Home',
