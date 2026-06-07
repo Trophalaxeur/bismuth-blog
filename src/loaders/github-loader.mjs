@@ -7,8 +7,9 @@ async function fetchTree(repo, token) {
     headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' },
   });
   if (!res.ok) throw new Error(`GitHub tree fetch failed: ${res.status} ${res.statusText} (${repo})`);
-  const { tree } = await res.json();
-  return tree.filter((f) => f.type === 'blob');
+  const data = await res.json();
+  if (data.truncated) throw new Error(`GitHub tree truncated for ${repo} — repo exceeds API limit`);
+  return data.tree.filter((f) => f.type === 'blob');
 }
 
 async function fetchContent(repo, path, token) {
