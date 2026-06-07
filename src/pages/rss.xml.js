@@ -1,5 +1,5 @@
 import { siteConfig } from '@/site-config';
-import { getAllPosts } from '@/utils';
+import { getAllPosts, getPostSlug } from '@/utils';
 import rss from '@astrojs/rss';
 
 export const GET = async () => {
@@ -13,7 +13,7 @@ export const GET = async () => {
       title: post.data.title,
       description: post.data.description,
       pubDate: post.data.publishDate,
-      link: `/blog/${post.id.replace(/\.(md|mdx)$/, '')}/`,
+      link: `/blog/${getPostSlug(post.id)}/`,
     })),
   });
 };

@@ -12,7 +12,8 @@ type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }> & {
   baseUrl?: string;
 };
 
-const { as: Tag = 'div', post, withDesc = false, baseUrl = BLOG_PATHS.fr } = Astro.props;
+const { as: Tag = 'div', post, withDesc = false, baseUrl: baseUrlProp } = Astro.props;
+const baseUrl = baseUrlProp ?? (Astro.currentLocale === 'en' ? BLOG_PATHS.en : BLOG_PATHS.fr);
 const postDate = post.data.updatedDate ?? post.data.publishDate;
 const slug = getPostSlug(post.id);
 ---
