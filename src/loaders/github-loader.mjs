@@ -23,7 +23,9 @@ async function fetchContent(repo, path, token) {
 export function parseFrontmatter(content) {
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
   if (!match) return { data: {}, body: content };
-  return { data: jsYaml.load(match[1]) ?? {}, body: match[2] };
+  const parsed = jsYaml.load(match[1]);
+  const data = parsed !== null && typeof parsed === 'object' && !Array.isArray(parsed) ? parsed : {};
+  return { data, body: match[2] };
 }
 
 // Converts a glob pattern to a RegExp. Supports **, *, {a,b} — sufficient for our path patterns.
