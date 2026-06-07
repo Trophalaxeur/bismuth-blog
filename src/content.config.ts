@@ -1,5 +1,5 @@
-import { defineCollection } from 'astro:content';
 import { docsSchema } from '@astrojs/starlight/schema';
+import { defineCollection } from 'astro:content';
 import { z } from 'zod';
 import { githubLoader } from './loaders/github-loader.mjs';
 
@@ -39,7 +39,7 @@ const postSchema = z.object({
 const postFr = defineCollection({
   loader: githubLoader({
     repo: CARBON_NOTES,
-    pathPattern: 'articles/**/fr/index.{md,mdx}',
+    pathPattern: 'articles/*/fr/index.{md,mdx}',
     token: CONTENT_TOKEN,
   }),
   schema: postSchema,
@@ -48,7 +48,7 @@ const postFr = defineCollection({
 const postEn = defineCollection({
   loader: githubLoader({
     repo: CARBON_NOTES,
-    pathPattern: 'articles/**/en/index.{md,mdx}',
+    pathPattern: 'articles/*/en/index.{md,mdx}',
     token: CONTENT_TOKEN,
   }),
   schema: postSchema,

@@ -23,7 +23,7 @@ interface Props {
   uniqueTags?: string[];
 }
 
-const { page, meta, backHref, baseUrl, emptyMessage, paginationProps, uniqueTags } = Astro.props;
+const { page, meta, backHref, baseUrl, emptyMessage, paginationProps, uniqueTags = [] } = Astro.props;
 ---
 
 <PageLayout meta={meta}>

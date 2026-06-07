@@ -1,5 +1,4 @@
 /* Starlight custom styles for bismuth-blog */
 
-/* Tailwind v4 / Starlight color alignment can be added here when needed */
-
-/* See: node_modules/@astrojs/starlight-tailwind/tailwind.css */
+/* Maps Tailwind v4 CSS variables to Starlight's --sl-* variables */
+@import '@astrojs/starlight-tailwind/tailwind.css';

@@ -3,13 +3,27 @@ import { globToRegex, parseFrontmatter } from './github-loader.mjs';
 
 describe('globToRegex', () => {
   describe('** wildcard', () => {
-    it('matches nested paths', () => {
-      const re = globToRegex('articles/**/fr/index.md');
+    it('matches single-level and nested paths', () => {
+      const re = globToRegex('docs/**/index.md');
+      expect(re.test('docs/overview/index.md')).toBe(true);
+      expect(re.test('docs/a/b/c/index.md')).toBe(true);
+    });
+  });
+
+  describe('* wildcard (single segment)', () => {
+    it('matches exactly one path segment', () => {
+      const re = globToRegex('articles/*/fr/index.md');
       expect(re.test('articles/my-post/fr/index.md')).toBe(true);
-      expect(re.test('articles/a/b/c/fr/index.md')).toBe(true);
     });
 
-    it('does not match across directory boundaries with single *', () => {
+    it('does not match nested paths — ensures valid single-segment slugs', () => {
+      // articles/*/fr/index.md is intentionally constrained to prevent
+      // multi-segment slugs like "a/b" that break [slug] routing
+      const re = globToRegex('articles/*/fr/index.md');
+      expect(re.test('articles/a/b/fr/index.md')).toBe(false);
+    });
+
+    it('does not match across directory boundaries', () => {
       const re = globToRegex('cv/*/profile.md');
       expect(re.test('cv/fr/profile.md')).toBe(true);
       expect(re.test('cv/fr/en/profile.md')).toBe(false);
