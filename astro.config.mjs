@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config'
+import starlight from '@astrojs/starlight'
 import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
 import { remarkReadingTime } from './src/utils/remarkReadingTime.ts'
@@ -12,9 +13,22 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
 	site: 'https://flefevre.fr',
 	integrations: [
+		starlight({
+			title: 'Docs — flefevre.fr',
+			customCss: ['./src/styles/starlight.css'],
+			components: {
+				// Docs are intentionally EN-only — the "not yet translated" banner is misleading
+				FallbackContentNotice: './src/components/starlight/EmptyFallbackNotice.astro',
+			},
+			sidebar: [
+				{ label: 'Carbon Notes', items: [{ autogenerate: { directory: 'carbon-notes' } }] },
+				{ label: 'Homelab', items: [{ autogenerate: { directory: 'homelab' } }] },
+				{ label: 'Neon', items: [{ autogenerate: { directory: 'neon' } }] },
+			],
+		}),
 		expressiveCode(expressiveCodeOptions),
 		sitemap({ filter: (page) => !page.includes('/print') }),
-		mdx()
+		mdx(),
 	],
 	vite: {
 		plugins: [tailwindcss()]

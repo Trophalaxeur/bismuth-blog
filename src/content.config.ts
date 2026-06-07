@@ -1,4 +1,5 @@
 import { defineCollection } from 'astro:content';
+import { docsSchema } from '@astrojs/starlight/schema';
 import { z } from 'zod';
 import { githubLoader } from './loaders/github-loader.mjs';
 
@@ -122,4 +123,40 @@ const cvSections = defineCollection({
   }),
 });
 
-export const collections = { postFr, postEn, cvExperiences, cvSections };
+const HOMELAB = 'Trophalaxeur/homelab-gallium';
+const NEON = 'Trophalaxeur/neon-agents';
+
+const docs = defineCollection({
+  loader: githubLoader([
+    {
+      repo: HOMELAB,
+      pathPattern: 'docs/**/*.md',
+      token: CONTENT_TOKEN,
+      stripPrefix: 'docs/',
+      idPrefix: 'homelab/',
+      stripExtension: true,
+      starlightDocsBase: 'src/content/docs',
+    },
+    {
+      repo: NEON,
+      pathPattern: 'docs/**/*.md',
+      token: CONTENT_TOKEN,
+      stripPrefix: 'docs/',
+      idPrefix: 'neon/',
+      stripExtension: true,
+      starlightDocsBase: 'src/content/docs',
+    },
+    {
+      repo: CARBON_NOTES,
+      pathPattern: 'docs/**/*.md',
+      token: CONTENT_TOKEN,
+      stripPrefix: 'docs/',
+      idPrefix: 'carbon-notes/',
+      stripExtension: true,
+      starlightDocsBase: 'src/content/docs',
+    },
+  ]),
+  schema: docsSchema(),
+});
+
+export const collections = { postFr, postEn, cvExperiences, cvSections, docs };
