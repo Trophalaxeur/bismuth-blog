@@ -101,10 +101,9 @@ const SVG_CLIPBOARD = `<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.
         />
       )
     }
-    <p
-      class={`mt-2.5 text-right text-[11px] tabular-nums ${isOverLimit ? 'font-semibold text-red-500' : 'text-muted-foreground'}`}
-    >
-      {charCount.toLocaleString(L.dateLocale)} / {CAREER_CHANNEL_MAX_CHARS.toLocaleString(L.dateLocale)} {L.characters}
+    <p class={`mt-2.5 text-right text-[11px] tabular-nums ${isOverLimit ? 'font-semibold text-red-500' : 'text-muted-foreground'}`}>
+      {charCount.toLocaleString(L.dateLocale)} / {CAREER_CHANNEL_MAX_CHARS.toLocaleString(L.dateLocale)}
+      {L.characters}
       {isOverLimit && ` ${L.overLimit}`}
     </p>
   </div>

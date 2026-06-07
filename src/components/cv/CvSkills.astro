@@ -13,9 +13,15 @@ const L = getCvLabels(Astro.currentLocale);
 
 // Icons keyed by card key — order and icons stay constant across locales.
 const CARD_ICONS: Record<string, CvIconName> = {
-  leadership: 'users', delivery: 'briefcase', quality: 'shield-check',
-  frontend: 'layout', backend: 'server', databases: 'database',
-  devops: 'git-branch', toolsMethods: 'settings', ia: 'cpu',
+  leadership: 'users',
+  delivery: 'briefcase',
+  quality: 'shield-check',
+  frontend: 'layout',
+  backend: 'server',
+  databases: 'database',
+  devops: 'git-branch',
+  toolsMethods: 'settings',
+  ia: 'cpu',
 };
 
 const CARDS = L.skillCards.map((c) => ({ ...c, icon: CARD_ICONS[c.key] ?? 'circle' }));
@@ -44,27 +50,25 @@ const cards = CARDS.map((c) => ({ ...c, items: toArray(skills[c.key]).map(parseS
 const isShort = variant === 'short';
 ---
 
-<section
-  id="competences"
-  class={isShort ? 'mb-8 print-short:mb-3' : 'mb-14 print:mb-0 print:break-after-page'}
-  data-cv-skills-expanded={collapsible ? 'false' : undefined}
->
+<section id="competences" class={isShort ? 'mb-8 print-short:mb-3' : 'mb-14 print:mb-0 print:break-after-page'} data-cv-skills-expanded={collapsible ? 'false' : undefined}>
   <div class="border-cv-accent/40 print-short:mb-2 print-short:pb-1.5 mb-5 flex items-center justify-between border-b-2 pb-2">
     <h2 class="text-foreground/85 text-[13px] font-bold tracking-[0.08em] uppercase">
       {L.keySkills}
     </h2>
-    {collapsible && (
-      <button
-        type="button"
-        class="cv-skills-toggle border-cv-accent/40 text-cv-accent hover:bg-cv-accent/10 hover:border-cv-accent inline-flex h-7 w-7 items-center justify-center rounded-md border transition-colors print:hidden"
-        aria-expanded="false"
-        aria-controls="competences"
-        aria-label={L.toggleSkills}
-      >
-        <CvIcon name="chevron-up" size={16} strokeWidth={2.5} class="cv-skills-icon-expanded" />
-        <CvIcon name="chevron-down" size={16} strokeWidth={2.5} class="cv-skills-icon-collapsed" />
-      </button>
-    )}
+    {
+      collapsible && (
+        <button
+          type="button"
+          class="cv-skills-toggle border-cv-accent/40 text-cv-accent hover:bg-cv-accent/10 hover:border-cv-accent inline-flex h-7 w-7 items-center justify-center rounded-md border transition-colors print:hidden"
+          aria-expanded="false"
+          aria-controls="competences"
+          aria-label={L.toggleSkills}
+        >
+          <CvIcon name="chevron-up" size={16} strokeWidth={2.5} class="cv-skills-icon-expanded" />
+          <CvIcon name="chevron-down" size={16} strokeWidth={2.5} class="cv-skills-icon-collapsed" />
+        </button>
+      )
+    }
   </div>
   <div class="cv-skills-body">
     {

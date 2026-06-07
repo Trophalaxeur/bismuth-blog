@@ -31,7 +31,6 @@ const SVG_CLIPBOARD = `<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.
 <PageLayout meta={{ title: L.careerChannel.pageTitle, description: L.careerChannel.pageDescription }}>
   <CvActions slot="headerActions" variant="career-channel" />
   <div class="w-full">
-
     <!-- Page intro banner -->
     <p class="text-muted-foreground border-border/40 mb-8 rounded-lg border px-5 py-3.5 text-sm leading-relaxed print:hidden" set:html={L.careerChannel.pageIntro} />
 
@@ -39,7 +38,9 @@ const SVG_CLIPBOARD = `<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.
     {
       profileEntry && (
         <section class="border-border/40 mb-8 rounded-lg border p-5">
-          <h1 class="sr-only">{profileName} — {titleText}</h1>
+          <h1 class="sr-only">
+            {profileName} — {titleText}
+          </h1>
           <div class="flex items-start gap-5">
             {profileImage && (
               <div class="relative shrink-0">
@@ -55,14 +56,23 @@ const SVG_CLIPBOARD = `<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.
                 <a
                   href={profileImage.src}
                   download="florian-lefevre-photo.webp"
-                  class="bg-background ring-border text-muted-foreground hover:text-cv-accent absolute -bottom-1.5 -right-1.5 flex h-6 w-6 items-center justify-center rounded-full shadow ring-1 transition-colors print:hidden"
+                  class="bg-background ring-border text-muted-foreground hover:text-cv-accent absolute -right-1.5 -bottom-1.5 flex h-6 w-6 items-center justify-center rounded-full shadow ring-1 transition-colors print:hidden"
                   aria-label={L.downloadPhoto}
                   title={L.downloadPhoto}
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                    <polyline points="7 10 12 15 17 10"></polyline>
-                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-3 w-3"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
                   </svg>
                 </a>
               </div>
@@ -82,7 +92,7 @@ const SVG_CLIPBOARD = `<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.
               {bioHtml && (
                 <div class="mt-3 flex items-start gap-3">
                   <div
-                    class="prose prose-sm dark:prose-invert prose-p:my-1.5 prose-p:leading-[1.75] prose-strong:text-foreground/95 text-foreground/80 min-w-0 flex-1 max-w-none"
+                    class="prose prose-sm dark:prose-invert prose-p:my-1.5 prose-p:leading-[1.75] prose-strong:text-foreground/95 text-foreground/80 max-w-none min-w-0 flex-1"
                     set:html={bioHtml}
                   />
                   <button
@@ -109,18 +119,19 @@ const SVG_CLIPBOARD = `<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.
     <section id="experiences" class="mb-14">
       <div class="border-cv-accent/40 mb-8 flex items-end justify-between gap-4 border-b-2 pb-3">
         <h2 class="text-foreground/85 text-[13px] font-bold tracking-[0.08em] uppercase">{L.careerChannel.expTitle}</h2>
-        <p class="text-muted-foreground print:hidden text-xs" set:html={L.careerChannel.copyHelp} />
+        <p class="text-muted-foreground text-xs print:hidden" set:html={L.careerChannel.copyHelp} />
       </div>
       <div>
         {experiencesData.map((exp) => <CvCareerChannelCard {...exp} />)}
       </div>
     </section>
-
   </div>
 </PageLayout>
 
 <style>
   @media print {
-    @page { margin: 15mm; }
+    @page {
+      margin: 15mm;
+    }
   }
 </style>

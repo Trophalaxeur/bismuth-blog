@@ -44,7 +44,5 @@ export function getUniqueTags(posts: Array<PostEntry>) {
 
 /** Note: This function doesn't filter draft posts, pass it the result of getAllPosts above to do so. */
 export function getUniqueTagsWithCount(posts: Array<PostEntry>): Array<[string, number]> {
-  return [
-    ...getAllTags(posts).reduce((acc, t) => acc.set(t, (acc.get(t) || 0) + 1), new Map<string, number>()),
-  ].sort((a, b) => b[1] - a[1]);
+  return [...getAllTags(posts).reduce((acc, t) => acc.set(t, (acc.get(t) || 0) + 1), new Map<string, number>())].sort((a, b) => b[1] - a[1]);
 }
