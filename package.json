@@ -26,7 +26,6 @@
 		"@resvg/resvg-js": "^2.6.2",
 		"@tailwindcss/vite": "^4.3.0",
 		"astro": "^6.3.1",
-		"astro-d2": "0.11.0",
 		"astro-expressive-code": "^0.42.0",
 		"clsx": "^2.1.1",
 		"js-yaml": "^4.2.0",

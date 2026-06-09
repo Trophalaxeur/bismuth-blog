@@ -27,6 +27,10 @@ function rehypeStripFirstH1() {
 
 // Collect h2/h3 headings into an array for Starlight's TOC (rendered.metadata.headings).
 // Must run after rehype-slug so id attributes are already set.
+function extractText(nodes) {
+  return nodes.flatMap((c) => (c.type === 'text' ? [c.value] : c.children ? extractText(c.children) : [])).join('');
+}
+
 function rehypeCollectHeadings(collected) {
   return function (tree) {
     visit(tree, 'element', (node) => {
@@ -34,10 +38,7 @@ function rehypeCollectHeadings(collected) {
       if (!match) return;
       const depth = parseInt(match[1], 10);
       const slug = node.properties?.id ?? '';
-      const text = node.children
-        .filter((c) => c.type === 'text')
-        .map((c) => c.value)
-        .join('');
+      const text = extractText(node.children);
       collected.push({ depth, slug, text });
     });
   };
@@ -128,7 +129,12 @@ function buildProcessor(d2Map = {}) {
 const GITHUB_API = 'https://api.github.com';
 
 async function fetchTree(repo, token) {
-  const res = await fetch(`${GITHUB_API}/repos/${repo}/git/trees/HEAD?recursive=1`, {
+  const repoRes = await fetch(`${GITHUB_API}/repos/${repo}`, {
+    headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' },
+  });
+  if (!repoRes.ok) throw new Error(`GitHub repo fetch failed: ${repoRes.status} ${repoRes.statusText} (${repo})`);
+  const { default_branch } = await repoRes.json();
+  const res = await fetch(`${GITHUB_API}/repos/${repo}/git/trees/${default_branch}?recursive=1`, {
     headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github+json' },
   });
   if (!res.ok) throw new Error(`GitHub tree fetch failed: ${res.status} ${res.statusText} (${repo})`);
@@ -140,7 +146,7 @@ async function fetchTree(repo, token) {
 async function fetchContent(repo, path, token) {
   const encodedPath = path.split('/').map(encodeURIComponent).join('/');
   const res = await fetch(`${GITHUB_API}/repos/${repo}/contents/${encodedPath}`, {
-    headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github.raw+json' },
+    headers: { Authorization: `Bearer ${token}`, Accept: 'application/vnd.github.raw' },
   });
   if (!res.ok) throw new Error(`GitHub content fetch failed: ${res.status} ${res.statusText} (${path})`);
   return res.text();
