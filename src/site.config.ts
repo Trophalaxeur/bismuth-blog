@@ -47,6 +47,11 @@ export const menuLinks: Array<{ title: string; path: string; devOnly?: boolean }
     devOnly: true,
   },
   {
+    title: 'Docs',
+    path: '/docs/',
+    devOnly: true,
+  },
+  {
     title: 'Contact',
     path: '/contact/',
   },

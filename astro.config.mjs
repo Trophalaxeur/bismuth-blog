@@ -19,8 +19,10 @@ export default defineConfig({
 			components: {
 				// Docs are intentionally EN-only — the "not yet translated" banner is misleading
 				FallbackContentNotice: './src/components/starlight/EmptyFallbackNotice.astro',
+				Header: './src/components/starlight/SiteHeader.astro',
 			},
 			sidebar: [
+					{ label: 'Overview', link: '/docs/' },
 				{ label: 'Carbon Notes', items: [{ autogenerate: { directory: 'carbon-notes' } }] },
 				{ label: 'Homelab', items: [{ autogenerate: { directory: 'homelab' } }] },
 				{ label: 'Neon', items: [{ autogenerate: { directory: 'neon' } }] },

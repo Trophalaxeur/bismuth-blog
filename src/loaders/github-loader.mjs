@@ -1,4 +1,129 @@
 import jsYaml from 'js-yaml';
+import { execFileSync } from 'child_process';
+import { writeFileSync, readFileSync, unlinkSync, mkdtempSync, rmdirSync } from 'fs';
+import { tmpdir } from 'os';
+import { join, posix } from 'path';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkGfm from 'remark-gfm';
+import remarkRehype from 'remark-rehype';
+import rehypeSlug from 'rehype-slug';
+import rehypeStringify from 'rehype-stringify';
+import { visit } from 'unist-util-visit';
+
+// Starlight renders the frontmatter title as its own h1 — strip any leading h1 from body.
+function rehypeStripFirstH1() {
+  return function (tree) {
+    let found = false;
+    tree.children = tree.children.filter((node) => {
+      if (!found && node.type === 'element' && node.tagName === 'h1') {
+        found = true;
+        return false;
+      }
+      return true;
+    });
+  };
+}
+
+// Collect h2/h3 headings into an array for Starlight's TOC (rendered.metadata.headings).
+// Must run after rehype-slug so id attributes are already set.
+function rehypeCollectHeadings(collected) {
+  return function (tree) {
+    visit(tree, 'element', (node) => {
+      const match = node.tagName.match(/^h([23])$/);
+      if (!match) return;
+      const depth = parseInt(match[1], 10);
+      const slug = node.properties?.id ?? '';
+      const text = node.children
+        .filter((c) => c.type === 'text')
+        .map((c) => c.value)
+        .join('');
+      collected.push({ depth, slug, text });
+    });
+  };
+}
+
+// Compile a .d2 source string to an inline SVG string via the d2 CLI.
+function compileD2ToSvg(d2Source) {
+  const dir = mkdtempSync(join(tmpdir(), 'd2-'));
+  const inFile = join(dir, 'diagram.d2');
+  const outFile = join(dir, 'diagram.svg');
+  try {
+    writeFileSync(inFile, d2Source, 'utf8');
+    execFileSync('d2', ['--theme=0', '--dark-theme=200', inFile, outFile], { timeout: 15000 });
+    const svg = readFileSync(outFile, 'utf8');
+    // Strip XML declaration — not needed for inline SVG
+    return svg.replace(/<\?xml[^?]*\?>\s*/i, '');
+  } finally {
+    try { unlinkSync(inFile); } catch {}
+    try { unlinkSync(outFile); } catch {}
+    try { rmdirSync(dir); } catch {}
+  }
+}
+
+// Fix relative links in markdown fetched from GitHub.
+// Starlight serves each page as a virtual directory (trailing slash), so a sibling link
+// like "skill-authoring" resolves one level too deep. We need "../skill-authoring".
+// Rules:
+//   - Strip .md / .mdx extension, preserving any #fragment
+//   - Skip .d2 links — handled separately by rehypeInlineD2
+//   - Prepend "../" if the link is relative and doesn't already start with ".."
+function rehypeStripMdExtension() {
+  return function (tree) {
+    visit(tree, 'element', (node) => {
+      if (node.tagName !== 'a') return;
+      const href = node.properties?.href;
+      if (!href || /^https?:\/\//.test(href) || href.startsWith('#') || href.startsWith('/')) return;
+      if (href.includes('.d2')) return;
+
+      let fixed = href.replace(/\.mdx?(#.*)?$/, (_, frag) => frag ?? '');
+
+      // Normalise "./" prefix → "../" (Starlight virtual dir shifts relative base one level down)
+      if (fixed.startsWith('./')) {
+        fixed = '../' + fixed.slice(2);
+      } else if (!fixed.startsWith('../')) {
+        fixed = '../' + fixed;
+      }
+
+      node.properties.href = fixed;
+    });
+  };
+}
+
+// Replace <a href="*.d2"> links with inline <figure class="d2-diagram"> containing the compiled SVG.
+// d2Map: { relHref: svgString }
+function rehypeInlineD2(d2Map) {
+  return function (tree) {
+    visit(tree, 'element', (node, index, parent) => {
+      if (node.tagName !== 'a') return;
+      const href = node.properties?.href;
+      if (!href || !href.endsWith('.d2')) return;
+      const svg = d2Map[href];
+      if (!svg || !parent) return;
+      parent.children[index] = {
+        type: 'element',
+        tagName: 'figure',
+        properties: { className: ['d2-diagram'] },
+        children: [{ type: 'raw', value: svg }],
+      };
+    });
+  };
+}
+
+function buildProcessor(d2Map = {}) {
+  const headings = [];
+  const processor = unified()
+    .use(remarkParse)
+    .use(remarkGfm)
+    .use(remarkRehype)
+    .use(rehypeStripFirstH1)
+    .use(rehypeSlug)
+    .use(rehypeCollectHeadings, headings)
+    .use(rehypeStripMdExtension)
+    .use(rehypeInlineD2, d2Map)
+    .use(rehypeStringify, { allowDangerousHtml: true });
+  return { processor, headings };
+}
 
 const GITHUB_API = 'https://api.github.com';
 
@@ -113,10 +238,29 @@ export function githubLoader(sources) {
           const raw = await fetchContent(repo, file.path, token);
           const { data, body } = parseFrontmatter(raw);
           const parsed = await parseData({ id, data });
+
+          // Compile any .d2 diagrams linked from this file before running the pipeline.
+          const d2Map = {};
+          const d2Links = [...body.matchAll(/\[[^\]]*\]\(([^)]+\.d2)\)/g)].map((m) => m[1]);
+          const fileDir = posix.dirname(file.path);
+          for (const relHref of d2Links) {
+            const repoPath = posix.normalize(posix.join(fileDir, relHref));
+            try {
+              const d2Source = await fetchContent(repo, repoPath, token);
+              d2Map[relHref] = compileD2ToSvg(d2Source);
+              logger.info(`Compiled D2: ${repoPath}`);
+            } catch (err) {
+              logger.warn(`D2 compile failed for ${repoPath}: ${err.message}`);
+            }
+          }
+
+          const { processor, headings } = buildProcessor(d2Map);
+          const result = await processor.process(body);
+          const html = String(result);
           // starlightDocsBase: fake filePath so Starlight's sidebar autogenerate works.
           // navigation.ts does filePath.replace('src/content/docs/', '') to derive the directory.
           const filePath = starlightDocsBase ? `${starlightDocsBase}/${id}.md` : undefined;
-          store.set({ id, data: parsed, body, digest: file.sha, filePath });
+          store.set({ id, data: parsed, body, rendered: { html, metadata: { headings } }, digest: file.sha, filePath });
           fetched++;
         }
 
