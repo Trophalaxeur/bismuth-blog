@@ -26,6 +26,29 @@ export async function GET() {
   const educationEntry = frSections.find((e) => e.data.type === 'education');
   const domainsEntry = frSections.find((e) => e.data.type === 'domains');
 
+  const skills = (skillsEntry?.data as { skills?: Record<string, string[]> })?.skills ?? {};
+
+  // Comprehensive technology list: every tool/language/method used across ALL
+  // experiences (early included) + the curated skills, de-duplicated. Gives the
+  // AI the full breadth of real skills to match against large form taxonomies.
+  const allExperiences = experiences.filter((e) => e.id.startsWith(`${locale}/`));
+  const technologies = [
+    ...new Set(
+      [
+        ...Object.values(skills).flat(),
+        ...allExperiences.flatMap((e) => [
+          ...(e.data.environment?.languages ?? []),
+          ...(e.data.environment?.tools ?? []),
+          ...(e.data.environment?.systems ?? []),
+          ...(e.data.environment?.methods ?? []),
+        ]),
+        ...allExperiences.flatMap((e) => e.data.secondaryTags ?? []),
+      ].map((s) => s.replace(/\*\*/g, '').trim())
+    ),
+  ]
+    .filter(Boolean)
+    .sort((a, b) => a.localeCompare(b));
+
   const cv = {
     meta: {
       name: profile?.data.name ?? '',
@@ -41,7 +64,8 @@ export async function GET() {
       ? stripMarkdownForCareerChannel(summaryEntry.body)
       : '',
     domains: parseDomainsList(domainsEntry?.body ?? ''),
-    skills: (skillsEntry?.data as { skills?: Record<string, string[]> })?.skills ?? {},
+    skills,
+    technologies,
     experiences: frExperiences.map((exp) => {
       const body = exp.body ?? '';
       const hasCareerChannel = exp.data.variants?.includes('career-channel');
