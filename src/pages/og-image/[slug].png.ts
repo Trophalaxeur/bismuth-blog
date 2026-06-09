@@ -1,10 +1,10 @@
-import { getAllPosts, getFormattedDate, renderOgImage } from '@/utils';
+import { getAllPosts, getFormattedDate, getPostSlug, renderOgImage } from '@/utils';
 import type { APIRoute, GetStaticPaths, InferGetStaticPropsType } from 'astro';
 
 export const getStaticPaths = (async () => {
   const posts = await getAllPosts();
   return posts.map((post) => ({
-    params: { slug: post.id.replace(/\.(md|mdx)$/, '') },
+    params: { slug: getPostSlug(post.id) },
     props: {
       title: post.data.title,
       description: post.data.description,

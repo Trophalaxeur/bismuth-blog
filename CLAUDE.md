@@ -15,6 +15,31 @@ npm run dev      # type-check watch + dev server → http://localhost:4321
 npm run build    # astro check + astro build
 npm run preview  # preview built output
 npm run lint     # prettier + eslint fix
+npm test         # unit tests (Vitest)
+```
+
+## Before pushing a PR
+
+Always run these checks locally before pushing. All must pass:
+
+```bash
+npm test                  # unit tests
+npm run build             # type-check + build
+npm run lint:prettier     # formatter
+npm run lint:eslint       # linter (0 errors required)
+npm run lint:stylelint    # CSS linter (0 errors required)
+```
+
+## Publishing content
+
+Content (articles, CV, docs) lives in carbon-notes and the project repos (homelab-gallium, neon-agents).
+It is fetched at Vercel build time via Astro Content Layer loaders — no auto-publish on commit.
+
+After any content commit, trigger a rebuild manually:
+
+```bash
+blog-publish          # shell alias → Vercel Deploy Hook (preferred)
+vercel deploy --prod  # alternative
 ```
 
 ## Conventions

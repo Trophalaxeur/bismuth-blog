@@ -315,6 +315,6 @@ export async function getCareerChannelExperiencesData(locale = 'fr') {
         text: stripMarkdownForCareerChannel(md),
         html: await renderMarkdown(md),
       };
-    }),
+    })
   );
 }

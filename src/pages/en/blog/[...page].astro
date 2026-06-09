@@ -1,0 +1,34 @@
+---
+export const prerender = true;
+
+import type { GetStaticPaths, Page } from 'astro';
+import type { PostEntry } from '@/utils';
+
+import BlogListPage from '@/components/blog/BlogListPage.astro';
+import { BLOG_PATHS } from '@/site-config';
+import { getAllPostsEn, sortMDByDate } from '@/utils';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const allPosts = await getAllPostsEn();
+  const allPostsByDate = sortMDByDate(allPosts);
+  return paginate(allPostsByDate, { pageSize: 10 });
+}) satisfies GetStaticPaths;
+
+interface Props {
+  page: Page<PostEntry>;
+}
+
+const { page } = Astro.props as Props;
+
+const meta = {
+  description: 'Articles, experiments and technical notes on web development, homelab and tools.',
+  title: 'Blog',
+};
+
+const paginationProps = {
+  ...(page.url.prev && { prevUrl: { text: `← Previous articles`, url: page.url.prev } }),
+  ...(page.url.next && { nextUrl: { text: `Next articles →`, url: page.url.next } }),
+};
+---
+
+<BlogListPage page={page} meta={meta} backHref="/en" baseUrl={BLOG_PATHS.en} emptyMessage="No English articles yet. Check back soon." paginationProps={paginationProps} />

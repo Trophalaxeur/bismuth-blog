@@ -1,0 +1,32 @@
+---
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkGfm from 'remark-gfm';
+import remarkRehype from 'remark-rehype';
+import rehypeStringify from 'rehype-stringify';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import StarlightPage from '@astrojs/starlight/components/StarlightPage.astro';
+
+const mdPath = resolve('./src/content/docs-home.md');
+const raw = readFileSync(mdPath, 'utf8');
+
+const result = await unified()
+  .use(remarkParse)
+  .use(remarkGfm)
+  .use(remarkRehype)
+  .use(rehypeStringify)
+  .process(raw);
+
+const html = String(result);
+---
+
+<StarlightPage
+  frontmatter={{
+    title: 'Documentation',
+    description: 'Technical documentation for my personal projects — homelab infrastructure, AI agents, and engineering notes.',
+    tableOfContents: false,
+  }}
+>
+  <Fragment set:html={html} />
+</StarlightPage>

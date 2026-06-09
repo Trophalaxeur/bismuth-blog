@@ -1,0 +1,163 @@
+/* Satoshi font — loaded here because app.css is not injected on Starlight pages */
+@font-face {
+  font-family: Satoshi;
+  src: url('/fonts/Satoshi-Variable.ttf');
+  font-weight: 300 900;
+  font-display: block;
+}
+
+@font-face {
+  font-family: Satoshi;
+  src: url('/fonts/Satoshi-VariableItalic.ttf');
+  font-style: italic;
+  font-weight: 300 900;
+  font-display: block;
+}
+
+/* Starlight uses a SEMANTIC inverted gray scale per mode:
+   light mode  → gray-1 = darkest (text), gray-7/black = lightest (bg)
+   dark mode   → gray-1 = lightest (text), gray-7/black = darkest (bg)
+   The search button uses background-color: var(--sl-color-black), so black must be
+   the page background color for each mode, not an absolute dark value. */
+
+/* ── Layout ── */
+:root {
+  --sl-sidebar-width: 15rem;
+  --sl-content-width: 40rem;
+}
+
+/* Center the page at a fixed max-width */
+.page {
+  max-width: 68rem;
+  margin-inline: auto;
+}
+
+/* The sidebar is position:fixed anchored to inset-inline-start:0 —
+   shift it to stay aligned with the centered .page on wide viewports. */
+@media (width >= 68rem) {
+  .sidebar-pane {
+    inset-inline-start: max(0px, calc((100vw - 68rem) / 2));
+  }
+}
+
+/* ── Light mode (default before JS + explicit [data-theme='light']) ── */
+:root,
+:root[data-theme='light'] {
+  --sl-color-accent-low: hsl(210deg, 65%, 88%);
+  --sl-color-accent: hsl(210deg, 65%, 30%);
+  --sl-color-accent-high: hsl(210deg, 65%, 18%);
+  --sl-color-white: hsl(220deg, 15%, 8%);
+  --sl-color-gray-1: hsl(220deg, 15%, 8%);
+  --sl-color-gray-2: hsl(220deg, 15%, 20%);
+  --sl-color-gray-3: hsl(220deg, 8%, 38%);
+  --sl-color-gray-4: hsl(220deg, 8%, 50%);
+  --sl-color-gray-5: hsl(220deg, 8%, 70%);
+  --sl-color-gray-6: hsl(220deg, 14%, 94%);
+  --sl-color-gray-7: hsl(220deg, 22%, 98.5%);
+  --sl-color-black: hsl(220deg, 22%, 98.5%);
+  --sl-color-bg: hsl(220deg, 22%, 98.5%);
+  --sl-color-bg-nav: hsl(220deg, 22%, 98.5%);
+  --sl-color-bg-sidebar: hsl(220deg, 14%, 94%);
+  --sl-color-hairline: hsl(220deg, 10%, 88%);
+  --sl-color-hairline-light: hsl(220deg, 10%, 88%);
+  --sl-color-hairline-shade: hsl(220deg, 14%, 94%);
+  --sl-color-text: hsl(220deg, 15%, 8%);
+  --sl-color-text-accent: hsl(210deg, 65%, 30%);
+  --sl-color-text-invert: hsl(0deg, 0%, 98%);
+  --sl-color-bg-inline-code: hsl(220deg, 14%, 94%);
+  --sl-color-bg-accent: hsl(210deg, 65%, 30%);
+  --sl-font: 'Satoshi', sans-serif;
+}
+
+/* ── Dark mode ── */
+[data-theme='dark'],
+:root.dark {
+  --sl-color-accent-low: hsl(210deg, 60%, 20%);
+  --sl-color-accent: hsl(210deg, 60%, 62%);
+  --sl-color-accent-high: hsl(210deg, 60%, 80%);
+  --sl-color-white: hsl(220deg, 10%, 96%);
+  --sl-color-gray-1: hsl(220deg, 10%, 96%);
+  --sl-color-gray-2: hsl(220deg, 10%, 80%);
+  --sl-color-gray-3: hsl(220deg, 8%, 60%);
+  --sl-color-gray-4: hsl(220deg, 8%, 46%);
+  --sl-color-gray-5: hsl(220deg, 8%, 30%);
+  --sl-color-gray-6: hsl(222deg, 14%, 14%);
+  --sl-color-gray-7: hsl(222deg, 18%, 8%);
+  --sl-color-black: hsl(222deg, 18%, 6%);
+  --sl-color-bg: hsl(222deg, 18%, 6%);
+  --sl-color-bg-nav: hsl(222deg, 18%, 6%);
+  --sl-color-bg-sidebar: hsl(222deg, 14%, 14%);
+  --sl-color-hairline: hsl(222deg, 12%, 18%);
+  --sl-color-hairline-light: hsl(222deg, 12%, 18%);
+  --sl-color-hairline-shade: hsl(222deg, 14%, 14%);
+  --sl-color-text: hsl(220deg, 10%, 96%);
+  --sl-color-text-accent: hsl(210deg, 60%, 62%);
+  --sl-color-text-invert: hsl(222deg, 18%, 6%);
+  --sl-color-bg-inline-code: hsl(222deg, 14%, 14%);
+  --sl-color-bg-accent: hsl(210deg, 60%, 62%);
+}
+
+/* ── Sidebar ── */
+.sidebar-pane {
+  border-inline-end-color: var(--sl-color-hairline);
+}
+
+.group-label span {
+  font-size: var(--sl-text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--sl-color-gray-4);
+}
+
+/* ── Prev/Next cards ── */
+.pagination-links a {
+  border-color: var(--sl-color-hairline);
+  background-color: var(--sl-color-bg);
+  border-radius: 0.5rem;
+}
+
+/* ── Content prose ── */
+.sl-markdown-content {
+  font-family: var(--sl-font);
+}
+
+.sl-markdown-content pre {
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.sl-markdown-content :is(h1, h2, h3, h4) code {
+  overflow-wrap: break-word;
+}
+
+.sl-markdown-content a {
+  color: var(--sl-color-text-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.sl-markdown-content a:hover {
+  color: var(--sl-color-accent-high);
+}
+
+[data-theme='dark'] .sl-markdown-content a,
+:root.dark .sl-markdown-content a {
+  color: var(--sl-color-accent);
+}
+
+/* ── D2 diagrams ── */
+figure.d2-diagram {
+  margin: 1.5rem 0;
+}
+
+figure.d2-diagram svg {
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+/* ── TOC ── */
+.right-sidebar a[aria-current='true'] {
+  color: var(--sl-color-text-accent);
+  font-weight: 600;
+}

@@ -1,0 +1,36 @@
+---
+export const prerender = true;
+
+import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
+import { render } from 'astro:content';
+
+import PostLayout from '@/layouts/BlogPost.astro';
+import { getAllPosts, getAllPostsEn, getPostSlug } from '@/utils';
+
+// EN slug pages use FR slugs as the source of truth (FR is always written first).
+// For each FR article, we serve the EN translation if it exists, or fall back to FR.
+// isFallback=true triggers a "not yet translated" notice in BlogPost.astro.
+export const getStaticPaths = (async () => {
+  const frPosts = await getAllPosts();
+  const enPosts = await getAllPostsEn();
+  const enMap = new Map(enPosts.map((p) => [getPostSlug(p.id), p]));
+
+  return frPosts.map((frEntry) => {
+    const slug = getPostSlug(frEntry.id);
+    const enEntry = enMap.get(slug);
+    return {
+      params: { slug },
+      props: { entry: enEntry ?? frEntry, isFallback: !enEntry },
+    };
+  });
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { entry, isFallback } = Astro.props as Props;
+const { Content } = await render(entry);
+---
+
+<PostLayout post={entry} isFallback={isFallback}>
+  <Content />
+</PostLayout>

@@ -70,7 +70,8 @@ const FR: CvLabels = {
     copyHelp: 'Cliquez sur <strong class="text-foreground/80">Copier</strong> pour copier la description.',
     pageTitle: 'CV — Format réseau professionnel',
     pageDescription: 'Descriptions de mes expériences professionnelles prêtes à copier-coller',
-    pageIntro: 'Format réseau professionnel — retrouvez ici titre de poste, biographie et expériences dans un format optimisé pour <strong class="text-foreground/80">LinkedIn</strong> et les plateformes similaires. Chaque description est prête à coller en un clic, sans reformatage.',
+    pageIntro:
+      'Format réseau professionnel — retrouvez ici titre de poste, biographie et expériences dans un format optimisé pour <strong class="text-foreground/80">LinkedIn</strong> et les plateformes similaires. Chaque description est prête à coller en un clic, sans reformatage.',
   },
   variantLabels: { short: 'Court', detailed: 'Détaillé', careerChannel: 'Réseau' },
   toggleSkills: 'Afficher / masquer les compétences',
@@ -125,7 +126,8 @@ const EN: CvLabels = {
     copyHelp: 'Click <strong class="text-foreground/80">Copy</strong> to copy the description.',
     pageTitle: 'CV — Professional network format',
     pageDescription: 'Professional experience descriptions ready to copy-paste',
-    pageIntro: 'Professional network format — find your job title, biography and experiences in an optimised format for <strong class="text-foreground/80">LinkedIn</strong> and similar platforms. Each description is ready to paste in one click, with no reformatting needed.',
+    pageIntro:
+      'Professional network format — find your job title, biography and experiences in an optimised format for <strong class="text-foreground/80">LinkedIn</strong> and similar platforms. Each description is ready to paste in one click, with no reformatting needed.',
   },
   variantLabels: { short: 'Short', detailed: 'Detailed', careerChannel: 'Network' },
   toggleSkills: 'Show / hide skills',

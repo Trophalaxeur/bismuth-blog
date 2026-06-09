@@ -1,6 +1,7 @@
-import { glob } from 'astro/loaders';
+import { docsSchema } from '@astrojs/starlight/schema';
 import { defineCollection } from 'astro:content';
 import { z } from 'zod';
+import { githubLoader } from './loaders/github-loader.mjs';
 
 function removeDupsAndLowerCase(array: string[]) {
   if (!array.length) return array;
@@ -9,34 +10,57 @@ function removeDupsAndLowerCase(array: string[]) {
   return Array.from(distinctItems);
 }
 
-const post = defineCollection({
-  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/post' }),
-  schema: ({ image }) =>
-    z.object({
-      title: z.string().max(60),
-      description: z.string().min(50).max(160),
-      publishDate: z
-        .string()
-        .or(z.date())
-        .transform((val) => new Date(val)),
-      updatedDate: z
-        .string()
-        .optional()
-        .transform((str) => (str ? new Date(str) : undefined)),
-      coverImage: z
-        .object({
-          src: image(),
-          alt: z.string(),
-        })
-        .optional(),
-      draft: z.boolean().default(false),
-      tags: z.array(z.string()).default([]).transform(removeDupsAndLowerCase),
-      ogImage: z.string().optional(),
-    }),
+const CONTENT_TOKEN = import.meta.env.CONTENT_TOKEN;
+const CARBON_NOTES = 'Trophalaxeur/carbon-notes';
+
+// coverImage.src is a CDN URL string — remote content can't use Astro's image() helper
+const postSchema = z.object({
+  title: z.string().max(60),
+  description: z.string().min(50).max(160),
+  publishDate: z
+    .string()
+    .or(z.date())
+    .transform((val) => new Date(val)),
+  updatedDate: z
+    .string()
+    .optional()
+    .transform((str) => (str ? new Date(str) : undefined)),
+  coverImage: z
+    .object({
+      src: z.string(),
+      alt: z.string(),
+    })
+    .optional(),
+  draft: z.boolean().default(false),
+  tags: z.array(z.string()).default([]).transform(removeDupsAndLowerCase),
+  ogImage: z.string().optional(),
+});
+
+const postFr = defineCollection({
+  loader: githubLoader({
+    repo: CARBON_NOTES,
+    pathPattern: 'articles/*/fr/index.{md,mdx}',
+    token: CONTENT_TOKEN,
+  }),
+  schema: postSchema,
+});
+
+const postEn = defineCollection({
+  loader: githubLoader({
+    repo: CARBON_NOTES,
+    pathPattern: 'articles/*/en/index.{md,mdx}',
+    token: CONTENT_TOKEN,
+  }),
+  schema: postSchema,
 });
 
 const cvExperiences = defineCollection({
-  loader: glob({ pattern: '*/experiences/*.md', base: './src/content/cv' }),
+  loader: githubLoader({
+    repo: CARBON_NOTES,
+    pathPattern: 'cv/{fr,en}/experiences/*.md',
+    token: CONTENT_TOKEN,
+    stripPrefix: 'cv/',
+  }),
   schema: z.object({
     schemaVersion: z.number().optional(),
     type: z.literal('experience'),
@@ -64,7 +88,12 @@ const cvExperiences = defineCollection({
 });
 
 const cvSections = defineCollection({
-  loader: glob({ pattern: '*/*.md', base: './src/content/cv' }),
+  loader: githubLoader({
+    repo: CARBON_NOTES,
+    pathPattern: 'cv/{fr,en}/*.md',
+    token: CONTENT_TOKEN,
+    stripPrefix: 'cv/',
+  }),
   schema: z.object({
     schemaVersion: z.number().optional(),
     type: z.enum(['profile', 'domains', 'skills', 'education', 'projects', 'extra-info', 'interests', 'summary']),
@@ -94,4 +123,40 @@ const cvSections = defineCollection({
   }),
 });
 
-export const collections = { post, cvExperiences, cvSections };
+const HOMELAB = 'Trophalaxeur/homelab-gallium';
+const NEON = 'Trophalaxeur/neon-agents';
+
+const docs = defineCollection({
+  loader: githubLoader([
+    {
+      repo: HOMELAB,
+      pathPattern: 'docs/**/*.md',
+      token: CONTENT_TOKEN,
+      stripPrefix: 'docs/',
+      idPrefix: 'homelab/',
+      stripExtension: true,
+      starlightDocsBase: 'src/content/docs',
+    },
+    {
+      repo: NEON,
+      pathPattern: 'docs/**/*.md',
+      token: CONTENT_TOKEN,
+      stripPrefix: 'docs/',
+      idPrefix: 'neon/',
+      stripExtension: true,
+      starlightDocsBase: 'src/content/docs',
+    },
+    {
+      repo: CARBON_NOTES,
+      pathPattern: 'docs/**/*.md',
+      token: CONTENT_TOKEN,
+      stripPrefix: 'docs/',
+      idPrefix: 'carbon-notes/',
+      stripExtension: true,
+      starlightDocsBase: 'src/content/docs',
+    },
+  ]),
+  schema: docsSchema(),
+});
+
+export const collections = { postFr, postEn, cvExperiences, cvSections, docs };
