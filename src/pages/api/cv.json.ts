@@ -69,8 +69,8 @@ export async function GET() {
     technologies,
     experiences: frExperiences.map((exp) => {
       const body = exp.body ?? '';
-      const hasCareerChannel = exp.data.variants?.includes('career-channel');
-      const variant = hasCareerChannel ? 'career-channel' : 'short';
+      const hasDetailed = exp.data.variants?.includes('detailed');
+      const variant = hasDetailed ? 'detailed' : 'short';
       const md = extractVariantMarkdown(body, variant);
       return {
         role: exp.data.role,
