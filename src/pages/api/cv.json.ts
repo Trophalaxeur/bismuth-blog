@@ -1,5 +1,5 @@
 import { getCollection } from 'astro:content';
-import { extractVariantMarkdown, parseDomains, sortCvExperiences, stripMarkdownForCareerChannel } from '../../utils/cv';
+import { extractVariantMarkdown, parseDomains, sortCvExperiences, stripMarkdownForCareerChannel } from '@/utils';
 
 export async function GET() {
   const locale = 'fr';
@@ -23,7 +23,10 @@ export async function GET() {
   const domainsEntry = frSections.find((e) => e.data.type === 'domains');
   const projectsEntry = frSections.find((e) => e.data.type === 'projects');
 
-  const skills: Record<string, string | string[]> = skillsEntry?.data.skills ?? {};
+  const rawSkills = skillsEntry?.data.skills ?? {};
+  const skills: Record<string, string[]> = Object.fromEntries(
+    Object.entries(rawSkills).map(([k, v]) => [k, Array.isArray(v) ? v : [v]])
+  );
 
   // Comprehensive technology list: every tool/language/method used across ALL
   // experiences (early included) + the curated skills, de-duplicated. Gives the
@@ -58,9 +61,9 @@ export async function GET() {
       positioning: profile?.data.positioning ?? [],
     },
     summary: summaryEntry?.body
-      ? stripMarkdownForCareerChannel(summaryEntry.body)
+      ? stripMarkdownForCareerChannel(extractVariantMarkdown(summaryEntry.body, 'detailed'))
       : '',
-    domains: parseDomains(domainsEntry?.body ?? '').map((d) => `${d.title} — ${d.description}`),
+    domains: parseDomains(extractVariantMarkdown(domainsEntry?.body ?? '', 'detailed')).map((d) => `${d.title} — ${d.description}`),
     skills,
     technologies,
     experiences: frExperiences.map((exp) => {
