@@ -25,6 +25,7 @@ export async function GET() {
   const summaryEntry = frSections.find((e) => e.data.type === 'summary');
   const educationEntry = frSections.find((e) => e.data.type === 'education');
   const domainsEntry = frSections.find((e) => e.data.type === 'domains');
+  const projectsEntry = frSections.find((e) => e.data.type === 'projects');
 
   const skills = (skillsEntry?.data as { skills?: Record<string, string[]> })?.skills ?? {};
 
@@ -89,6 +90,9 @@ export async function GET() {
     }),
     education: educationEntry?.body
       ? stripMarkdownForCareerChannel(extractVariantMarkdown(educationEntry.body, 'detailed'))
+      : '',
+    projects: projectsEntry?.body
+      ? stripMarkdownForCareerChannel(extractVariantMarkdown(projectsEntry.body, 'detailed'))
       : '',
   };
 
