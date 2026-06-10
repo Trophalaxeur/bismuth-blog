@@ -1,5 +1,5 @@
 import { getCollection } from 'astro:content';
-import { extractVariantMarkdown, stripMarkdownForCareerChannel } from '../../utils/cv';
+import { extractVariantMarkdown, parseDomains, sortCvExperiences, stripMarkdownForCareerChannel } from '../../utils/cv';
 
 export async function GET() {
   const locale = 'fr';
@@ -14,11 +14,7 @@ export async function GET() {
     (e) => e.id.startsWith(`${locale}/`) && e.data.section !== 'early'
   );
 
-  // Sort by priority asc, then start date desc
-  const frExperiences = [...frExperiencesRaw].sort((a, b) => {
-    const pDiff = (a.data.priority ?? 50) - (b.data.priority ?? 50);
-    return pDiff !== 0 ? pDiff : b.data.start.localeCompare(a.data.start);
-  });
+  const frExperiences = sortCvExperiences(frExperiencesRaw);
 
   const profile = frSections.find((e) => e.data.type === 'profile');
   const skillsEntry = frSections.find((e) => e.data.type === 'skills');
@@ -27,7 +23,7 @@ export async function GET() {
   const domainsEntry = frSections.find((e) => e.data.type === 'domains');
   const projectsEntry = frSections.find((e) => e.data.type === 'projects');
 
-  const skills = (skillsEntry?.data as { skills?: Record<string, string[]> })?.skills ?? {};
+  const skills: Record<string, string | string[]> = skillsEntry?.data.skills ?? {};
 
   // Comprehensive technology list: every tool/language/method used across ALL
   // experiences (early included) + the curated skills, de-duplicated. Gives the
@@ -64,7 +60,7 @@ export async function GET() {
     summary: summaryEntry?.body
       ? stripMarkdownForCareerChannel(summaryEntry.body)
       : '',
-    domains: parseDomainsList(domainsEntry?.body ?? ''),
+    domains: parseDomains(domainsEntry?.body ?? '').map((d) => `${d.title} — ${d.description}`),
     skills,
     technologies,
     experiences: frExperiences.map((exp) => {
@@ -100,17 +96,6 @@ export async function GET() {
     status: 200,
     headers: {
       'Content-Type': 'application/json',
-      'Cache-Control': 'public, max-age=3600',
     },
   });
-}
-
-function parseDomainsList(markdown: string): string[] {
-  return markdown
-    .split('\n')
-    .map((line) => {
-      const m = line.match(/^\s*-\s+\*\*(.+?)\*\*\s*[—–-]\s*(.+?)\s*$/);
-      return m ? `${m[1]} — ${m[2]}` : null;
-    })
-    .filter((x): x is string => x !== null);
 }
