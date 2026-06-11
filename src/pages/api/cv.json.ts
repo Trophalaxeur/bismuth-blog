@@ -47,7 +47,7 @@ export async function GET() {
     ),
   ]
     .filter(Boolean)
-    .sort((a, b) => a.localeCompare(b));
+    .sort((a, b) => a.localeCompare(b, locale));
 
   const cv = {
     meta: {
@@ -79,7 +79,7 @@ export async function GET() {
         end: exp.data.end,
         tags: exp.data.tags ?? [],
         secondaryTags: exp.data.secondaryTags ?? [],
-        tools: [
+        stack: [
           ...(exp.data.environment?.languages ?? []),
           ...(exp.data.environment?.tools ?? []),
         ],
