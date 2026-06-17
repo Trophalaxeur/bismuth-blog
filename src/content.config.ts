@@ -1,4 +1,5 @@
 import { docsSchema } from '@astrojs/starlight/schema';
+import { glob } from 'astro/loaders';
 import { defineCollection } from 'astro:content';
 import { z } from 'zod';
 import { githubLoader } from './loaders/github-loader.mjs';
@@ -12,6 +13,7 @@ function removeDupsAndLowerCase(array: string[]) {
 
 const CONTENT_TOKEN = import.meta.env.CONTENT_TOKEN;
 const CARBON_NOTES = 'Trophalaxeur/carbon-notes';
+const LOCAL_CARBON_NOTES = import.meta.env.LOCAL_CARBON_NOTES as string | undefined;
 
 // coverImage.src is a CDN URL string — remote content can't use Astro's image() helper
 const postSchema = z.object({
@@ -55,12 +57,14 @@ const postEn = defineCollection({
 });
 
 const cvExperiences = defineCollection({
-  loader: githubLoader({
-    repo: CARBON_NOTES,
-    pathPattern: 'cv/{fr,en}/experiences/*.md',
-    token: CONTENT_TOKEN,
-    stripPrefix: 'cv/',
-  }),
+  loader: LOCAL_CARBON_NOTES
+    ? glob({ pattern: '{fr,en}/experiences/*.md', base: `${LOCAL_CARBON_NOTES}/cv` })
+    : githubLoader({
+        repo: CARBON_NOTES,
+        pathPattern: 'cv/{fr,en}/experiences/*.md',
+        token: CONTENT_TOKEN,
+        stripPrefix: 'cv/',
+      }),
   schema: z.object({
     schemaVersion: z.number().optional(),
     type: z.literal('experience'),
@@ -88,12 +92,14 @@ const cvExperiences = defineCollection({
 });
 
 const cvSections = defineCollection({
-  loader: githubLoader({
-    repo: CARBON_NOTES,
-    pathPattern: 'cv/{fr,en}/*.md',
-    token: CONTENT_TOKEN,
-    stripPrefix: 'cv/',
-  }),
+  loader: LOCAL_CARBON_NOTES
+    ? glob({ pattern: '{fr,en}/*.md', base: `${LOCAL_CARBON_NOTES}/cv` })
+    : githubLoader({
+        repo: CARBON_NOTES,
+        pathPattern: 'cv/{fr,en}/*.md',
+        token: CONTENT_TOKEN,
+        stripPrefix: 'cv/',
+      }),
   schema: z.object({
     schemaVersion: z.number().optional(),
     type: z.enum(['profile', 'domains', 'skills', 'education', 'projects', 'extra-info', 'interests', 'summary']),
@@ -128,6 +134,14 @@ const NEON = 'Trophalaxeur/neon-agents';
 
 const docs = defineCollection({
   loader: githubLoader([
+    {
+      local: true,
+      base: 'docs',
+      pathPattern: '**/*.md',
+      idPrefix: 'bismuth/',
+      stripExtension: true,
+      starlightDocsBase: 'src/content/docs',
+    },
     {
       repo: HOMELAB,
       pathPattern: 'docs/**/*.md',

@@ -5,7 +5,7 @@ export const siteConfig: SiteConfig = {
   url: 'https://flefevre.fr',
   // Used as a meta property (src/components/BaseHead.astro L:31 + L:49) and by OG image generation (src/pages/og-image/[slug].png.ts and src/utils/og-image.ts via siteCard/articleCard)
   author: 'Florian Lefevre',
-  role: 'Lead Tech / Software Engineering Manager',
+  role: 'Tech Lead / Engineering Manager (hands-on)',
   siteName: 'Dev Notes',
   // Meta property used to construct the meta title property, found in src/components/BaseHead.astro L:11
   title: 'Florian Lefevre | Dev Notes',

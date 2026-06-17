@@ -34,6 +34,7 @@ npm run lint:stylelint    # CSS linter (0 errors required)
 
 Content (articles, CV, docs) lives in carbon-notes and the project repos (homelab-gallium, neon-agents).
 It is fetched at Vercel build time via Astro Content Layer loaders — no auto-publish on commit.
+Full mechanics: [docs/content-pipeline.md](docs/content-pipeline.md).
 
 After any content commit, trigger a rebuild manually:
 
@@ -50,8 +51,7 @@ vercel deploy --prod  # alternative
 
 ```
 src/
-  content.config.ts   # Astro Content Layer config (glob loader, z from zod)
-  content/post/       # Blog posts (MD/MDX)
+  content.config.ts   # Astro Content Layer config — multi-repo GitHub loader, see docs/content-pipeline.md
   site.config.ts      # Site metadata, menu links, expressive-code config
   styles/app.css      # TW4 entry point (@import "tailwindcss", @theme inline)
   pages/blog/[slug].astro
@@ -118,11 +118,11 @@ const post = defineCollection({
 
 ## CV architecture
 
-Single source of truth in `src/content/cv/`, split by locale:
+Source of truth is `cv/` in the **carbon-notes** repo, split by locale — not a local `src/content/` folder. Fetched at build time via the custom GitHub loader (or read straight from disk in dev via `LOCAL_CARBON_NOTES`, see [docs/content-pipeline.md](docs/content-pipeline.md)):
 
 ```
-src/content/cv/
-  fr/                      # French (source of truth)
+cv/                         # in Trophalaxeur/carbon-notes
+  fr/                       # French (source of truth)
     profile.md
     skills.md
     education.md
@@ -132,21 +132,22 @@ src/content/cv/
     domains.md
     summary.md
     experiences/
-      YYYY-company.md      # one file per role
-  en/                      # English (translated — same filenames)
+      YYYY-company.md       # one file per role
+  en/                       # English (translated — same filenames)
     profile.md
     ...
     experiences/
       YYYY-company.md
 ```
 
-- Two content collections: `cvSections` (glob `*/*.md`) + `cvExperiences` (glob `*/experiences/*.md`)
-- Entry IDs are prefixed by locale: `fr/profile.md`, `en/experiences/2025-bluewhale.md`
+- Two content collections, defined in `src/content.config.ts`: `cvSections` (`cv/{fr,en}/*.md`) + `cvExperiences` (`cv/{fr,en}/experiences/*.md`)
+- Entry IDs are prefixed by locale: `fr/profile.md`, `en/experiences/2025-bluewhale.md` (the `cv/` prefix is stripped by the loader)
 - Components filter by `Astro.currentLocale ?? 'fr'` to select the right locale entries
 - Variant system: `:::short` / `:::detailed` / `:::career-channel` blocks in markdown, filtered by `extractVariantMarkdown()` in `src/utils/cv.ts`
 - Rendered via `unified` (remark/rehype) + `set:html` — not standard Astro pipeline
 - Experiences sorted by `priority` field then `start` date descending
 - Components in `src/components/cv/`: CvPage, CvHeader, CvSkills, CvExperienceList, CvExperienceCard, CvDomains, CvSummary, CvAppendix, CvActions, CvLangSwitch, CvPrintButton, CvDownloadButton, CvCareerChannelCard
+- PDF export of the CV (6 files, 3 variants × fr/en): [docs/cv/pdf-generation.md](docs/cv/pdf-generation.md)
 
 ## CV i18n
 
@@ -155,7 +156,7 @@ Astro i18n config (`astro.config.mjs`):
 - English served at `/en/cv/*`
 - `prefixDefaultLocale: false`
 
-To add a translation, create the English file at the same path as the French original but under `src/content/cv/en/`. The file must keep identical frontmatter (same field names and values) — only the markdown body should be translated.
+To add a translation, create the English file at the same path as the French original but under `cv/en/` **in carbon-notes**, not in this repo. The file must keep identical frontmatter (same field names and values) — only the markdown body should be translated.
 
 **Rules for translating a CV file from French to English:**
 

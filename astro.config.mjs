@@ -23,6 +23,7 @@ export default defineConfig({
 			},
 			sidebar: [
 					{ label: 'Overview', link: '/docs/' },
+				{ label: 'Bismuth', items: [{ autogenerate: { directory: 'bismuth' } }] },
 				{ label: 'Carbon Notes', items: [{ autogenerate: { directory: 'carbon-notes' } }] },
 				{ label: 'Homelab', items: [{ autogenerate: { directory: 'homelab' } }] },
 				{ label: 'Neon', items: [{ autogenerate: { directory: 'neon' } }] },

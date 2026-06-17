@@ -7,6 +7,7 @@ import CvActions from './CvActions.astro';
 import CvSkills from './CvSkills.astro';
 import { extractVariantMarkdown, getCareerChannelExperiencesData, getCvLabels, renderMarkdown, stripMarkdownForCareerChannel } from '@/utils';
 import { getCollection } from 'astro:content';
+import CvAppendix from './CvAppendix.astro';
 
 const locale = Astro.currentLocale ?? 'fr';
 const L = getCvLabels(locale);
@@ -15,6 +16,13 @@ const [experiencesData, allSections] = await Promise.all([getCareerChannelExperi
 const localeSections = allSections.filter((e) => e.id.startsWith(`${locale}/`));
 const profileEntry = localeSections.find((e) => e.data.type === 'profile');
 const skillsEntry = localeSections.find((e) => e.data.type === 'skills');
+const educationEntry = localeSections.find((e) => e.data.type === 'education');
+const projectsEntry = localeSections.find((e) => e.data.type === 'projects');
+const extraInfoEntry = localeSections.find((e) => e.data.type === 'extra-info');
+
+const renderSection = async (entry: (typeof allSections)[number] | undefined) => (entry ? renderMarkdown(extractVariantMarkdown(entry.body ?? '', 'short')) : '');
+
+const [educationHtml, projectsHtml, extraInfoHtml] = await Promise.all([renderSection(educationEntry), renderSection(projectsEntry), renderSection(extraInfoEntry)]);
 
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/*.{png,jpg,jpeg,webp}', { eager: true });
 const profileImage = profileEntry?.data.image ? images[`/src/assets${profileEntry.data.image}`]?.default : undefined;
@@ -125,6 +133,13 @@ const SVG_CLIPBOARD = `<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.
         {experiencesData.map((exp) => <CvCareerChannelCard {...exp} />)}
       </div>
     </section>
+
+    <!-- Appendix: projects, education, languages -->
+    <CvAppendix
+      formation={{ title: L.appendix.education, html: educationHtml, id: 'formation', icon: 'graduation-cap' }}
+      projects={{ title: L.appendix.projects, html: projectsHtml, id: 'projets', icon: 'code-2' }}
+      extraInfo={{ title: L.appendix.extraInfo, html: extraInfoHtml, id: 'infos', icon: 'info' }}
+    />
   </div>
 </PageLayout>
 
