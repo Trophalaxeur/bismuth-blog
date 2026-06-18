@@ -146,6 +146,9 @@ export async function renderMarkdown(md: string): Promise<string> {
 /** Max characters for a career channel experience description (e.g. LinkedIn limit). */
 export const CAREER_CHANNEL_MAX_CHARS = 2000;
 
+/** Max characters for the career channel profile bio (e.g. LinkedIn "About" limit). */
+export const CAREER_CHANNEL_PROFILE_MAX_CHARS = 2600;
+
 function formatCvDate(yyyyMM: string, locale: string): string {
   if (!yyyyMM.includes('-')) {
     return yyyyMM; // Year-only format: display as-is

@@ -4,8 +4,9 @@ import { Image } from 'astro:assets';
 import PageLayout from '@/layouts/BaseLayout.astro';
 import CvCareerChannelCard from './CvCareerChannelCard.astro';
 import CvActions from './CvActions.astro';
+import CvIcon from './CvIcon.astro';
 import CvSkills from './CvSkills.astro';
-import { extractVariantMarkdown, getCareerChannelExperiencesData, getCvLabels, renderMarkdown, stripMarkdownForCareerChannel } from '@/utils';
+import { CAREER_CHANNEL_PROFILE_MAX_CHARS, extractVariantMarkdown, getCareerChannelExperiencesData, getCvLabels, renderMarkdown, stripMarkdownForCareerChannel } from '@/utils';
 import { getCollection } from 'astro:content';
 import CvAppendix from './CvAppendix.astro';
 
@@ -27,9 +28,11 @@ const [educationHtml, projectsHtml, extraInfoHtml] = await Promise.all([renderSe
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/*.{png,jpg,jpeg,webp}', { eager: true });
 const profileImage = profileEntry?.data.image ? images[`/src/assets${profileEntry.data.image}`]?.default : undefined;
 
-const bioMd = profileEntry ? extractVariantMarkdown(profileEntry.body ?? '', 'short') : '';
+const bioMd = profileEntry ? extractVariantMarkdown(profileEntry.body ?? '', 'career-channel') : '';
 const bioHtml = bioMd ? await renderMarkdown(bioMd) : '';
 const bioText = stripMarkdownForCareerChannel(bioMd);
+const bioCharCount = [...bioText].length;
+const isBioOverLimit = bioCharCount > CAREER_CHANNEL_PROFILE_MAX_CHARS;
 const titleText = profileEntry?.data.title ?? '';
 const profileName = profileEntry?.data.name ?? '';
 
@@ -45,7 +48,7 @@ const SVG_CLIPBOARD = `<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.
     <!-- Profile section -->
     {
       profileEntry && (
-        <section class="border-border/40 mb-8 rounded-lg border p-5">
+        <section class="border-border/40 mb-8 rounded-lg border p-5" data-cv-profile-expanded="true">
           <h1 class="sr-only">
             {profileName} — {titleText}
           </h1>
@@ -96,24 +99,40 @@ const SVG_CLIPBOARD = `<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.
                 >
                   <Fragment set:html={SVG_CLIPBOARD} />
                 </button>
+                <button
+                  type="button"
+                  class="cv-profile-toggle border-cv-accent/40 text-cv-accent hover:bg-cv-accent/10 hover:border-cv-accent ml-auto inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-md border transition-colors print:hidden"
+                  aria-expanded="true"
+                  aria-label={L.toggleProfile}
+                >
+                  <CvIcon name="chevron-up" size={16} strokeWidth={2.5} class="cv-profile-icon-expanded" />
+                  <CvIcon name="chevron-down" size={16} strokeWidth={2.5} class="cv-profile-icon-collapsed" />
+                </button>
               </div>
-              {bioHtml && (
-                <div class="mt-3 flex items-start gap-3">
-                  <div
-                    class="prose prose-sm dark:prose-invert prose-p:my-1.5 prose-p:leading-[1.75] prose-strong:text-foreground/95 text-foreground/80 max-w-none min-w-0 flex-1"
-                    set:html={bioHtml}
-                  />
-                  <button
-                    class="copy-btn bg-cv-accent/12 text-cv-accent hover:bg-cv-accent/25 focus-visible:ring-cv-accent flex shrink-0 items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none print:hidden"
-                    data-text={bioText}
-                    aria-label={L.copy}
-                    title={L.copy}
-                  >
-                    <Fragment set:html={SVG_CLIPBOARD} />
-                    {L.copy}
-                  </button>
-                </div>
-              )}
+              <div class="cv-profile-body">
+                {bioHtml && (
+                  <div class="mt-3 flex items-start gap-3">
+                    <div
+                      class="prose prose-sm dark:prose-invert prose-p:my-1.5 prose-p:leading-[1.75] prose-strong:text-foreground/95 text-foreground/80 max-w-none min-w-0 flex-1"
+                      set:html={bioHtml}
+                    />
+                    <button
+                      class="copy-btn bg-cv-accent/12 text-cv-accent hover:bg-cv-accent/25 focus-visible:ring-cv-accent flex shrink-0 items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none print:hidden"
+                      data-text={bioText}
+                      aria-label={L.copy}
+                      title={L.copy}
+                    >
+                      <Fragment set:html={SVG_CLIPBOARD} />
+                      {L.copy}
+                    </button>
+                  </div>
+                )}
+                <p class={`mt-2.5 text-right text-[11px] tabular-nums ${isBioOverLimit ? 'font-semibold text-red-500' : 'text-muted-foreground'}`}>
+                  {bioCharCount.toLocaleString(L.dateLocale)} / {CAREER_CHANNEL_PROFILE_MAX_CHARS.toLocaleString(L.dateLocale)}
+                  {L.characters}
+                  {isBioOverLimit && ` ${L.overLimit}`}
+                </p>
+              </div>
             </div>
           </div>
         </section>
@@ -150,3 +169,31 @@ const SVG_CLIPBOARD = `<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.
     }
   }
 </style>
+
+<style is:global>
+  [data-cv-profile-expanded='false'] .cv-profile-body {
+    display: none;
+  }
+  [data-cv-profile-expanded='true'] .cv-profile-icon-collapsed,
+  [data-cv-profile-expanded='false'] .cv-profile-icon-expanded {
+    display: none;
+  }
+  @media print {
+    /* Always show the bio when printing, regardless of on-screen collapsed state. */
+    [data-cv-profile-expanded] .cv-profile-body {
+      display: block !important;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.cv-profile-toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const section = btn.closest<HTMLElement>('[data-cv-profile-expanded]');
+      if (!section) return;
+      const next = section.dataset.cvProfileExpanded === 'true' ? 'false' : 'true';
+      section.dataset.cvProfileExpanded = next;
+      btn.setAttribute('aria-expanded', next);
+    });
+  });
+</script>

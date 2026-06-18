@@ -18,6 +18,7 @@ export interface CvLabels {
   downloadLabels: { short: string; detailed: string; careerChannel: string };
   careerChannel: { expTitle: string; copyHelp: string; pageTitle: string; pageDescription: string; pageIntro: string };
   toggleSkills: string;
+  toggleProfile: string;
   variantLabels: { short: string; detailed: string; careerChannel: string };
   printExport: string;
   downloadPhoto: string;
@@ -75,6 +76,7 @@ const FR: CvLabels = {
   },
   variantLabels: { short: 'Court', detailed: 'Détaillé', careerChannel: 'Réseau' },
   toggleSkills: 'Afficher / masquer les compétences',
+  toggleProfile: 'Afficher / masquer le profil',
   printExport: 'Imprimer / Exporter en PDF',
   downloadPhoto: 'Télécharger la photo',
   langSwitcher: 'Sélection de la langue',
@@ -131,6 +133,7 @@ const EN: CvLabels = {
   },
   variantLabels: { short: 'Short', detailed: 'Detailed', careerChannel: 'Network' },
   toggleSkills: 'Show / hide skills',
+  toggleProfile: 'Show / hide profile',
   printExport: 'Print / Export as PDF',
   downloadPhoto: 'Download photo',
   langSwitcher: 'Language selection',
