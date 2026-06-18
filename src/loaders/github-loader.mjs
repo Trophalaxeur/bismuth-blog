@@ -203,6 +203,15 @@ export function globToRegex(pattern) {
   return new RegExp(`^${result}$`);
 }
 
+// Resolves relPath against base and rejects any result that escapes base (path traversal guard,
+// e.g. a markdown link like "../../../etc/passwd"). Returns null on escape.
+function resolveWithinBase(base, relPath) {
+  const baseAbs = resolve(base);
+  const target = resolve(baseAbs, relPath);
+  if (target !== baseAbs && !target.startsWith(`${baseAbs}/`)) return null;
+  return target;
+}
+
 // Recursively list files under absBase matching pathPattern, relative to absBase.
 function listLocalFiles(absBase, pathPattern) {
   const regex = globToRegex(pathPattern);
@@ -227,11 +236,16 @@ function listLocalFiles(absBase, pathPattern) {
 function copyLocalImages(body, absBase, fileDir, logger) {
   const imageMap = {};
   const imageLinks = [...body.matchAll(/!\[[^\]]*\]\(([^)]+)\)/g)].map((m) => m[1]);
+  const docsAssetsRoot = resolve('public', 'docs-assets');
   for (const relHref of imageLinks) {
     if (/^https?:\/\//.test(relHref) || relHref.startsWith('/')) continue;
     const resolvedRelPath = posix.normalize(posix.join(fileDir, relHref));
-    const srcPath = join(absBase, resolvedRelPath);
-    const destPath = resolve('public', 'docs-assets', resolvedRelPath);
+    const srcPath = resolveWithinBase(absBase, resolvedRelPath);
+    const destPath = resolveWithinBase(docsAssetsRoot, resolvedRelPath);
+    if (!srcPath || !destPath) {
+      logger?.warn(`Skipping image outside allowed directory: ${relHref}`);
+      continue;
+    }
     try {
       mkdirSync(dirname(destPath), { recursive: true });
       copyFileSync(srcPath, destPath);
@@ -247,6 +261,7 @@ function copyLocalImages(body, absBase, fileDir, logger) {
 // instead of calling the GitHub API. Used for this repo's own docs/ folder, which is
 // already on disk at build time and needs no remote round-trip.
 async function loadLocalSource({ base, pathPattern, idPrefix = '', stripExtension = false, starlightDocsBase, store, logger, parseData }) {
+  if (!base) throw new Error('githubLoader: "base" is required when "local: true" is set');
   const absBase = resolve(base);
   logger.info(`Reading local docs: ${base}`);
   const files = listLocalFiles(absBase, pathPattern);
@@ -264,7 +279,11 @@ async function loadLocalSource({ base, pathPattern, idPrefix = '', stripExtensio
     const d2Links = [...body.matchAll(/\[[^\]]*\]\(([^)]+\.d2)\)/g)].map((m) => m[1]);
     const fileDir = posix.dirname(relPath);
     for (const relHref of d2Links) {
-      const localPath = join(absBase, posix.normalize(posix.join(fileDir, relHref)));
+      const localPath = resolveWithinBase(absBase, posix.normalize(posix.join(fileDir, relHref)));
+      if (!localPath) {
+        logger.warn(`Skipping D2 diagram outside allowed directory: ${relHref}`);
+        continue;
+      }
       try {
         const d2Source = readFileSync(localPath, 'utf8');
         d2Map[relHref] = compileD2ToSvg(d2Source);

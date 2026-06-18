@@ -13,7 +13,9 @@ function removeDupsAndLowerCase(array: string[]) {
 
 const CONTENT_TOKEN = import.meta.env.CONTENT_TOKEN;
 const CARBON_NOTES = 'Trophalaxeur/carbon-notes';
-const LOCAL_CARBON_NOTES = import.meta.env.LOCAL_CARBON_NOTES as string | undefined;
+// Dev-only override — never honored in builds (preview/production), so an accidentally-set
+// env var on a deploy platform can't silently swap GitHub fetch for a local path that doesn't exist there.
+const LOCAL_CARBON_NOTES = import.meta.env.DEV ? (import.meta.env.LOCAL_CARBON_NOTES as string | undefined) : undefined;
 
 // coverImage.src is a CDN URL string — remote content can't use Astro's image() helper
 const postSchema = z.object({

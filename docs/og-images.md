@@ -96,7 +96,7 @@ Two layouts share the same design tokens, gradient, and top bar (bismuth logo + 
 ```
 [8px blue bar] | Dev Notes (logo)
                | Florian Lefevre (68px bold)
-               | Tech Lead / Engineering Manager hands-on (36px bold)
+               | Tech Lead / Engineering Manager (hands-on) (36px bold)
                | ── blue divider ──
                | site description (26px)
                |                              flefevre.fr
