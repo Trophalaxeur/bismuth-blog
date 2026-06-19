@@ -28,7 +28,10 @@ const [educationHtml, projectsHtml, extraInfoHtml] = await Promise.all([renderSe
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/images/*.{png,jpg,jpeg,webp}', { eager: true });
 const profileImage = profileEntry?.data.image ? images[`/src/assets${profileEntry.data.image}`]?.default : undefined;
 
-const bioMd = profileEntry ? extractVariantMarkdown(profileEntry.body ?? '', 'career-channel') : '';
+// Prefer the career-channel bio; fall back to the short variant so the profile is never blank
+// when a profile.md lacks a :::career-channel block.
+const profileBody = profileEntry?.body ?? '';
+const bioMd = profileEntry ? extractVariantMarkdown(profileBody, 'career-channel') || extractVariantMarkdown(profileBody, 'short') : '';
 const bioHtml = bioMd ? await renderMarkdown(bioMd) : '';
 const bioText = stripMarkdownForCareerChannel(bioMd);
 const bioCharCount = [...bioText].length;

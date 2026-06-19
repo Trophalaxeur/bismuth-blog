@@ -1,4 +1,5 @@
 import jsYaml from 'js-yaml';
+import { createHash } from 'crypto';
 import { execFileSync } from 'child_process';
 import { writeFileSync, readFileSync, unlinkSync, mkdtempSync, rmdirSync, readdirSync, copyFileSync, mkdirSync } from 'fs';
 import { tmpdir } from 'os';
@@ -299,7 +300,7 @@ async function loadLocalSource({ base, pathPattern, idPrefix = '', stripExtensio
     const result = await processor.process(body);
     const html = String(result);
     const filePath = starlightDocsBase ? `${starlightDocsBase}/${id}.md` : undefined;
-    store.set({ id, data: parsed, body, rendered: { html, metadata: { headings } }, digest: `${relPath}:${raw.length}`, filePath });
+    store.set({ id, data: parsed, body, rendered: { html, metadata: { headings } }, digest: `${relPath}:${createHash('sha256').update(raw).digest('hex')}`, filePath });
   }
 
   logger.info(`Loaded ${files.length} local files from ${base}`);
