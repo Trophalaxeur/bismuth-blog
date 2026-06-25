@@ -1,0 +1,128 @@
+direction: down
+
+title: "Content pipeline — multi-repo fetch at build time, by flow"
+
+posts: "Blog posts" {
+  direction: right
+
+  carbon_notes_posts: "carbon-notes\narticles/*/{fr,en}/index.md" {
+    shape: rectangle
+    style.fill: "#E3F2FD"
+  }
+
+  loader_posts: "github-loader.mjs" {
+    shape: rectangle
+    style.fill: "#FFF3E0"
+  }
+
+  postFr: "postFr" {
+    shape: rectangle
+    style.fill: "#EDE7F6"
+  }
+
+  postEn: "postEn" {
+    shape: rectangle
+    style.fill: "#EDE7F6"
+  }
+
+  blog_pages: "/blog/*" {
+    shape: rectangle
+    style.fill: "#F5F5F5"
+  }
+
+  carbon_notes_posts -> loader_posts
+  loader_posts -> postFr
+  loader_posts -> postEn
+  postFr -> blog_pages
+  postEn -> blog_pages
+}
+
+cv: "CV" {
+  direction: right
+
+  carbon_notes_cv: "carbon-notes\ncv/{fr,en}/**" {
+    shape: rectangle
+    style.fill: "#E3F2FD"
+  }
+
+  local_override: "Local checkout\nLOCAL_CARBON_NOTES/cv\nglob loader — dev only" {
+    shape: rectangle
+    style.stroke-dash: 4
+    style.fill: "#F1F8E9"
+  }
+
+  loader_cv: "github-loader.mjs" {
+    shape: rectangle
+    style.fill: "#FFF3E0"
+  }
+
+  cvSections: "cvSections" {
+    shape: rectangle
+    style.fill: "#EDE7F6"
+  }
+
+  cvExperiences: "cvExperiences" {
+    shape: rectangle
+    style.fill: "#EDE7F6"
+  }
+
+  cv_pages: "/cv/*\n/en/cv/*" {
+    shape: rectangle
+    style.fill: "#F5F5F5"
+  }
+
+  carbon_notes_cv -> loader_cv
+  loader_cv -> cvSections
+  loader_cv -> cvExperiences
+  local_override -> cvSections: "dev override"
+  local_override -> cvExperiences: "dev override"
+  cvSections -> cv_pages
+  cvExperiences -> cv_pages
+}
+
+docs_hub: "Docs hub" {
+  direction: right
+
+  this_repo_docs: "this repo\ndocs/** (local)" {
+    shape: rectangle
+    style.stroke-dash: 4
+    style.fill: "#F1F8E9"
+  }
+
+  carbon_notes_docs: "carbon-notes\ndocs/**" {
+    shape: rectangle
+    style.fill: "#E3F2FD"
+  }
+
+  homelab: "homelab-gallium\ndocs/**" {
+    shape: rectangle
+    style.fill: "#E3F2FD"
+  }
+
+  neon: "neon-agents\ndocs/**" {
+    shape: rectangle
+    style.fill: "#E3F2FD"
+  }
+
+  loader_docs: "github-loader.mjs" {
+    shape: rectangle
+    style.fill: "#FFF3E0"
+  }
+
+  docs: "docs" {
+    shape: rectangle
+    style.fill: "#EDE7F6"
+  }
+
+  docs_pages: "/bismuth/*\n/carbon-notes/*\n/homelab/*\n/neon/*\n(top-level, no /docs prefix)" {
+    shape: rectangle
+    style.fill: "#F5F5F5"
+  }
+
+  this_repo_docs -> loader_docs
+  carbon_notes_docs -> loader_docs
+  homelab -> loader_docs
+  neon -> loader_docs
+  loader_docs -> docs
+  docs -> docs_pages
+}

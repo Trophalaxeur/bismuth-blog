@@ -1,5 +1,13 @@
-This documentation covers the technical side of my personal projects. It is organized into three sections,
-each corresponding to a separate repository.
+This documentation covers the technical side of my personal projects. It is organized into four sections —
+this site itself, plus one per sibling repository.
+
+## Bismuth
+
+Technical notes for this site itself, flefevre.fr. Covers the multi-repo content pipeline that fetches
+everything you're reading here, CV PDF generation, Open Graph image generation, and a personal decision
+matrix for choosing between Claude Code and GitHub Copilot Agent.
+
+[Browse Bismuth docs →](/bismuth/content-pipeline/)
 
 ## Homelab
 

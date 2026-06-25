@@ -30,7 +30,7 @@ CV, dev experiments, homelab documentation. **Written for me, open to outside ey
 
 - **Professional showcase** — shareable CV with a recruiter-friendly short version and a full competency dossier
 - **Dev blog** — technical adventures, experiments, and lessons learned
-- **Homelab docs** — *(coming later)* home infrastructure documentation
+- **Docs hub** — homelab, neon-agents, and blog notes aggregated into one browsable site at `/docs`
 
 ## Stack
 
@@ -38,10 +38,69 @@ CV, dev experiments, homelab documentation. **Written for me, open to outside ey
 |---|---|
 | Framework | [Astro 6](https://astro.build/) — static output |
 | Styling | [Tailwind CSS v4](https://tailwindcss.com/) via `@tailwindcss/vite` |
-| Content | Astro Content Layer (glob loader + Zod schemas) |
+| Content | Astro Content Layer — fetched from sibling repos at build time (custom GitHub loader + Zod schemas), see [Linked projects](#linked-projects) |
 | Syntax highlighting | [Expressive Code](https://expressive-code.com/) |
 | Hosting | [Vercel](https://vercel.com/) — static |
 | Domain | [flefevre.fr](https://flefevre.fr) |
+
+## Getting started
+
+Prerequisites:
+
+- Node version pinned in `.nvmrc` (`nvm use`)
+- [`d2`](https://d2lang.com/) CLI — only needed to regenerate the diagrams under `docs/`
+
+Install and run:
+
+```bash
+npm install
+cp .env.example .env   # then fill in CONTENT_TOKEN — see below
+npm run dev             # → http://localhost:4321
+```
+
+To generate CV PDFs locally, Playwright also needs a browser binary once: `npx playwright install chromium`.
+
+### Environment variables
+
+| Variable | Required | Purpose |
+|---|---|---|
+| `CONTENT_TOKEN` | Yes | GitHub fine-grained PAT (`Contents: Read-only`) on carbon-notes, homelab-gallium, neon-agents — fetches articles, CV content, and docs at build time |
+| `LOCAL_CARBON_NOTES` | No | Absolute path to a local carbon-notes checkout — reads CV content from disk instead of GitHub, no token needed for that part |
+| `PREVIEW_PORT` | No | Port for the preview server used by `npm run cv:pdf` (default `4322`) |
+
+Full mechanics: [docs/content-pipeline.md](docs/content-pipeline.md).
+
+## Linked projects
+
+This repo fetches content from three sibling repos at build time — see [docs/content-pipeline.md](docs/content-pipeline.md) for the full mechanics.
+
+| Repo | Role |
+|---|---|
+| [carbon-notes](https://github.com/Trophalaxeur/carbon-notes) | Personal knowledge base — blog articles, CV content (fr/en), general notes |
+| [homelab-gallium](https://github.com/Trophalaxeur/homelab-gallium) | Home infrastructure docs |
+| [neon-agents](https://github.com/Trophalaxeur/neon-agents) | Neon agents project docs |
+
+There's no webhook — a deployed build only reflects those repos' state as of the last build. After editing content in any of them, trigger a rebuild manually:
+
+```bash
+blog-publish          # shell alias → Vercel Deploy Hook (preferred)
+vercel deploy --prod  # alternative
+```
+
+## CV PDF generation
+
+```bash
+npm run cv:pdf
+```
+
+Builds the site, then renders the CV as 6 PDFs (3 variants × fr/en) via headless Chromium into `public/cv-*.pdf`. Details: [docs/cv/pdf-generation.md](docs/cv/pdf-generation.md).
+
+## Troubleshooting
+
+- **Blog/CV/docs pages render empty** — `CONTENT_TOKEN` is missing or expired. The build still succeeds; check the build log for `CONTENT_TOKEN not set — skipping loader for …`.
+- **Content edited in carbon-notes/homelab-gallium/neon-agents doesn't show up** — there's no webhook, builds don't auto-trigger on those repos' pushes. Run `blog-publish` (see [Linked projects](#linked-projects)).
+- **`LOCAL_CARBON_NOTES` set but CV content is empty** — the path must point at the repo root (the loader reads `$LOCAL_CARBON_NOTES/cv`), and must be absolute.
+- **`npm run cv:pdf` fails with a missing browser executable** — run `npx playwright install chromium` once.
 
 ## Claude Code in the workflow
 

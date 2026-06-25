@@ -1,360 +1,363 @@
-# Matrice de décision : Claude Code vs GitHub Copilot Agent
+---
+title: Decision Matrix — Claude Code vs GitHub Copilot Agent
+description: A personal decision matrix for choosing between Claude Code CLI, GitHub Copilot Agent, and homelab scripts depending on repo privacy, multi-repo needs, and automation goals.
+---
 
-> Dernière vérification des tarifs et limitations : **mai 2026**
+> Last verified pricing and limitations: **May 2026**
 
-## Contexte
+## Context
 
-Je dispose de :
+I have:
 
-- un abonnement **GitHub Copilot Pro** (pas Pro+) ;
-- un abonnement **Claude / Claude Code Pro** (pas Max) ;
-- des repositories publics et privés ;
-- des besoins variés :
-  - code review ;
-  - analyse de repositories ;
-  - refactoring avec création de PR ;
-  - envoi de mails de récap.
+- a **GitHub Copilot Pro** subscription (not Pro+);
+- a **Claude / Claude Code Pro** subscription (not Max);
+- public and private repositories;
+- varied needs:
+  - code review;
+  - repository analysis;
+  - refactoring with PR creation;
+  - sending recap emails.
 
-## Diagramme de décision
+## Decision diagram
 
-![Arbre de décision Claude Code / Copilot / homelab](./decision-tree.svg)
+![Decision tree: Claude Code, Copilot Agent and homelab](./decision-tree.svg)
 
 ---
 
-## 1. Matrice de décision rapide
+## 1. Quick decision matrix
 
-| Critère | Script homelab + Claude | Claude Code CLI homelab | Copilot Agent (GitHub) | Claude Code via GitHub Actions | Copilot Agent self-hosted |
+| Criterion | Homelab script + Claude | Claude Code CLI homelab | Copilot Agent (GitHub) | Claude Code via GitHub Actions | Copilot Agent self-hosted |
 |---|---|---|---|---|---|
-| **Repos privés** | ✅ | ✅ | ⚠️ limité | ✅ | ✅ |
-| **Repos publics** | ✅ | ✅ | ✅ idéal | ✅ | ✅ |
-| **Accès homelab / réseau local** | ✅ | ✅ | ❌ | ❌ | ✅ si configuré |
-| **Multi-repos** | ✅ | ✅ | ❌ | ❌ | ❌ |
-| **Modification de code / PR** | ❌ | ✅ | ✅ | ✅ | ✅ |
-| **Lecture / résumé / reporting** | ✅ idéal | ✅ | ⚠️ | ⚠️ | ⚠️ |
-| **Mail ou rapport personnalisé** | ✅ idéal | ✅ | ❌ | ❌ | ❌ |
-| **Intégration GitHub CI/CD** | ❌ | ❌ | ✅ | ✅ native | ✅ |
-| **Installation / maintenance** | Faible | Modérée | Aucune | Faible | Élevée |
-| **Coût mensuel** | API Anthropic (usage) | Abonnement Claude | Copilot Pro $10 | Abonnement Claude + Actions | Copilot Pro $10 + infra |
+| **Private repos** | ✅ | ✅ | ⚠️ limited | ✅ | ✅ |
+| **Public repos** | ✅ | ✅ | ✅ ideal | ✅ | ✅ |
+| **Homelab / local network access** | ✅ | ✅ | ❌ | ❌ | ✅ if configured |
+| **Multi-repo** | ✅ | ✅ | ❌ | ❌ | ❌ |
+| **Code modification / PR** | ❌ | ✅ | ✅ | ✅ | ✅ |
+| **Reading / summary / reporting** | ✅ ideal | ✅ | ⚠️ | ⚠️ | ⚠️ |
+| **Email or custom report** | ✅ ideal | ✅ | ❌ | ❌ | ❌ |
+| **GitHub CI/CD integration** | ❌ | ❌ | ✅ | ✅ native | ✅ |
+| **Installation / maintenance** | Low | Moderate | None | Low | High |
+| **Monthly cost** | Anthropic API (usage) | Claude subscription | Copilot Pro $10 | Claude subscription + Actions | Copilot Pro $10 + infra |
 
 ---
 
-## 2. Matrice de décision détaillé
+## 2. Detailed decision matrix
 
-| Solution | Avantages | Inconvénients | Limitations importantes | Déclencheurs possibles | Tarif estimé usage ponctuel / régulier | Tarif estimé usage important | Tarif estimé usage intensif |
+| Solution | Advantages | Disadvantages | Important limitations | Possible triggers | Estimated cost: occasional / regular use | Estimated cost: heavy use | Estimated cost: intensive use |
 |---|---|---|---|---|---:|---:|---:|
-| **Claude Code CLI sur homelab** | Très flexible. Idéal pour scripts nocturnes, mails, multi-repos, prompts personnalisés, accès réseau local, tâches privées. Aucun besoin de GitHub Actions pour exécuter. Parfait pour un atelier de nuit. | Je dois maintenir la VM/LXC, les scripts, les logs, les tokens, les permissions et la sécurité. Moins plug-and-play que GitHub. | Les limites Claude sont partagées entre Claude.ai, Claude Desktop et Claude Code. Les limites dépendent de la longueur/complexité des conversations et du modèle. Contexte standard de **200K tokens** sur les plans payants non Enterprise. Attention : si `ANTHROPIC_API_KEY` est défini, Claude Code peut utiliser l’API au lieu de mon abonnement, donc coût séparé. | Manuel, cron, systemd timer, webhook, commit, script maison, pipeline local, tâche planifiée, issue GitHub via script. | **0 €** si inclus dans mon abonnement et usage raisonnable. | Possible besoin d’**extra usage**, d’un plan Claude supérieur ou de l’API si les limites deviennent gênantes. | Probable besoin d’API pay-as-you-go ou plan supérieur. En API Claude Sonnet 4.6 : **$3/MTok input**, **$15/MTok output**. |
-| **Claude Code via GitHub Actions** | Très bon pour “issue/prompt → branche → PR”. Intégration GitHub propre, logs dans Actions, checks, review, historique. Bon pour repos publics ou privés peu sensibles. | Moins adapté aux mails quotidiens, aux workflows très custom et aux accès réseau homelab. Pour les repos privés, GitHub Actions peut consommer des minutes. | Même limite Claude que CLI si j’utilise mon abonnement Claude. GitHub Actions est gratuit sur repos publics avec runners standards, mais les repos privés consomment des minutes incluses puis peuvent être facturés. | Manuel via `workflow_dispatch`, cron GitHub, PR, issue, commentaire, push/commit, label, schedule, workflow appelé par un autre workflow. | **0 €** sur repo public et usage Claude léger. Sur privé : dépend des minutes Actions + limites Claude. | Risque de limites Claude + minutes Actions privées. | API ou extra usage probable si gros volume. Coût Actions privé à surveiller. |
-| **GitHub Copilot Cloud Agent depuis GitHub** | Le plus simple pour tâches GitHub natives : code review, petite PR, issue assignée à Copilot, repo public. Pas d’installation homelab. Interface GitHub agréable. | Moins personnalisable qu’un orchestrateur maison. Moins adapté aux mails, multi-repos, jobs nocturnes complexes, accès local. | Copilot Cloud Agent utilise **GitHub Actions minutes + premium requests**. Avec Copilot Pro, je n’ai que **300 premium requests/mois**. L’agent ne modifie qu’un repo par tâche, une branche à la fois, et ouvre une seule PR par tâche. Certaines branch protections/rulesets peuvent bloquer l’agent. | Manuel depuis GitHub, issue assignée, PR, commentaire, demande explicite dans l’interface GitHub, tâches de code review. | **0 €** si je reste dans les 300 requests et minutes incluses. | Dépassement possible : **$0.04/request** au-delà du quota actuel. | Copilot Pro probablement trop juste. Pro+ ou modèle de crédits à envisager si l’usage augmente. |
-| **GitHub Copilot Agent sur homelab / self-hosted runner** | Permettrait d’utiliser l’écosystème GitHub/Copilot tout en exécutant sur mon infra, avec accès possible à des ressources internes. | Beaucoup plus lourd. Configuration runner, réseau, sécurité, runners éphémères recommandés. Moins naturel pour un usage perso simple. | GitHub recommande des runners éphémères/single-use, souvent via ARC ou runner scale set. Copilot cloud agent est compatible Ubuntu x64 et Windows 64-bit, pas macOS/autres OS. La configuration avancée est surtout pensée pour des organisations GitHub. | GitHub Actions, PR, issue, commentaire, label, schedule, workflow dispatch, déclencheurs GitHub classiques reliés au runner self-hosted. | Peu pertinent pour usage ponctuel/régulier. Coût temps/complexité supérieur au bénéfice. | Intéressant seulement si j’ai une organisation GitHub et des contraintes réseau fortes. | Complexité d’exploitation élevée. Quota Copilot Pro toujours limité à 300 requests/mois. |
-| **Script homelab sans agent, avec Claude ponctuel** | Excellent pour rapports mails, résumés commits, inventaires, audits textuels. Je garde Claude pour la synthèse, pas pour modifier du code. Très économique. | Ne fait pas automatiquement de PR complexes sauf si j’ajoute Claude Code ou des scripts Git dédiés. Moins autonome pour modifier du code intelligemment. | Dépend surtout de mes scripts. Les limites Claude s’appliquent seulement si je demande de gros résumés ou analyses fréquentes. | Manuel, cron, systemd timer, commit, git log quotidien, webhook, script local, tâche planifiée, événement externe. | **0 €** dans la plupart des cas. | Peut rester gratuit si je limite le contexte envoyé. | Peut nécessiter API si gros volume de résumés longs multi-repos. |
+| **Claude Code CLI on homelab** | Very flexible. Ideal for nightly scripts, emails, multi-repo work, custom prompts, local network access, private tasks. No need for GitHub Actions to run. Perfect for a night-shift workshop. | I have to maintain the VM/LXC, scripts, logs, tokens, permissions and security. Less plug-and-play than GitHub. | Claude limits are shared across Claude.ai, Claude Desktop and Claude Code. Limits depend on conversation length/complexity and the model. Standard context of **200K tokens** on non-Enterprise paid plans. Caution: if `ANTHROPIC_API_KEY` is set, Claude Code may use the API instead of my subscription, incurring a separate cost. | Manual, cron, systemd timer, webhook, commit, custom script, local pipeline, scheduled task, GitHub issue via script. | **€0** if included in my subscription and reasonable usage. | May need **extra usage**, a higher Claude plan, or the API if limits become a problem. | Likely needs pay-as-you-go API or a higher plan. On the Claude Sonnet 4.6 API: **$3/MTok input**, **$15/MTok output**. |
+| **Claude Code via GitHub Actions** | Very good for "issue/prompt → branch → PR". Clean GitHub integration, logs in Actions, checks, review, history. Good for public repos or low-sensitivity private repos. | Less suited to daily emails, highly custom workflows, and homelab network access. For private repos, GitHub Actions can consume minutes. | Same Claude limit as the CLI if I use my Claude subscription. GitHub Actions is free on public repos with standard runners, but private repos consume included minutes and can then be billed. | Manual via `workflow_dispatch`, GitHub cron, PR, issue, comment, push/commit, label, schedule, workflow called by another workflow. | **€0** on a public repo with light Claude usage. On private: depends on Actions minutes + Claude limits. | Risk of Claude limits + private Actions minutes. | API or extra usage likely if high volume. Watch private Actions cost. |
+| **GitHub Copilot Cloud Agent from GitHub** | The simplest option for native GitHub tasks: code review, small PR, issue assigned to Copilot, public repo. No homelab installation. Pleasant GitHub interface. | Less customizable than a homegrown orchestrator. Less suited to emails, multi-repo work, complex nightly jobs, local access. | Copilot Cloud Agent uses **GitHub Actions minutes + premium requests**. With Copilot Pro, I only get **300 premium requests/month**. The agent only modifies one repo per task, one branch at a time, and opens a single PR per task. Some branch protections/rulesets can block the agent. | Manual from GitHub, assigned issue, PR, comment, explicit request in the GitHub UI, code review tasks. | **€0** if I stay within the 300 requests and included minutes. | Possible overage: **$0.04/request** beyond the current quota. | Copilot Pro is probably too tight. Consider Pro+ or a credit model if usage grows. |
+| **GitHub Copilot Agent on homelab / self-hosted runner** | Would allow using the GitHub/Copilot ecosystem while running on my own infra, with possible access to internal resources. | Much heavier. Runner setup, networking, security, ephemeral runners recommended. Less natural for simple personal use. | GitHub recommends ephemeral/single-use runners, often via ARC or a runner scale set. The Copilot cloud agent supports Ubuntu x64 and Windows 64-bit, not macOS/other OSes. Advanced configuration is mainly designed for GitHub organizations. | GitHub Actions, PR, issue, comment, label, schedule, workflow dispatch, standard GitHub triggers wired to the self-hosted runner. | Not very relevant for occasional/regular use. Time/complexity cost outweighs the benefit. | Only interesting if I have a GitHub organization and strong network constraints. | High operational complexity. Copilot Pro quota still capped at 300 requests/month. |
+| **Homelab script without an agent, with occasional Claude** | Excellent for email reports, commit summaries, inventories, text audits. I keep Claude for synthesis, not for modifying code. Very economical. | Doesn't automatically produce complex PRs unless I add Claude Code or dedicated Git scripts. Less autonomous for modifying code intelligently. | Mostly depends on my scripts. Claude limits only apply if I request large or frequent summaries/analyses. | Manual, cron, systemd timer, commit, daily git log, webhook, local script, scheduled task, external event. | **€0** in most cases. | Can stay free if I limit the context sent. | May need the API for a high volume of long, multi-repo summaries. |
 
 ---
 
-## 3. Matrice par besoin
+## 3. Matrix by need
 
-| Besoin | Meilleur choix | Pourquoi |
+| Need | Best choice | Why |
 |---|---|---|
-| **Analyse textuelle d’un repo privé + mail récap personnalisé** | **Script homelab + Claude** ou **Claude Code CLI homelab** | Repo privé, rendu personnalisable, pas besoin de PR, pas besoin de consommer Copilot requests ni GitHub Actions. |
-| **Résumé quotidien des commits d’un repo Astro** | **Script homelab + Claude optionnel** | Un `git log` + résumé mail suffit. L’agent complet serait surdimensionné. |
-| **Code review sur PR d’un repo public, petit volume** | **GitHub Copilot Cloud Agent** | Simple, intégré, pas besoin d’installer une infrastructure dans mon homelab. Avec peu de PR, Copilot Pro suffit probablement. |
-| **Création automatique d’une PR de refactoring sur repo public** | **Copilot Cloud Agent** ou **Claude Code GitHub Action** | GitHub est le lieu naturel : branche, PR, checks, review. |
-| **Création automatique d’une PR de sécurité sur repo homelab privé** | **Claude Code CLI homelab** | Je peux injecter mes conventions, fichiers IaC, contexte local, et garder les secrets hors GitHub Actions. |
-| **Audit Terraform/Ansible sans toucher l’infra réelle** | **Claude Code GitHub Action** ou **Claude Code CLI homelab** | GitHub Action suffit si tout est dans Git. Homelab est mieux si je veux croiser avec l’état local. |
-| **Audit Terraform/Ansible + état réel Proxmox/réseau** | **Claude Code CLI homelab** | GitHub ne doit pas avoir les clés de ma maison. |
-| **Refactoring multi-repos nocturne** | **Claude Code CLI homelab** | Copilot Cloud Agent est limité à un repo par tâche, une branche, une PR. |
-| **Petite tâche issue GitHub → PR** | **Copilot Cloud Agent** | Simple, rapide, déjà dans GitHub. |
-| **Workflow très custom : PR parfois, mail parfois, rapport Markdown parfois** | **Claude Code CLI homelab** | Je contrôle les sorties, les prompts, les règles, les formats et l’orchestration. |
-| **Besoin d’exécuter dans mon réseau local** | **Claude Code CLI homelab** | Plus simple et plus sûr qu’exposer mon réseau à GitHub. |
-| **Éviter toute maintenance homelab** | **Copilot Cloud Agent depuis GitHub** | Moins puissant, mais immédiat. |
-| **Éviter tout coût supplémentaire** | **Homelab + Claude ponctuel**, puis Copilot seulement petit volume | Mon quota Copilot Pro est limité, donc je le garde pour les cas où GitHub est vraiment utile. |
+| **Text analysis of a private repo + custom recap email** | **Homelab script + Claude** or **Claude Code CLI homelab** | Private repo, customizable output, no PR needed, no need to spend Copilot requests or GitHub Actions. |
+| **Daily commit summary for an Astro repo** | **Homelab script + optional Claude** | A `git log` + email summary is enough. A full agent would be overkill. |
+| **Code review on a PR in a public repo, low volume** | **GitHub Copilot Cloud Agent** | Simple, integrated, no need to install infrastructure on my homelab. With few PRs, Copilot Pro is probably enough. |
+| **Automatically creating a refactoring PR on a public repo** | **Copilot Cloud Agent** or **Claude Code GitHub Action** | GitHub is the natural place: branch, PR, checks, review. |
+| **Automatically creating a security PR on a private homelab repo** | **Claude Code CLI homelab** | I can inject my conventions, IaC files, local context, and keep secrets out of GitHub Actions. |
+| **Terraform/Ansible audit without touching real infra** | **Claude Code GitHub Action** or **Claude Code CLI homelab** | A GitHub Action is enough if everything is in Git. Homelab is better if I want to cross-check against local state. |
+| **Terraform/Ansible audit + real Proxmox/network state** | **Claude Code CLI homelab** | GitHub must not hold the keys to my home. |
+| **Nightly multi-repo refactoring** | **Claude Code CLI homelab** | Copilot Cloud Agent is limited to one repo per task, one branch, one PR. |
+| **Small GitHub issue → PR task** | **Copilot Cloud Agent** | Simple, fast, already in GitHub. |
+| **Highly custom workflow: sometimes a PR, sometimes an email, sometimes a Markdown report** | **Claude Code CLI homelab** | I control the outputs, prompts, rules, formats and orchestration. |
+| **Need to run inside my local network** | **Claude Code CLI homelab** | Simpler and safer than exposing my network to GitHub. |
+| **Avoid any homelab maintenance** | **Copilot Cloud Agent from GitHub** | Less powerful, but immediate. |
+| **Avoid any extra cost** | **Homelab + occasional Claude**, then Copilot only for low volume | My Copilot Pro quota is limited, so I save it for cases where GitHub is genuinely useful. |
 
 ---
 
-## 4. Différence entre "Claude Code CLI homelab" et "script homelab + Claude"
+## 4. Difference between "Claude Code CLI homelab" and "homelab script + Claude"
 
-Ces deux options se ressemblent parce qu’elles tournent toutes les deux sur mon homelab, mais elles ne répondent pas au même niveau d’autonomie.
+These two options look similar because they both run on my homelab, but they don't address the same level of autonomy.
 
-### Script homelab + Claude
+### Homelab script + Claude
 
-Dans ce modèle, le script fait le travail mécanique :
+In this model, the script does the mechanical work:
 
 ```text
 git log
 git diff
-liste des commits
-lecture de fichiers ciblés
-génération d’un rapport brut
-envoi de mail
+list of commits
+reading targeted files
+generating a raw report
+sending the email
 ```
 
-Claude intervient seulement comme **moteur de synthèse** ou **rédacteur**.
+Claude only acts as a **synthesis engine** or **writer**.
 
-Exemples adaptés :
+Good fits:
 
 ```text
-- résumer les commits du jour
-- transformer un git log en mail lisible
-- analyser un README ou un rapport existant
-- produire un résumé hebdomadaire
-- classer des changements par thème
+- summarizing the day's commits
+- turning a git log into a readable email
+- analyzing an existing README or report
+- producing a weekly summary
+- categorizing changes by theme
 ```
 
-C’est le bon choix quand je veux :
+This is the right choice when I want:
 
 ```text
-- peu de risque
-- peu de coût
-- un rendu personnalisé
-- pas de modification de code
-- pas de PR complexe
+- low risk
+- low cost
+- a custom output
+- no code modification
+- no complex PR
 ```
 
-### Claude Code CLI sur homelab
+### Claude Code CLI on homelab
 
-Dans ce modèle, Claude Code devient un **agent de développement local**.
+In this model, Claude Code becomes a **local development agent**.
 
-Il peut :
+It can:
 
 ```text
-- explorer le repo
-- lire plusieurs fichiers
-- proposer un plan
-- modifier du code
-- lancer des commandes
-- exécuter des tests
-- créer des commits
-- préparer une PR via GitHub CLI
+- explore the repo
+- read multiple files
+- propose a plan
+- modify code
+- run commands
+- run tests
+- create commits
+- prepare a PR via the GitHub CLI
 ```
 
-C’est le bon choix quand je veux :
+This is the right choice when I want:
 
 ```text
-- refactoring réel
-- modification de code
-- création de branche
-- création de PR
-- analyse plus profonde du repository
-- orchestration multi-repos
-- workflow nocturne plus autonome
+- real refactoring
+- code modification
+- branch creation
+- PR creation
+- deeper repository analysis
+- multi-repo orchestration
+- a more autonomous nightly workflow
 ```
 
-### Règle simple
+### Simple rule
 
-| Situation | Choix |
+| Situation | Choice |
 |---|---|
-| Je veux seulement lire, résumer, envoyer un mail | **Script homelab + Claude** |
-| Je veux modifier le code, tester, commiter, créer une PR | **Claude Code CLI homelab** |
-| Je veux un job très fiable et déterministe | **Script homelab** |
-| Je veux un agent capable de raisonner dans le repo | **Claude Code CLI** |
+| I just want to read, summarize, send an email | **Homelab script + Claude** |
+| I want to modify code, test, commit, create a PR | **Claude Code CLI homelab** |
+| I want a very reliable, deterministic job | **Homelab script** |
+| I want an agent that can reason across the repo | **Claude Code CLI** |
 
 ---
 
-## 5. Grille de coût pratique
+## 5. Practical cost grid
 
-Les chiffres ci-dessous sont des **ordres de grandeur décisionnels**, pas une facture garantie.
+The figures below are **decision-making orders of magnitude**, not a guaranteed bill.
 
-| Niveau d’usage | Description concrète | Claude Code CLI homelab | Claude Code GitHub Actions | Copilot Cloud Agent avec Copilot Pro |
+| Usage level | Concrete description | Claude Code CLI homelab | Claude Code GitHub Actions | Copilot Cloud Agent with Copilot Pro |
 |---|---|---:|---:|---:|
-| **Ponctuel / régulier** | 1 à 3 tâches/semaine, petits repos, peu de modifications, quelques PR/reviews | 0 € | 0 € sur public ; privé selon minutes | 0 € si < 300 premium requests/mois |
-| **Important** | 1 tâche/jour ou plusieurs repos/semaine | Risque de toucher les limites Claude Pro | Risque limites Claude + minutes Actions privées | Risque de dépasser les 300 requests, puis $0.04/request au modèle actuel |
-| **Intensif** | Runs nocturnes multi-repos, gros refactors, nombreuses PR | Claude Pro probablement insuffisant ; extra usage/API/Max à envisager | Même chose + coût Actions privé possible | Copilot Pro probablement trop juste ; Pro+ ou crédits/dépassement à envisager |
+| **Occasional / regular** | 1 to 3 tasks/week, small repos, few changes, a few PRs/reviews | €0 | €0 on public; private depends on minutes | €0 if < 300 premium requests/month |
+| **Heavy** | 1 task/day or several repos/week | Risk of hitting Claude Pro limits | Risk of Claude limits + private Actions minutes | Risk of exceeding 300 requests, then $0.04/request at the current model |
+| **Intensive** | Nightly multi-repo runs, large refactors, many PRs | Claude Pro probably insufficient; consider extra usage/API/Max | Same, plus possible private Actions cost | Copilot Pro probably too tight; consider Pro+ or overage credits |
 
 ---
 
-## 6. Limitations spécifiques de Claude Code CLI sur homelab
+## 6. Specific limitations of Claude Code CLI on homelab
 
-### 6.1 Limites d’usage Claude
+### 6.1 Claude usage limits
 
-Claude Code avec Pro/Max partage les mêmes limites que Claude.ai, Claude Desktop et les autres surfaces Claude.
+Claude Code on Pro/Max shares the same limits as Claude.ai, Claude Desktop and other Claude surfaces.
 
-Conséquence :
+Consequence:
 
 ```text
-Une grosse session Claude Code nocturne peut réduire mon usage Claude disponible le lendemain matin.
+A large overnight Claude Code session can reduce the Claude usage available to me the next morning.
 ```
 
-Donc si je lance plusieurs gros traitements pendant la nuit, je peux me retrouver limité ensuite pour mon usage interactif.
+So if I run several heavy jobs overnight, I might find myself limited afterwards for interactive use.
 
-### 6.2 Contexte limité
+### 6.2 Limited context
 
-Les plans payants non Enterprise ont un contexte standard de **200K tokens**.
+Non-Enterprise paid plans have a standard context of **200K tokens**.
 
-Pour un repo de **~50K lignes**, ce n’est pas bloquant si les tâches sont ciblées, mais ce n’est pas une invitation à faire lire tout le repo à chaque run.
+For a repo of **~50K lines**, this isn't a blocker if tasks are targeted, but it's not an invitation to have the whole repo read on every run.
 
-À privilégier :
+Favor:
 
 ```text
-- tâches ciblées par dossier
-- prompts précis
-- fichiers CLAUDE.md
-- usage de ripgrep
+- tasks targeted by folder
+- precise prompts
+- CLAUDE.md files
+- using ripgrep
 - git diff
 - tree
-- README d’architecture
-- conventions projet
+- architecture README
+- project conventions
 ```
 
-À éviter :
+Avoid:
 
 ```text
-- “analyse tout le repo”
-- “refactorise toute l’application”
-- “lis tous les fichiers et propose tout ce qui peut être amélioré”
+- "analyze the whole repo"
+- "refactor the entire application"
+- "read every file and suggest everything that could be improved"
 ```
 
-### 6.3 Risque de facturation API involontaire
+### 6.3 Risk of unintended API billing
 
-Si `ANTHROPIC_API_KEY` est défini dans l’environnement du runner, Claude Code peut utiliser cette clé API au lieu de mon abonnement Claude.
+If `ANTHROPIC_API_KEY` is set in the runner's environment, Claude Code may use that API key instead of my Claude subscription.
 
-À vérifier sur le runner :
+Check on the runner:
 
 ```bash
 env | grep ANTHROPIC
 ```
 
-Si je veux utiliser uniquement mon abonnement :
+If I want to use only my subscription:
 
 ```bash
 unset ANTHROPIC_API_KEY
 ```
 
-Si je veux utiliser volontairement l’API, je mets en place :
+If I want to deliberately use the API, I should put in place:
 
 ```text
-- budget mensuel
+- a monthly budget
 - monitoring
-- logs par tâche
-- limite par repo
-- limite par type de run
+- per-task logs
+- a per-repo limit
+- a limit per run type
 ```
 
-### 6.4 Sécurité locale
+### 6.4 Local security
 
-Claude Code CLI sur homelab est puissant parce qu’il est proche de mes ressources. C’est aussi son principal risque.
+Claude Code CLI on homelab is powerful because it's close to my resources. That's also its main risk.
 
-À ne pas lui donner au départ :
+Do not grant it, at least initially:
 
 ```text
-- accès SSH global
-- tokens GitHub admin
-- secrets Proxmox
-- .env de production
-- vault Ansible
-- fichiers terraform.tfstate
-- accès écriture aux sauvegardes
-- accès complet à mon $HOME
+- global SSH access
+- admin GitHub tokens
+- Proxmox secrets
+- production .env files
+- Ansible vault
+- terraform.tfstate files
+- write access to backups
+- full access to my $HOME
 ```
 
-Architecture recommandée :
+Recommended architecture:
 
 ```text
-VM/LXC dédiée
-utilisateur dédié
-repos clonés dans /srv/ai-runner/workspaces
-clé SSH GitHub limitée
-pas de secrets prod
-branches ai/*
-PR obligatoire
-CI obligatoire
-logs horodatés
-snapshots réguliers
+dedicated VM/LXC
+dedicated user
+repos cloned under /srv/ai-runner/workspaces
+restricted GitHub SSH key
+no prod secrets
+ai/* branches
+PR required
+CI required
+timestamped logs
+regular snapshots
 ```
 
 ### 6.5 Maintenance
 
-Claude Code CLI local demande de maintenir :
+Running Claude Code CLI locally means maintaining:
 
 ```text
-- OS de la VM/LXC
-- Node/npm/pnpm si projets JS
-- Terraform/Ansible si IaC
+- the VM/LXC OS
+- Node/npm/pnpm for JS projects
+- Terraform/Ansible for IaC
 - GitHub CLI
 - Claude Code CLI
 - scripts
 - cron/systemd timers
 - logs
-- rotation des tokens
+- token rotation
 - snapshots
 ```
 
-Ce n’est pas énorme, mais ce n’est pas zéro.
+It's not huge, but it's not zero either.
 
 ---
 
-## 7. Ce que change Copilot Pro au lieu de Copilot Pro+
+## 7. What changes with Copilot Pro vs Copilot Pro+
 
-Avec **Copilot Pro**, j’ai actuellement :
-
-```text
-300 premium requests / mois
-$0.04 par request supplémentaire
-```
-
-Avec **Copilot Pro+**, j’aurais :
+With **Copilot Pro**, I currently have:
 
 ```text
-1 500 premium requests / mois
+300 premium requests / month
+$0.04 per additional request
 ```
 
-Donc avec mon abonnement actuel, Copilot Cloud Agent est très intéressant pour :
+With **Copilot Pro+**, I would have:
 
 ```text
-- quelques PR publiques
-- quelques code reviews
-- quelques tâches simples
-- petits repos
-- faible fréquence
+1,500 premium requests / month
 ```
 
-Mais il devient moins évident pour :
+So with my current subscription, Copilot Cloud Agent is very appealing for:
 
 ```text
-- tâches quotidiennes
-- plusieurs repos
-- gros refactoring
-- agent nocturne
-- workflows à itérations multiples
-- usage combiné Chat + review + agent
+- a few public PRs
+- a few code reviews
+- a few simple tasks
+- small repos
+- low frequency
 ```
 
-Le quota Copilot Pro peut suffire comme **outil ponctuel GitHub**, mais pas comme moteur principal de mon automation nocturne.
+But it becomes less obvious for:
+
+```text
+- daily tasks
+- multiple repos
+- large refactoring
+- a nightly agent
+- multi-iteration workflows
+- combined Chat + review + agent usage
+```
+
+The Copilot Pro quota can be enough as an **occasional GitHub tool**, but not as the main engine of my nightly automation.
 
 ---
 
-## 8. Règle de choix simple
+## 8. Simple decision rule
 
-| Question | Réponse | Choix |
+| Question | Answer | Choice |
 |---|---|---|
-| Est-ce une tâche GitHub pure, petite, sur un repo public ? | Oui | **Copilot Cloud Agent** |
-| Est-ce privé, multi-repos, mail/reporting, ou très personnalisé ? | Oui | **Claude Code CLI homelab** |
-| Est-ce une PR automatisée avec CI propre sur GitHub ? | Oui | **Claude Code GitHub Action** ou **Copilot Cloud Agent** |
-| Est-ce que ça doit accéder à mon réseau local ? | Oui | **Homelab** |
-| Est-ce que je veux éviter toute installation ? | Oui | **Copilot Cloud Agent** |
-| Est-ce que je veux éviter les dépassements Copilot Pro ? | Oui | **Claude Code CLI homelab** |
-| Est-ce que le repo est privé et sensible ? | Oui | **Claude Code CLI homelab** |
-| Est-ce que c’est juste un rapport ou un mail ? | Oui | **Script homelab + Claude ponctuel** |
+| Is it a pure, small GitHub task on a public repo? | Yes | **Copilot Cloud Agent** |
+| Is it private, multi-repo, email/reporting, or highly custom? | Yes | **Claude Code CLI homelab** |
+| Is it an automated PR with clean CI on GitHub? | Yes | **Claude Code GitHub Action** or **Copilot Cloud Agent** |
+| Does it need to access my local network? | Yes | **Homelab** |
+| Do I want to avoid any installation? | Yes | **Copilot Cloud Agent** |
+| Do I want to avoid Copilot Pro overages? | Yes | **Claude Code CLI homelab** |
+| Is the repo private and sensitive? | Yes | **Claude Code CLI homelab** |
+| Is it just a report or an email? | Yes | **Occasional homelab script + Claude** |
 
 ---
 
 ## 9. Sources
 
-- GitHub Docs — Plans individuels Copilot, quotas Pro/Pro+ et premium requests  
+- GitHub Docs — Individual Copilot plans, Pro/Pro+ quotas and premium requests
   https://docs.github.com/en/copilot/concepts/billing/individual-plans
 
-- GitHub Docs — Copilot coding agent (cloud)  
+- GitHub Docs — Copilot coding agent (cloud)
   https://docs.github.com/en/copilot/concepts/agents/coding-agent/about-coding-agent
 
-- GitHub Docs — Facturation GitHub Actions  
+- GitHub Docs — GitHub Actions billing
   https://docs.github.com/en/billing/managing-billing-for-github-actions/about-billing-for-github-actions
 
-- GitHub Docs — Configurer un runner self-hosted pour Copilot coding agent  
+- GitHub Docs — Configure a self-hosted runner for Copilot coding agent
   https://docs.github.com/en/copilot/how-tos/administer-copilot/manage-for-organization/configure-runner-for-coding-agent
 
-- Anthropic Support — Claude Code avec plan Pro ou Max  
+- Anthropic Support — Using Claude Code with your Pro or Max plan
   https://support.claude.com/en/articles/11145838-use-claude-code-with-your-pro-or-max-plan
 
-- Anthropic Support — Limites d'usage et longueur de contexte  
+- Anthropic Support — How usage and length limits work
   https://support.claude.com/en/articles/11647753-how-do-usage-and-length-limits-work
 
-- Anthropic Docs — Pricing API Claude  
+- Anthropic Docs — Claude API pricing
   https://platform.claude.com/docs/en/about-claude/pricing

@@ -46,7 +46,9 @@ const linkInactive = 'text-foreground/70 hover:text-foreground';
       href={cvBase}
       class={`${linkBase} rounded-l-md ${variant === 'short' ? linkActive : linkInactive}`}
       aria-current={variant === 'short' ? 'page' : undefined}
-    >{L.variantLabels.short}</a>
+    >
+      {L.variantLabels.short}
+    </a>
     <a
       href={`${cvBase}/detailed`}
       class={`${linkBase} border-border border-l ${variant === 'detailed' ? linkActive : linkInactive}`}

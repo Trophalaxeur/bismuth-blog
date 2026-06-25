@@ -1,18 +1,13 @@
-import { getCollection } from 'astro:content';
 import { extractVariantMarkdown, parseDomains, sortCvExperiences, stripMarkdownForCareerChannel } from '@/utils';
+import { getCollection } from 'astro:content';
 
 export async function GET() {
   const locale = 'fr';
 
-  const [sections, experiences] = await Promise.all([
-    getCollection('cvSections'),
-    getCollection('cvExperiences'),
-  ]);
+  const [sections, experiences] = await Promise.all([getCollection('cvSections'), getCollection('cvExperiences')]);
 
   const frSections = sections.filter((e) => e.id.startsWith(`${locale}/`));
-  const frExperiencesRaw = experiences.filter(
-    (e) => e.id.startsWith(`${locale}/`) && e.data.section !== 'early'
-  );
+  const frExperiencesRaw = experiences.filter((e) => e.id.startsWith(`${locale}/`) && e.data.section !== 'early');
 
   const frExperiences = sortCvExperiences(frExperiencesRaw);
 
@@ -24,9 +19,7 @@ export async function GET() {
   const projectsEntry = frSections.find((e) => e.data.type === 'projects');
 
   const rawSkills = skillsEntry?.data.skills ?? {};
-  const skills: Record<string, string[]> = Object.fromEntries(
-    Object.entries(rawSkills).map(([k, v]) => [k, Array.isArray(v) ? v : [v]])
-  );
+  const skills: Record<string, string[]> = Object.fromEntries(Object.entries(rawSkills).map(([k, v]) => [k, Array.isArray(v) ? v : [v]]));
 
   // Comprehensive technology list: every tool/language/method used across ALL
   // experiences (early included) + the curated skills, de-duplicated. Gives the
@@ -60,9 +53,7 @@ export async function GET() {
       linkedin: profile?.data.contact?.linkedin ?? '',
       positioning: profile?.data.positioning ?? [],
     },
-    summary: summaryEntry?.body
-      ? stripMarkdownForCareerChannel(extractVariantMarkdown(summaryEntry.body, 'detailed'))
-      : '',
+    summary: summaryEntry?.body ? stripMarkdownForCareerChannel(extractVariantMarkdown(summaryEntry.body, 'detailed')) : '',
     domains: parseDomains(extractVariantMarkdown(domainsEntry?.body ?? '', 'detailed')).map((d) => `${d.title} — ${d.description}`),
     skills,
     technologies,
@@ -79,20 +70,13 @@ export async function GET() {
         end: exp.data.end,
         tags: exp.data.tags ?? [],
         secondaryTags: exp.data.secondaryTags ?? [],
-        stack: [
-          ...(exp.data.environment?.languages ?? []),
-          ...(exp.data.environment?.tools ?? []),
-        ],
+        stack: [...(exp.data.environment?.languages ?? []), ...(exp.data.environment?.tools ?? [])],
         methods: exp.data.environment?.methods ?? [],
         description: stripMarkdownForCareerChannel(md),
       };
     }),
-    education: educationEntry?.body
-      ? stripMarkdownForCareerChannel(extractVariantMarkdown(educationEntry.body, 'detailed'))
-      : '',
-    projects: projectsEntry?.body
-      ? stripMarkdownForCareerChannel(extractVariantMarkdown(projectsEntry.body, 'detailed'))
-      : '',
+    education: educationEntry?.body ? stripMarkdownForCareerChannel(extractVariantMarkdown(educationEntry.body, 'detailed')) : '',
+    projects: projectsEntry?.body ? stripMarkdownForCareerChannel(extractVariantMarkdown(projectsEntry.body, 'detailed')) : '',
   };
 
   return new Response(JSON.stringify(cv), {

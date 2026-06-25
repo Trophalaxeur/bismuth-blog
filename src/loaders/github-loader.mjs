@@ -1,8 +1,9 @@
 import jsYaml from 'js-yaml';
+import { createHash } from 'crypto';
 import { execFileSync } from 'child_process';
-import { writeFileSync, readFileSync, unlinkSync, mkdtempSync, rmdirSync } from 'fs';
+import { writeFileSync, readFileSync, unlinkSync, mkdtempSync, rmdirSync, readdirSync, copyFileSync, mkdirSync } from 'fs';
 import { tmpdir } from 'os';
-import { join, posix } from 'path';
+import { join, posix, dirname, resolve } from 'path';
 import { unified } from 'unified';
 import remarkParse from 'remark-parse';
 import remarkGfm from 'remark-gfm';
@@ -111,7 +112,21 @@ function rehypeInlineD2(d2Map) {
   };
 }
 
-function buildProcessor(d2Map = {}) {
+// Rewrite <img src="*"> for images copied to public/docs-assets by copyLocalImages.
+// imageMap: { originalRelativeSrc: '/docs-assets/...' }
+function rehypeRewriteImages(imageMap) {
+  return function (tree) {
+    visit(tree, 'element', (node) => {
+      if (node.tagName !== 'img') return;
+      const src = node.properties?.src;
+      if (src && imageMap[src]) {
+        node.properties.src = imageMap[src];
+      }
+    });
+  };
+}
+
+function buildProcessor(d2Map = {}, imageMap = {}) {
   const headings = [];
   const processor = unified()
     .use(remarkParse)
@@ -122,6 +137,7 @@ function buildProcessor(d2Map = {}) {
     .use(rehypeCollectHeadings, headings)
     .use(rehypeStripMdExtension)
     .use(rehypeInlineD2, d2Map)
+    .use(rehypeRewriteImages, imageMap)
     .use(rehypeStringify, { allowDangerousHtml: true });
   return { processor, headings };
 }
@@ -188,14 +204,116 @@ export function globToRegex(pattern) {
   return new RegExp(`^${result}$`);
 }
 
+// Resolves relPath against base and rejects any result that escapes base (path traversal guard,
+// e.g. a markdown link like "../../../etc/passwd"). Returns null on escape.
+function resolveWithinBase(base, relPath) {
+  const baseAbs = resolve(base);
+  const target = resolve(baseAbs, relPath);
+  if (target !== baseAbs && !target.startsWith(`${baseAbs}/`)) return null;
+  return target;
+}
+
+// Recursively list files under absBase matching pathPattern, relative to absBase.
+function listLocalFiles(absBase, pathPattern) {
+  const regex = globToRegex(pathPattern);
+  const results = [];
+  const walk = (relDir) => {
+    for (const entry of readdirSync(join(absBase, relDir), { withFileTypes: true })) {
+      const relPath = relDir ? `${relDir}/${entry.name}` : entry.name;
+      if (entry.isDirectory()) {
+        walk(relPath);
+      } else if (regex.test(relPath)) {
+        results.push(relPath);
+      }
+    }
+  };
+  walk('');
+  return results;
+}
+
+// Copy images referenced by a local markdown file into public/docs-assets, so they're
+// servable as static assets — relative image paths have no meaningful base once the
+// content is rendered into a virtual Starlight route. Returns { originalSrc: publicPath }.
+function copyLocalImages(body, absBase, fileDir, logger) {
+  const imageMap = {};
+  const imageLinks = [...body.matchAll(/!\[[^\]]*\]\(([^)]+)\)/g)].map((m) => m[1]);
+  const docsAssetsRoot = resolve('public', 'docs-assets');
+  for (const relHref of imageLinks) {
+    if (/^https?:\/\//.test(relHref) || relHref.startsWith('/')) continue;
+    const resolvedRelPath = posix.normalize(posix.join(fileDir, relHref));
+    const srcPath = resolveWithinBase(absBase, resolvedRelPath);
+    const destPath = resolveWithinBase(docsAssetsRoot, resolvedRelPath);
+    if (!srcPath || !destPath) {
+      logger?.warn(`Skipping image outside allowed directory: ${relHref}`);
+      continue;
+    }
+    try {
+      mkdirSync(dirname(destPath), { recursive: true });
+      copyFileSync(srcPath, destPath);
+      imageMap[relHref] = `/docs-assets/${resolvedRelPath}`;
+    } catch (err) {
+      logger?.warn(`Image copy failed for ${srcPath}: ${err.message}`);
+    }
+  }
+  return imageMap;
+}
+
+// Local counterpart of the GitHub fetch loop below — reads markdown straight off disk
+// instead of calling the GitHub API. Used for this repo's own docs/ folder, which is
+// already on disk at build time and needs no remote round-trip.
+async function loadLocalSource({ base, pathPattern, idPrefix = '', stripExtension = false, starlightDocsBase, store, logger, parseData }) {
+  if (!base) throw new Error('githubLoader: "base" is required when "local: true" is set');
+  const absBase = resolve(base);
+  logger.info(`Reading local docs: ${base}`);
+  const files = listLocalFiles(absBase, pathPattern);
+  logger.info(`${files.length} files match ${pathPattern}`);
+
+  for (const relPath of files) {
+    const relativePath = stripExtension ? relPath.replace(/\.(md|mdx)$/, '') : relPath;
+    const id = idPrefix + relativePath;
+
+    const raw = readFileSync(join(absBase, relPath), 'utf8');
+    const { data, body } = parseFrontmatter(raw);
+    const parsed = await parseData({ id, data });
+
+    const d2Map = {};
+    const d2Links = [...body.matchAll(/\[[^\]]*\]\(([^)]+\.d2)\)/g)].map((m) => m[1]);
+    const fileDir = posix.dirname(relPath);
+    for (const relHref of d2Links) {
+      const localPath = resolveWithinBase(absBase, posix.normalize(posix.join(fileDir, relHref)));
+      if (!localPath) {
+        logger.warn(`Skipping D2 diagram outside allowed directory: ${relHref}`);
+        continue;
+      }
+      try {
+        const d2Source = readFileSync(localPath, 'utf8');
+        d2Map[relHref] = compileD2ToSvg(d2Source);
+        logger.info(`Compiled D2: ${localPath}`);
+      } catch (err) {
+        logger.warn(`D2 compile failed for ${localPath}: ${err.message}`);
+      }
+    }
+
+    const imageMap = copyLocalImages(body, absBase, fileDir, logger);
+
+    const { processor, headings } = buildProcessor(d2Map, imageMap);
+    const result = await processor.process(body);
+    const html = String(result);
+    const filePath = starlightDocsBase ? `${starlightDocsBase}/${id}.md` : undefined;
+    store.set({ id, data: parsed, body, rendered: { html, metadata: { headings } }, digest: `${relPath}:${createHash('sha256').update(raw).digest('hex')}`, filePath });
+  }
+
+  logger.info(`Loaded ${files.length} local files from ${base}`);
+}
+
 /**
  * Astro Content Layer loader that fetches markdown files from one or more private GitHub repos.
  *
  * @param {object|object[]} sources - Single config or array of configs
- * @param {string} sources.repo - GitHub repo in "owner/name" format
+ * @param {string} sources.repo - GitHub repo in "owner/name" format (ignored when sources.local is true)
  * @param {string} sources.pathPattern - Glob pattern to match files
- * @param {string} sources.token - GitHub fine-grained PAT with contents:read
- * @param {string} [sources.stripPrefix] - Path prefix to strip from the source path
+ * @param {string} sources.token - GitHub fine-grained PAT with contents:read (ignored when sources.local is true)
+ * @param {string} [sources.stripPrefix] - Path prefix to strip from the source path (GitHub sources only)
  * @param {string} [sources.idPrefix] - Prefix to prepend to the entry ID
  * @param {boolean} [sources.stripExtension] - Strip .md/.mdx extension from the entry ID
  * @param {string} [sources.starlightDocsBase] - When set, generates a fake filePath for Starlight
@@ -203,6 +321,9 @@ export function globToRegex(pattern) {
  *   The file doesn't need to exist on disk — Starlight only uses the string for path operations.
  *   Formula: `${starlightDocsBase}/${id}.md` → Starlight strips the base to derive the sidebar group.
  *   See: carbon-notes/docs/decisions/starlight-content-layer-integration.md for the full decision record.
+ * @param {boolean} [sources.local] - Read from local disk instead of the GitHub API — for content
+ *   that already lives in this repo (e.g. this repo's own docs/ folder). No token needed.
+ * @param {string} [sources.base] - Directory to read from, relative to the repo root (local sources only)
  */
 export function githubLoader(sources) {
   const sourceList = Array.isArray(sources) ? sources : [sources];
@@ -217,7 +338,14 @@ export function githubLoader(sources) {
         idPrefix = '',
         stripExtension = false,
         starlightDocsBase,
+        local = false,
+        base,
       } of sourceList) {
+        if (local) {
+          await loadLocalSource({ base, pathPattern, idPrefix, stripExtension, starlightDocsBase, store, logger, parseData });
+          continue;
+        }
+
         if (!token) {
           logger.warn(`CONTENT_TOKEN not set — skipping loader for ${repo} (${pathPattern})`);
           continue;

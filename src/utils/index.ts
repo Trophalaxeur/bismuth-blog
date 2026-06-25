@@ -1,5 +1,6 @@
 export {
   CAREER_CHANNEL_MAX_CHARS,
+  CAREER_CHANNEL_PROFILE_MAX_CHARS,
   annotateExperienceHtml,
   colorizePlainTechTerms,
   colorizeTechTerms,

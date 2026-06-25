@@ -1,3 +1,8 @@
+---
+title: OG Images
+description: Dynamic Open Graph image generation at build time using Satori and @resvg/resvg-js.
+---
+
 # OG Images — Dynamic generation with Satori
 
 ## What are OG images?
@@ -91,7 +96,7 @@ Two layouts share the same design tokens, gradient, and top bar (bismuth logo + 
 ```
 [8px blue bar] | Dev Notes (logo)
                | Florian Lefevre (68px bold)
-               | Lead Tech / Software Engineering Manager (36px bold)
+               | Tech Lead / Engineering Manager (hands-on) (36px bold)
                | ── blue divider ──
                | site description (26px)
                |                              flefevre.fr
@@ -116,7 +121,7 @@ const C = { bg, text, muted, accent }          // color palette
 const SITE_URL = 'flefevre.fr'
 const SITE_NAME = 'Dev Notes'
 const AUTHOR = 'Florian Lefevre'
-const ROLE = 'Lead Tech / Software Engineering Manager'
+const ROLE = 'Tech Lead / Engineering Manager (hands-on)'
 const BG_GRADIENT = '...'                       // radial gradient CSS string
 ```
 

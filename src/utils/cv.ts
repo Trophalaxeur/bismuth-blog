@@ -146,6 +146,9 @@ export async function renderMarkdown(md: string): Promise<string> {
 /** Max characters for a career channel experience description (e.g. LinkedIn limit). */
 export const CAREER_CHANNEL_MAX_CHARS = 2000;
 
+/** Max characters for the career channel profile bio (e.g. LinkedIn "About" limit). */
+export const CAREER_CHANNEL_PROFILE_MAX_CHARS = 2600;
+
 function formatCvDate(yyyyMM: string, locale: string): string {
   if (!yyyyMM.includes('-')) {
     return yyyyMM; // Year-only format: display as-is
@@ -305,6 +308,12 @@ export async function getCareerChannelExperiencesData(locale = 'fr') {
   return Promise.all(
     sortCvExperiences(localeEntries.filter((e) => e.data.variants?.includes('career-channel'))).map(async (exp) => {
       const md = extractVariantMarkdown(exp.body ?? '', 'career-channel');
+      // tags/secondaryTags are a curated highlight list; environment is the full technical
+      // stack from frontmatter (languages/tools/systems) — append it so it's part of both
+      // the rendered HTML and the plain text copied to the clipboard, not just on-screen tags.
+      const envString = flattenEnvironment(exp.data.environment);
+      const envLabel = locale === 'en' ? 'Environment' : 'Environnement';
+      const fullMd = envString ? `${md}\n\n*${envLabel} : ${envString}*` : md;
       return {
         company: exp.data.company,
         role: exp.data.role,
@@ -312,8 +321,8 @@ export async function getCareerChannelExperiencesData(locale = 'fr') {
         end: exp.data.end,
         current: exp.data.current,
         tags: exp.data.tags,
-        text: stripMarkdownForCareerChannel(md),
-        html: await renderMarkdown(md),
+        text: stripMarkdownForCareerChannel(fullMd),
+        html: await renderMarkdown(fullMd),
       };
     })
   );
