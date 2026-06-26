@@ -6,12 +6,24 @@ const CV_PRINT_PATHS = new Set(['/cv/print', '/en/cv/print']);
 
 const CV_PRINT_PROTECTED_VARIANTS = new Set(['detailed', 'career-channel']);
 
+// Astro's static output treats `/path` and `/path/` as the same route — strip the
+// trailing slash before matching so it can't be used to bypass a zone check.
+function normalizePath(pathname: string): string {
+  return pathname.length > 1 && pathname.endsWith('/') ? pathname.slice(0, -1) : pathname;
+}
+
 function isCvZone(url: URL): boolean {
-  if (CV_PATHS.has(url.pathname)) return true;
-  if (CV_PRINT_PATHS.has(url.pathname)) {
+  const path = normalizePath(url.pathname);
+  if (CV_PATHS.has(path)) return true;
+  if (CV_PRINT_PATHS.has(path)) {
     return CV_PRINT_PROTECTED_VARIANTS.has(url.searchParams.get('variant') ?? '');
   }
   return false;
+}
+
+function isDocsZone(url: URL): boolean {
+  const path = normalizePath(url.pathname);
+  return path === '/docs' || path.startsWith('/docs/');
 }
 
 interface Zone {
@@ -22,7 +34,7 @@ interface Zone {
 
 const ZONES: Zone[] = [
   { realm: 'CV', envVar: 'CV_PASSWORD', matches: isCvZone },
-  { realm: 'Docs', envVar: 'DOCS_PASSWORD', matches: (url) => url.pathname.startsWith('/docs') },
+  { realm: 'Docs', envVar: 'DOCS_PASSWORD', matches: isDocsZone },
 ];
 
 function unauthorized(realm: string): Response {
@@ -49,12 +61,25 @@ export default function middleware(request: Request) {
   const auth = request.headers.get('authorization');
   if (!auth?.startsWith('Basic ')) return unauthorized(zone.realm);
 
-  const [, providedPassword] = atob(auth.slice('Basic '.length)).split(':');
+  let providedPassword: string | undefined;
+  try {
+    [, providedPassword] = atob(auth.slice('Basic '.length)).split(':');
+  } catch {
+    return unauthorized(zone.realm);
+  }
   if (providedPassword !== password) return unauthorized(zone.realm);
 
   return next();
 }
 
 export const config = {
-  matcher: ['/cv/detailed', '/cv/career-channel', '/en/cv/detailed', '/en/cv/career-channel', '/cv/print', '/en/cv/print', '/docs/:path*'],
+  matcher: [
+    '/cv/detailed/:path*',
+    '/cv/career-channel/:path*',
+    '/en/cv/detailed/:path*',
+    '/en/cv/career-channel/:path*',
+    '/cv/print/:path*',
+    '/en/cv/print/:path*',
+    '/docs/:path*',
+  ],
 };
