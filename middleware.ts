@@ -61,12 +61,15 @@ export default function middleware(request: Request) {
   const auth = request.headers.get('authorization');
   if (!auth?.startsWith('Basic ')) return unauthorized(zone.realm);
 
-  let providedPassword: string | undefined;
+  let decoded: string;
   try {
-    [, providedPassword] = atob(auth.slice('Basic '.length)).split(':');
+    decoded = atob(auth.slice('Basic '.length));
   } catch {
     return unauthorized(zone.realm);
   }
+  // Split on the first ":" only — the password itself may legitimately contain one.
+  const separatorIndex = decoded.indexOf(':');
+  const providedPassword = separatorIndex === -1 ? undefined : decoded.slice(separatorIndex + 1);
   if (providedPassword !== password) return unauthorized(zone.realm);
 
   return next();
