@@ -32,7 +32,7 @@ npm run lint:stylelint    # CSS linter (0 errors required)
 
 ## Publishing content
 
-Content (articles, CV, docs) lives in carbon-notes and the project repos (homelab-gallium, neon-agents).
+Content (articles, CV, docs) lives in carbon-notes and the project repos (gallium-homelab, neon-agents).
 It is fetched at Vercel build time via Astro Content Layer loaders — no auto-publish on commit.
 Full mechanics: [docs/content-pipeline.md](docs/content-pipeline.md).
 
@@ -188,7 +188,7 @@ Content (articles, CV, docs) lives in separate private repos, fetched at build t
 | Articles FR | `Trophalaxeur/carbon-notes` `articles/**/fr/` | `postFr` |
 | Articles EN | `Trophalaxeur/carbon-notes` `articles/**/en/` | `postEn` |
 | CV | `Trophalaxeur/carbon-notes` `cv/{fr,en}/` | `cvSections`, `cvExperiences` |
-| Docs homelab | `Trophalaxeur/homelab-gallium` `docs/` | `docs` (Starlight) |
+| Docs homelab | `Trophalaxeur/gallium-homelab` `docs/` | `docs` (Starlight) |
 | Docs neon | `Trophalaxeur/neon-agents` `docs/` | `docs` (Starlight) |
 
 Auth: `CONTENT_TOKEN` env var (Vercel + local `.env`).
