@@ -64,7 +64,7 @@ To generate CV PDFs locally, Playwright also needs a browser binary once: `npx p
 
 | Variable | Required | Purpose |
 |---|---|---|
-| `CONTENT_TOKEN` | Yes | GitHub fine-grained PAT (`Contents: Read-only`) on carbon-notes, homelab-gallium, neon-agents — fetches articles, CV content, and docs at build time |
+| `CONTENT_TOKEN` | Yes | GitHub fine-grained PAT (`Contents: Read-only`) on carbon-notes, gallium-homelab, neon-agents — fetches articles, CV content, and docs at build time |
 | `LOCAL_CARBON_NOTES` | No | Absolute path to a local carbon-notes checkout — reads CV content from disk instead of GitHub, no token needed for that part |
 | `PREVIEW_PORT` | No | Port for the preview server used by `npm run cv:pdf` (default `4322`) |
 
@@ -77,7 +77,7 @@ This repo fetches content from three sibling repos at build time — see [docs/c
 | Repo | Role |
 |---|---|
 | [carbon-notes](https://github.com/Trophalaxeur/carbon-notes) | Personal knowledge base — blog articles, CV content (fr/en), general notes |
-| [homelab-gallium](https://github.com/Trophalaxeur/homelab-gallium) | Home infrastructure docs |
+| [gallium-homelab](https://github.com/Trophalaxeur/gallium-homelab) | Home infrastructure docs |
 | [neon-agents](https://github.com/Trophalaxeur/neon-agents) | Neon agents project docs |
 
 There's no webhook — a deployed build only reflects those repos' state as of the last build. After editing content in any of them, trigger a rebuild manually:
@@ -98,7 +98,7 @@ Builds the site, then renders the CV as 6 PDFs (3 variants × fr/en) via headles
 ## Troubleshooting
 
 - **Blog/CV/docs pages render empty** — `CONTENT_TOKEN` is missing or expired. The build still succeeds; check the build log for `CONTENT_TOKEN not set — skipping loader for …`.
-- **Content edited in carbon-notes/homelab-gallium/neon-agents doesn't show up** — there's no webhook, builds don't auto-trigger on those repos' pushes. Run `blog-publish` (see [Linked projects](#linked-projects)).
+- **Content edited in carbon-notes/gallium-homelab/neon-agents doesn't show up** — there's no webhook, builds don't auto-trigger on those repos' pushes. Run `blog-publish` (see [Linked projects](#linked-projects)).
 - **`LOCAL_CARBON_NOTES` set but CV content is empty** — the path must point at the repo root (the loader reads `$LOCAL_CARBON_NOTES/cv`), and must be absolute.
 - **`npm run cv:pdf` fails with a missing browser executable** — run `npx playwright install chromium` once.
 

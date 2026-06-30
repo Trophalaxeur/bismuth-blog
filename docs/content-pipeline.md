@@ -17,10 +17,10 @@ This repo holds almost no long-form content of its own outside `docs/` — `src/
 | `Trophalaxeur/carbon-notes` | Blog articles (fr/en) | `articles/*/{fr,en}/index.{md,mdx}` | `postFr`, `postEn` |
 | `Trophalaxeur/carbon-notes` | CV content (fr/en) | `cv/{fr,en}/*.md`, `cv/{fr,en}/experiences/*.md` | `cvSections`, `cvExperiences` |
 | `Trophalaxeur/carbon-notes` | General notes | `docs/**/*.md` | `docs` (id prefix `carbon-notes/`) |
-| `Trophalaxeur/homelab-gallium` | Homelab infrastructure docs | `docs/**/*.md` | `docs` (id prefix `homelab/`) |
+| `Trophalaxeur/gallium-homelab` | Homelab infrastructure docs | `docs/**/*.md` | `docs` (id prefix `homelab/`) |
 | `Trophalaxeur/neon-agents` | Neon agents docs | `docs/**/*.md` | `docs` (id prefix `neon/`) |
 
-`carbon-notes` is the only remote repo that feeds three different collections — it's the personal knowledge base shared across every project (this blog, homelab-gallium, neon-agents). The `docs` collection itself aggregates **four** sources — this repo plus the other three's `docs/` folders — into one browsable site, treated as equals (see [Starlight integration](#starlight-integration-docs-collection-only) for how the routing actually works, it's not what the name suggests).
+`carbon-notes` is the only remote repo that feeds three different collections — it's the personal knowledge base shared across every project (this blog, gallium-homelab, neon-agents). The `docs` collection itself aggregates **four** sources — this repo plus the other three's `docs/` folders — into one browsable site, treated as equals (see [Starlight integration](#starlight-integration-docs-collection-only) for how the routing actually works, it's not what the name suggests).
 
 All collections are defined in `src/content.config.ts`; the actual fetching/reading logic lives in `src/loaders/github-loader.mjs`.
 

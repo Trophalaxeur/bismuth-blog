@@ -131,7 +131,7 @@ const cvSections = defineCollection({
   }),
 });
 
-const HOMELAB = 'Trophalaxeur/homelab-gallium';
+const HOMELAB = 'Trophalaxeur/gallium-homelab';
 const NEON = 'Trophalaxeur/neon-agents';
 
 const docs = defineCollection({
