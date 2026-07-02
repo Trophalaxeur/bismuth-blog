@@ -71,6 +71,16 @@ When `LOCAL_CARBON_NOTES` is set to an absolute path, Astro's built-in `glob()` 
 
 This override only exists for the two CV collections. `postFr`, `postEn`, and the three remote `docs` sources always fetch from GitHub regardless of `LOCAL_CARBON_NOTES`.
 
+### Sub-selector — `TAILORED_CV_SLUG`
+
+A second dev-only env var, `TAILORED_CV_SLUG`, re-points the same two collections one level deeper: instead of `${LOCAL_CARBON_NOTES}/cv`, they read `${LOCAL_CARBON_NOTES}/cv/tailored/<slug>`. It only has any effect when `LOCAL_CARBON_NOTES` is also set — it's a sub-selector of that mechanism, not an independent one — and it's gated behind `import.meta.env.DEV` exactly the same way, for the exact same reason: Vite statically replaces that check to `false` at build time, so a production build never even reads the variable's value.
+
+This exists for `bromine-backend` (see `Trophalaxeur/bromine-backend`), which generates one-off, AI-tailored CVs (adapted to a specific job offer, or a custom prompt) on demand. It spawns `astro dev` in a bismuth-blog checkout with `TAILORED_CV_SLUG` set to render exactly one tailored dataset — living at `carbon-notes/cv/tailored/<slug>/{fr,en}/` and mirroring `cv/{fr,en}/`'s shape exactly (same frontmatter schema, same file layout, prefix included) — to a PDF via Playwright, then tears the dev server down. See [docs/cv/pdf-generation-tailored.md](./cv/pdf-generation-tailored.md) for the full flow.
+
+The route that renders this content, `src/pages/cv/tailored/[slug]/print.astro`, has its own `getStaticPaths()` returning `[]` whenever `!import.meta.env.DEV` — so even independently of `TAILORED_CV_SLUG` never being read in a build, the route itself is absent from `dist/` in production (verified: an empty `getStaticPaths()` on a dynamic route under `output: 'static'` builds clean, with zero pages emitted, no error). `middleware.ts` and the sitemap filter both also exclude `/cv/tailored/*` as further defense in depth.
+
+**Cache warning**: because `astro dev`'s content loaders all run on startup — articles, docs, not just the CV — the Astro Content Layer cache (`.astro/`) in whatever bismuth-blog checkout is running this must persist between renders (a fresh checkout, or one with `.astro/` wiped, re-fetches everything from GitHub on the very next render, which is slow and needs `CONTENT_TOKEN`).
+
 ## Starlight integration (`docs` collection only)
 
 The `docs` collection feeds an [`@astrojs/starlight`](https://starlight.astro.build/) site. **Despite the name, it is not mounted under a `/docs` URL prefix** — Starlight's `base` is the site root, so its pages land at top-level routes: `/bismuth/content-pipeline`, `/carbon-notes/architecture`, `/homelab/adguard-config`, `/neon/agents`, etc. `/docs` itself is just a separate, hand-written overview page (`src/pages/docs.astro`, prose in `src/content/docs-home.md`) that links out to each section below — it only shares the word "docs" by coincidence.
@@ -104,4 +114,5 @@ d2 docs/content-pipeline.d2 docs/content-pipeline.png
 ## See also
 
 - [docs/cv/pdf-generation.md](./cv/pdf-generation.md) — what happens downstream of `cvSections`/`cvExperiences` to produce the CV PDFs
+- [docs/cv/pdf-generation-tailored.md](./cv/pdf-generation-tailored.md) — the on-demand, AI-tailored variant of that pipeline (driven by `bromine-backend`)
 - README → [Linked projects](../README.md#linked-projects) and [Troubleshooting](../README.md#troubleshooting)

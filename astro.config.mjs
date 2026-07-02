@@ -30,7 +30,7 @@ export default defineConfig({
 			],
 		}),
 		expressiveCode(expressiveCodeOptions),
-		sitemap({ filter: (page) => !page.includes('/print') }),
+		sitemap({ filter: (page) => !page.includes('/print') && !page.includes('/cv/tailored/') }),
 		mdx(),
 	],
 	vite: {

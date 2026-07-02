@@ -17,6 +17,22 @@ const CARBON_NOTES = 'Trophalaxeur/carbon-notes';
 // env var on a deploy platform can't silently swap GitHub fetch for a local path that doesn't exist there.
 const LOCAL_CARBON_NOTES = import.meta.env.DEV ? (import.meta.env.LOCAL_CARBON_NOTES as string | undefined) : undefined;
 
+// Sub-selector for LOCAL_CARBON_NOTES: when set (by bromine-backend's PDF
+// render step), points cvSections/cvExperiences at a one-off tailored dataset
+// instead of the real cv/{fr,en}/. Same DEV-only gating as LOCAL_CARBON_NOTES
+// itself — never honored in a build, so it can never leak into production.
+// Requires LOCAL_CARBON_NOTES to also be set (it's a sub-selector, not an
+// independent mechanism).
+const TAILORED_CV_SLUG = import.meta.env.DEV ? (import.meta.env.TAILORED_CV_SLUG as string | undefined) : undefined;
+if (TAILORED_CV_SLUG && !/^[a-z0-9-]+$/i.test(TAILORED_CV_SLUG)) {
+  throw new Error(`Invalid TAILORED_CV_SLUG: "${TAILORED_CV_SLUG}" — must match /^[a-z0-9-]+$/`);
+}
+
+// cv/tailored/<slug>/ mirrors cv/'s own {fr,en}/ shape exactly (prefix kept —
+// see docs/cv/pdf-generation-tailored.md — so CvPage's existing
+// `e.id.startsWith(locale + '/')` filter needs no change).
+const CV_BASE = LOCAL_CARBON_NOTES && TAILORED_CV_SLUG ? `${LOCAL_CARBON_NOTES}/cv/tailored/${TAILORED_CV_SLUG}` : LOCAL_CARBON_NOTES ? `${LOCAL_CARBON_NOTES}/cv` : undefined;
+
 // coverImage.src is a CDN URL string — remote content can't use Astro's image() helper
 const postSchema = z.object({
   title: z.string().max(60),
@@ -59,8 +75,8 @@ const postEn = defineCollection({
 });
 
 const cvExperiences = defineCollection({
-  loader: LOCAL_CARBON_NOTES
-    ? glob({ pattern: '{fr,en}/experiences/*.md', base: `${LOCAL_CARBON_NOTES}/cv` })
+  loader: CV_BASE
+    ? glob({ pattern: '{fr,en}/experiences/*.md', base: CV_BASE })
     : githubLoader({
         repo: CARBON_NOTES,
         pathPattern: 'cv/{fr,en}/experiences/*.md',
@@ -94,8 +110,8 @@ const cvExperiences = defineCollection({
 });
 
 const cvSections = defineCollection({
-  loader: LOCAL_CARBON_NOTES
-    ? glob({ pattern: '{fr,en}/*.md', base: `${LOCAL_CARBON_NOTES}/cv` })
+  loader: CV_BASE
+    ? glob({ pattern: '{fr,en}/*.md', base: CV_BASE })
     : githubLoader({
         repo: CARBON_NOTES,
         pathPattern: 'cv/{fr,en}/*.md',

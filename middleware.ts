@@ -26,6 +26,17 @@ function isDocsZone(url: URL): boolean {
   return path === '/docs' || path.startsWith('/docs/');
 }
 
+// Defense in depth: cv/tailored/* content should never exist in a production
+// build at all (see content.config.ts CV_BASE — the githubLoader path pattern
+// can't match it, and the route's getStaticPaths() is DEV-only). This blocks
+// the request unconditionally regardless of any of that holding true, so a
+// future regression in either of those layers still can't serve tailored
+// content publicly — no password can unlock this zone, unlike CV_PATHS.
+function isTailoredZone(url: URL): boolean {
+  const path = normalizePath(url.pathname);
+  return path.startsWith('/cv/tailored/') || path.startsWith('/en/cv/tailored/');
+}
+
 interface Zone {
   realm: string;
   envVar: string;
@@ -51,6 +62,11 @@ export default function middleware(request: Request) {
   }
 
   const url = new URL(request.url);
+
+  if (isTailoredZone(url)) {
+    return new Response('Not found', { status: 404 });
+  }
+
   const zone = ZONES.find((z) => z.matches(url));
   if (!zone) return next();
 
@@ -83,6 +99,8 @@ export const config = {
     '/en/cv/career-channel/:path*',
     '/cv/print/:path*',
     '/en/cv/print/:path*',
+    '/cv/tailored/:path*',
+    '/en/cv/tailored/:path*',
     '/docs/:path*',
   ],
 };
