@@ -1,0 +1,18 @@
+---
+import CvPrintPage from '@/components/cv/CvPrintPage.astro';
+
+// DEV-only route: bromine-backend spawns `astro dev` with TAILORED_CV_SLUG set
+// to render one specific tailored CV to PDF via Playwright. In a production
+// build this always returns [] — no GitHub-fetched collection ever contains
+// "tailored" data (see content.config.ts CV_BASE), so there is nothing to
+// enumerate and the route is absent from `dist/` entirely (verified empirically:
+// an empty getStaticPaths on a dynamic route under output: 'static' builds
+// clean, emits zero pages, no error).
+export function getStaticPaths() {
+  if (!import.meta.env.DEV) return [];
+  const slug = import.meta.env.TAILORED_CV_SLUG;
+  return slug && import.meta.env.LOCAL_CARBON_NOTES ? [{ params: { slug } }] : [];
+}
+---
+
+<CvPrintPage />
