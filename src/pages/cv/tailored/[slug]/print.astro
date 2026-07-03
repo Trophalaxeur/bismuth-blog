@@ -8,7 +8,7 @@ import CvPrintPage from '@/components/cv/CvPrintPage.astro';
 // enumerate and the route is absent from `dist/` entirely (verified empirically:
 // an empty getStaticPaths on a dynamic route under output: 'static' builds
 // clean, emits zero pages, no error).
-export async function getStaticPaths() {
+export function getStaticPaths() {
   if (!import.meta.env.DEV) return [];
   const slug = import.meta.env.TAILORED_CV_SLUG;
   return slug ? [{ params: { slug } }] : [];

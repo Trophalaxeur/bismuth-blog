@@ -25,7 +25,7 @@ const LOCAL_CARBON_NOTES = import.meta.env.DEV ? (import.meta.env.LOCAL_CARBON_N
 // independent mechanism).
 const TAILORED_CV_SLUG = import.meta.env.DEV ? (import.meta.env.TAILORED_CV_SLUG as string | undefined) : undefined;
 if (TAILORED_CV_SLUG && !/^[a-z0-9-]+$/i.test(TAILORED_CV_SLUG)) {
-  throw new Error(`Invalid TAILORED_CV_SLUG: "${TAILORED_CV_SLUG}" — must match /^[a-z0-9-]+$/`);
+  throw new Error(`Invalid TAILORED_CV_SLUG: "${TAILORED_CV_SLUG}" — must match /^[a-z0-9-]+$/i`);
 }
 
 // cv/tailored/<slug>/ mirrors cv/'s own {fr,en}/ shape exactly (prefix kept —

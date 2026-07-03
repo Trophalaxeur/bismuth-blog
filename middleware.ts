@@ -34,7 +34,7 @@ function isDocsZone(url: URL): boolean {
 // content publicly — no password can unlock this zone, unlike CV_PATHS.
 function isTailoredZone(url: URL): boolean {
   const path = normalizePath(url.pathname);
-  return path.startsWith('/cv/tailored/') || path.startsWith('/en/cv/tailored/');
+  return path === '/cv/tailored' || path.startsWith('/cv/tailored/') || path === '/en/cv/tailored' || path.startsWith('/en/cv/tailored/');
 }
 
 interface Zone {
