@@ -6,7 +6,7 @@ import CvCareerChannelPage from '@/components/cv/CvCareerChannelPage.astro';
 export function getStaticPaths() {
   if (!import.meta.env.DEV) return [];
   const slug = import.meta.env.TAILORED_CV_SLUG;
-  return slug ? [{ params: { slug } }] : [];
+  return slug && import.meta.env.LOCAL_CARBON_NOTES ? [{ params: { slug } }] : [];
 }
 ---
 
