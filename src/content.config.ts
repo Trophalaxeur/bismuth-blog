@@ -1,8 +1,11 @@
 import { docsSchema } from '@astrojs/starlight/schema';
 import { glob } from 'astro/loaders';
+import type { Loader, LoaderContext } from 'astro/loaders';
 import { defineCollection } from 'astro:content';
+import { readdirSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { z } from 'zod';
-import { githubLoader } from './loaders/github-loader.mjs';
+import { githubLoader, globToRegex, parseFrontmatter } from './loaders/github-loader.mjs';
 
 function removeDupsAndLowerCase(array: string[]) {
   if (!array.length) return array;
@@ -32,6 +35,59 @@ if (TAILORED_CV_SLUG && !/^[a-z0-9-]+$/i.test(TAILORED_CV_SLUG)) {
 // see docs/cv/pdf-generation-tailored.md — so CvPage's existing
 // `e.id.startsWith(locale + '/')` filter needs no change).
 const CV_BASE = LOCAL_CARBON_NOTES && TAILORED_CV_SLUG ? `${LOCAL_CARBON_NOTES}/cv/tailored/${TAILORED_CV_SLUG}` : LOCAL_CARBON_NOTES ? `${LOCAL_CARBON_NOTES}/cv` : undefined;
+
+// Lists files under `dir` matching `pattern`, relative to `dir`.
+function listFiles(dir: string, pattern: string): string[] {
+  const regex = globToRegex(pattern);
+  const results: string[] = [];
+  const walk = (relDir: string) => {
+    for (const entry of readdirSync(join(dir, relDir), { withFileTypes: true })) {
+      const relPath = relDir ? `${relDir}/${entry.name}` : entry.name;
+      if (entry.isDirectory()) walk(relPath);
+      else if (regex.test(relPath)) results.push(relPath);
+    }
+  };
+  walk('');
+  return results;
+}
+
+// The LLM tailoring step only writes profile.md + the experiences it touched
+// (see bromine-backend/src/lib/prompt.ts) — skills.md, education.md,
+// extra-info.md, interests.md, and untouched experiences never exist under
+// CV_BASE when a tailored slug is active. This loader reads the real
+// cv/{fr,en}/ directory first, then overlays anything present under CV_BASE
+// (by matching relative path) — tailored content wins, everything else falls
+// back to the real CV instead of silently disappearing from the render.
+//
+// This can't be done by calling astro's built-in `glob()` loader twice against
+// the shared store: each invocation prunes any store entry it didn't see in
+// its own scan, so a second call (over the smaller tailored dir) deletes
+// everything the first call just loaded from the real CV dir.
+function localCvLoader(pattern: string): Loader {
+  return {
+    name: 'local-cv-glob',
+    async load({ store, parseData, logger, generateDigest }: LoaderContext) {
+      const baseCvDir = `${LOCAL_CARBON_NOTES}/cv`;
+      const dirs = CV_BASE && CV_BASE !== baseCvDir ? [baseCvDir, CV_BASE] : [baseCvDir];
+
+      // relPath -> absolute file path; later dirs (the tailored slug) override earlier ones.
+      const files = new Map<string, string>();
+      for (const dir of dirs) {
+        for (const relPath of listFiles(dir, pattern)) files.set(relPath, join(dir, relPath));
+      }
+
+      store.clear();
+      for (const [relPath, absPath] of files) {
+        const id = relPath.replace(/\.mdx?$/, '');
+        const raw = readFileSync(absPath, 'utf8');
+        const { data, body } = parseFrontmatter(raw);
+        const parsed = await parseData({ id, data });
+        store.set({ id, data: parsed, body, digest: generateDigest(raw) });
+      }
+      logger.info(`Loaded ${files.size} local CV files matching ${pattern}`);
+    },
+  };
+}
 
 // coverImage.src is a CDN URL string — remote content can't use Astro's image() helper
 const postSchema = z.object({
@@ -110,8 +166,8 @@ const cvExperiences = defineCollection({
 });
 
 const cvSections = defineCollection({
-  loader: CV_BASE
-    ? glob({ pattern: '{fr,en}/*.md', base: CV_BASE })
+  loader: LOCAL_CARBON_NOTES
+    ? localCvLoader('{fr,en}/*.md')
     : githubLoader({
         repo: CARBON_NOTES,
         pathPattern: 'cv/{fr,en}/*.md',
