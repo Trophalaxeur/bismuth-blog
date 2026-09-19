@@ -168,6 +168,8 @@ async function fetchContent(repo, path, token) {
   return res.text();
 }
 
+/** @param {string} content
+ *  @returns {{ data: Record<string, unknown>; body: string }} */
 export function parseFrontmatter(content) {
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
   if (!match) return { data: {}, body: content };

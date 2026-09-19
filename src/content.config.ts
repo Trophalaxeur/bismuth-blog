@@ -1,6 +1,6 @@
 import { docsSchema } from '@astrojs/starlight/schema';
-import { glob } from 'astro/loaders';
 import type { Loader, LoaderContext } from 'astro/loaders';
+import { glob } from 'astro/loaders';
 import { defineCollection } from 'astro:content';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -66,7 +66,8 @@ function listFiles(dir: string, pattern: string): string[] {
 function localCvLoader(pattern: string): Loader {
   return {
     name: 'local-cv-glob',
-    async load({ store, parseData, logger, generateDigest }: LoaderContext) {
+    async load(context: LoaderContext) {
+      const { store, logger } = context;
       const baseCvDir = `${LOCAL_CARBON_NOTES}/cv`;
       const dirs = CV_BASE && CV_BASE !== baseCvDir ? [baseCvDir, CV_BASE] : [baseCvDir];
 
@@ -81,8 +82,8 @@ function localCvLoader(pattern: string): Loader {
         const id = relPath.replace(/\.mdx?$/, '');
         const raw = readFileSync(absPath, 'utf8');
         const { data, body } = parseFrontmatter(raw);
-        const parsed = await parseData({ id, data });
-        store.set({ id, data: parsed, body, digest: generateDigest(raw) });
+        const parsed = await context.parseData({ id, data });
+        store.set({ id, data: parsed, body, digest: context.generateDigest(raw) });
       }
       logger.info(`Loaded ${files.size} local CV files matching ${pattern}`);
     },
